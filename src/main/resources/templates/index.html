@@ -139,19 +139,19 @@
   <div class="logo">
     <img src="/images/moodtrip-logo.png" alt="MOODTRIP" onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold;\'>MOODTRIP</span>'">
   </div>
-  <div class="header-buttons">
-    <!-- 로그인 상태가 아닐 때 -->
-    <div th:if="${user == null}">
-      <a href="/signin" class="header-button">Sign In</a>
-      <a href="/signup" class="header-button">Sign Up</a>
-    </div>
+<!--  <div class="header-buttons">-->
+<!--    &lt;!&ndash; 로그인 상태가 아닐 때 &ndash;&gt;-->
+<!--    <div th:if="${user == null}">-->
+<!--      <a href="/signin" class="header-button">Sign In</a>-->
+<!--      <a href="/signup" class="header-button">Sign Up</a>-->
+<!--    </div>-->
 
-    <!-- 로그인 상태일 때 -->
-    <div th:if="${user != null}" style="display: flex; align-items: center;">
-      <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold;"></span>
-      <a href="/logout" class="header-button">Sign Out</a>
-    </div>
-  </div>
+<!--    &lt;!&ndash; 로그인 상태일 때 &ndash;&gt;-->
+<!--    <div th:if="${user != null}" style="display: flex; align-items: center;">-->
+<!--      <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold;"></span>-->
+<!--      <a href="/logout" class="header-button">Sign Out</a>-->
+<!--    </div>-->
+<!--  </div>-->
 </header>
 
 <div class="main-content">
