@@ -309,16 +309,16 @@
         <img src="/images/moodtrip-logo.png" alt="MOODTRIP"
              onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold; color: white;\'>MOODTRIP</span>'">
     </a>
-    <div class="header-buttons">
-        <div th:if="${user == null}">
-            <a href="/login" class="header-button" style="color: white;">Sign In</a>
-            <a href="/signup" class="header-button" style="color: white;">Sign Up</a>
-        </div>
-        <div th:if="${user != null}" style="display: flex; align-items: center;">
-            <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold; color: white;"></span>
-            <a href="/logout" class="header-button" style="color: white;">Sign Out</a>
-        </div>
-    </div>
+<!--    <div class="header-buttons">-->
+<!--        <div th:if="${user == null}">-->
+<!--            <a href="/login" class="header-button" style="color: white;">Sign In</a>-->
+<!--            <a href="/signup" class="header-button" style="color: white;">Sign Up</a>-->
+<!--        </div>-->
+<!--        <div th:if="${user != null}" style="display: flex; align-items: center;">-->
+<!--            <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold; color: white;"></span>-->
+<!--            <a href="/logout" class="header-button" style="color: white;">Sign Out</a>-->
+<!--        </div>-->
+<!--    </div>-->
 </header>
 
 <div class="content">

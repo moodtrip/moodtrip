@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -98,17 +100,49 @@ public class WebPageController {
 //    }
 
     // 추천 처리
+//    @PostMapping("/recommend")
+//    public String processSearch(@RequestParam("keyword") String input,
+//                                HttpSession session,
+//                                Model model) {
+//
+//        try {
+//            User user = (User) session.getAttribute("user");
+//            List<PlaceInfo> places = recommendService.recommendPlaces(input);
+//            model.addAttribute("user", user);
+//            model.addAttribute("keyword", input);
+//            model.addAttribute("places", places);
+//        } catch (Exception e) {
+//            model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
+//            e.printStackTrace();
+//        }
+//        return "recommendResult";
+//    }
+
     @PostMapping("/recommend")
-    public String processSearch(@RequestParam("keyword") String input,
+    public String processSearch(@RequestParam("keyword") String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return "redirect:/";
+        }
+        String encodedKeyword = URLEncoder.encode(input, StandardCharsets.UTF_8);
+        return "redirect:/recommend?keyword=" + encodedKeyword;
+    }
+
+    @GetMapping("/recommend")
+    public String showRecommend(@RequestParam("keyword") String keyword,
                                 HttpSession session,
                                 Model model) {
-
         try {
+            if (keyword == null || keyword.trim().isEmpty()) {
+                return "redirect:/";
+            }
+
             User user = (User) session.getAttribute("user");
-            List<PlaceInfo> places = recommendService.recommendPlaces(input);
+            List<PlaceInfo> places = recommendService.recommendPlaces(keyword);
+
             model.addAttribute("user", user);
-            model.addAttribute("keyword", input);
-            model.addAttribute("places", places);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("places", places != null ? places : List.of());
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
             e.printStackTrace();
