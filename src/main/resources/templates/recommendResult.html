@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MOODTRIP - Recommend</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .header-buttons {
+            display: flex;
+        }
+
+        .header-button {
+            margin-left: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .search-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #place-counter {
+            font-size: 16px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* 스크롤 컨테이너 */
+        .scroll-container {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* 스크롤 버튼 */
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .scroll-btn:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .scroll-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .scroll-btn.left {
+            left: -25px;
+        }
+
+        .scroll-btn.right {
+            right: -25px;
+        }
+
+        /* 페이지 인디케이터 */
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* 가로 스크롤 영역 */
+        .places-scroll-wrapper {
+            overflow: hidden;
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .places-list {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .place-card {
+            flex: 0 0 calc(20% - 16px); /* 5개씩 보이도록 */
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 320px;
+        }
+
+        .place-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: white;
+        }
+
+        .place-image-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .place-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .place-card:hover .place-image {
+            transform: scale(1.05);
+        }
+
+        .image-placeholder {
+            color: #999;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .place-info {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .place-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.3;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .place-address {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-buttons .back-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons .back-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 1200px) {
+            .place-card {
+                flex: 0 0 calc(25% - 15px); /* 4개씩 */
+                min-width: 180px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .place-card {
+                flex: 0 0 calc(33.333% - 14px); /* 3개씩 */
+                min-width: 160px;
+            }
+
+            .scroll-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .place-card {
+                flex: 0 0 calc(50% - 10px); /* 2개씩 */
+                min-width: 140px;
+                height: 280px;
+            }
+
+            .place-image-wrapper {
+                height: 140px;
+            }
+
+            .scroll-btn.left {
+                left: -20px;
+            }
+
+            .scroll-btn.right {
+                right: -20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .place-card {
+                flex: 0 0 calc(100% - 20px); /* 1개씩 */
+                min-width: 280px;
+            }
+        }
+
+        /* 스크롤바 숨기기 */
+        .places-scroll-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .places-scroll-wrapper {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/" class="logo" style="text-decoration: none; color: inherit;">
+        <img src="/images/moodtrip-logo.png" alt="MOODTRIP"
+             onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold; color: white;\'>MOODTRIP</span>'">
+    </a>
+    <div class="header-buttons">
+        <div th:if="${user == null}">
+            <a href="/login" class="header-button" style="color: white;">Sign In</a>
+            <a href="/signup" class="header-button" style="color: white;">Sign Up</a>
+        </div>
+        <div th:if="${user != null}" style="display: flex; align-items: center;">
+            <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold; color: white;"></span>
+            <a href="/logout" class="header-button" style="color: white;">Sign Out</a>
+        </div>
+    </div>
+</header>
+
+<div class="content">
+    <h2 class="search-title" th:text="'검색어: ' + ${keyword}">검색 결과</h2>
+    <div id="place-counter" th:text="'총 ' + ${places.size()} + '개의 장소'">총 0개의 장소</div>
+
+    <!-- 페이지 인디케이터 -->
+    <div class="page-indicator" id="pageIndicator"></div>
+
+    <!-- 스크롤 컨테이너 -->
+    <div class="scroll-container">
+        <!-- 스크롤 버튼 -->
+        <button class="scroll-btn left" id="scrollLeft">‹</button>
+        <button class="scroll-btn right" id="scrollRight">›</button>
+
+        <!-- 가로 스크롤 영역 -->
+        <div class="places-scroll-wrapper">
+            <div class="places-list" id="placesList">
+                <div th:each="place, iterStat : ${places}" class="place-card"
+                     th:onclick="|location.href='@{/place/{index}(index=${iterStat.index}, keyword=${keyword})}'|">
+                    <div class="place-image-wrapper">
+                        <img th:src="${place.imageUrl}" alt="장소 이미지" class="place-image"
+                             onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>이미지 없음</div>'"/>
+                    </div>
+
+                    <div class="place-info">
+                        <div class="place-name" th:text="${place.name}">장소명</div>
+                        <div class="place-address" th:text="${place.address}">주소</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 네비게이션 버튼 -->
+    <div class="nav-buttons">
+        <a href="/" class="back-btn">« 메인으로 돌아가기 »</a>
+    </div>
+</div>
+
+<script>
+    class HorizontalCardScroller {
+        constructor() {
+            this.placesList = document.getElementById('placesList');
+            this.scrollLeftBtn = document.getElementById('scrollLeft');
+            this.scrollRightBtn = document.getElementById('scrollRight');
+            this.pageIndicator = document.getElementById('pageIndicator');
+
+            this.currentPage = 0;
+            this.cardsPerPage = this.getCardsPerPage();
+            this.totalCards = this.placesList.children.length;
+            this.totalPages = Math.ceil(this.totalCards / this.cardsPerPage);
+
+            this.init();
+        }
+
+        getCardsPerPage() {
+            const width = window.innerWidth;
+            if (width <= 400) return 1;
+            if (width <= 600) return 2;
+            if (width <= 900) return 3;
+            if (width <= 1200) return 4;
+            return 5;
+        }
+
+        init() {
+            this.createPageIndicators();
+            this.updateButtons();
+            this.bindEvents();
+
+            // 초기 위치 설정
+            this.updateScroll();
+        }
+
+        createPageIndicators() {
+            this.pageIndicator.innerHTML = '';
+            for (let i = 0; i < this.totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.className = `page-dot ${i === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => this.goToPage(i));
+                this.pageIndicator.appendChild(dot);
+            }
+        }
+
+        updateButtons() {
+            this.scrollLeftBtn.style.opacity = this.currentPage === 0 ? '0.5' : '1';
+            this.scrollRightBtn.style.opacity = this.currentPage >= this.totalPages - 1 ? '0.5' : '1';
+
+            this.scrollLeftBtn.disabled = this.currentPage === 0;
+            this.scrollRightBtn.disabled = this.currentPage >= this.totalPages - 1;
+        }
+
+        updatePageIndicators() {
+            const dots = this.pageIndicator.querySelectorAll('.page-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === this.currentPage);
+            });
+        }
+
+        updateScroll() {
+            const cardWidth = this.placesList.children[0].offsetWidth;
+            const gap = 20; // CSS의 gap 값
+            const scrollDistance = (cardWidth + gap) * this.cardsPerPage * this.currentPage;
+
+            this.placesList.style.transform = `translateX(-${scrollDistance}px)`;
+            this.updateButtons();
+            this.updatePageIndicators();
+        }
+
+        goToPage(page) {
+            if (page >= 0 && page < this.totalPages) {
+                this.currentPage = page;
+                this.updateScroll();
+            }
+        }
+
+        scrollLeft() {
+            if (this.currentPage > 0) {
+                this.currentPage--;
+                this.updateScroll();
+            }
+        }
+
+        scrollRight() {
+            if (this.currentPage < this.totalPages - 1) {
+                this.currentPage++;
+                this.updateScroll();
+            }
+        }
+
+        bindEvents() {
+            this.scrollLeftBtn.addEventListener('click', () => this.scrollLeft());
+            this.scrollRightBtn.addEventListener('click', () => this.scrollRight());
+
+            // 키보드 이벤트
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.scrollLeft();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.scrollRight();
+                }
+            });
+
+            // 터치 스와이프 지원
+            let startX = 0;
+            let startY = 0;
+            let isScrolling = false;
+
+            this.placesList.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isScrolling = false;
+            }, { passive: true });
+
+            this.placesList.addEventListener('touchmove', (e) => {
+                if (!startX || !startY) return;
+
+                const diffX = startX - e.touches[0].clientX;
+                const diffY = startY - e.touches[0].clientY;
+
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && !isScrolling) {
+                    isScrolling = true;
+                    if (diffX > 0) {
+                        this.scrollRight();
+                    } else {
+                        this.scrollLeft();
+                    }
+                }
+            }, { passive: true });
+
+            this.placesList.addEventListener('touchend', () => {
+                startX = 0;
+                startY = 0;
+                isScrolling = false;
+            }, { passive: true });
+
+            // 윈도우 리사이즈 이벤트
+            window.addEventListener('resize', () => {
+                const newCardsPerPage = this.getCardsPerPage();
+                if (newCardsPerPage !== this.cardsPerPage) {
+                    this.cardsPerPage = newCardsPerPage;
+                    this.totalPages = Math.ceil(this.totalCards / this.cardsPerPage);
+                    this.currentPage = Math.min(this.currentPage, this.totalPages - 1);
+                    this.createPageIndicators();
+                    this.updateScroll();
+                }
+            });
+        }
+    }
+
+    // 페이지 로드 후 스크롤러 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('placesList').children.length > 0) {
+            new HorizontalCardScroller();
+        }
+    });
+
+    console.log('가로 스크롤 장소 리스트가 로드되었습니다.');
+</script>
+</body>
+</html>
