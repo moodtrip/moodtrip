@@ -132,9 +132,9 @@ public class WebPageController {
                               @RequestParam("keyword") String keyword,
                               HttpSession session,
                               Model model) {
-        if (session.getAttribute("user") == null) {
-            return "redirect:/signin";
-        }
+//        if (session.getAttribute("user") == null) {
+//            return "redirect:/signin";
+//        }
 
         try {
             List<PlaceInfo> places = recommendService.recommendPlaces(keyword);
