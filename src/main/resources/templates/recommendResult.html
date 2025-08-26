@@ -19,7 +19,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .logo img {
@@ -43,6 +43,63 @@
             align-items: center;
             padding: 20px;
             text-align: center;
+        }
+
+        /* 선택된 감정/상황 표시 박스 */
+        .selected-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .selected-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .selected-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .selected-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .selected-text {
+            background: #f8f9fa;
+            color: #495057;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 16px;
+            line-height: 1.5;
+            border-left: 4px solid #667eea;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .search-title {
@@ -244,6 +301,36 @@
             color: #667eea;
         }
 
+        /* 애니메이션 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 태그 애니메이션 지연 */
+        .selected-tag:nth-child(1) { animation-delay: 0.1s; }
+        .selected-tag:nth-child(2) { animation-delay: 0.2s; }
+        .selected-tag:nth-child(3) { animation-delay: 0.3s; }
+        .selected-tag:nth-child(4) { animation-delay: 0.4s; }
+        .selected-tag:nth-child(5) { animation-delay: 0.5s; }
+
         /* 반응형 디자인 */
         @media (max-width: 1200px) {
             .place-card {
@@ -262,6 +349,11 @@
                 width: 40px;
                 height: 40px;
                 font-size: 16px;
+            }
+
+            .selected-info {
+                padding: 20px 25px;
+                margin: 0 15px 25px;
             }
         }
 
@@ -283,12 +375,35 @@
             .scroll-btn.right {
                 right: -20px;
             }
+
+            .selected-info {
+                padding: 18px 20px;
+                margin: 0 10px 20px;
+            }
+
+            .selected-title {
+                font-size: 16px;
+            }
+
+            .selected-tag {
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+
+            .selected-text {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 400px) {
             .place-card {
                 flex: 0 0 calc(100% - 20px); /* 1개씩 */
                 min-width: 280px;
+            }
+
+            .content {
+                padding: 15px;
             }
         }
 
@@ -309,20 +424,35 @@
         <img src="/images/moodtrip-logo.png" alt="MOODTRIP"
              onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold; color: white;\'>MOODTRIP</span>'">
     </a>
-<!--    <div class="header-buttons">-->
-<!--        <div th:if="${user == null}">-->
-<!--            <a href="/login" class="header-button" style="color: white;">Sign In</a>-->
-<!--            <a href="/signup" class="header-button" style="color: white;">Sign Up</a>-->
-<!--        </div>-->
-<!--        <div th:if="${user != null}" style="display: flex; align-items: center;">-->
-<!--            <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold; color: white;"></span>-->
-<!--            <a href="/logout" class="header-button" style="color: white;">Sign Out</a>-->
-<!--        </div>-->
-<!--    </div>-->
 </header>
 
 <div class="content">
-    <h2 class="search-title" th:text="'검색어: ' + ${keyword}">검색 결과</h2>
+    <!-- 선택된 감정/상황 표시 박스 -->
+    <div class="selected-info" th:if="${selected}">
+        <div class="selected-title">
+            <span th:if="${type == 'emotion'}">😊 선택하신 감정</span>
+            <span th:if="${type == 'situation'}">📝 입력하신 상황</span>
+            <span th:unless="${type}">🔍 검색 키워드</span>
+        </div>
+        <div class="selected-content">
+            <!-- 감정 선택일 경우 태그 형태로 표시 -->
+            <div th:if="${type == 'emotion'}" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+                <span th:each="emotion, iterStat : ${#strings.split(selected, ' ')}" 
+                      class="selected-tag"
+                      th:text="${emotion}">감정</span>
+            </div>
+            <!-- 상황 입력일 경우 텍스트 박스로 표시 -->
+            <div th:if="${type == 'situation'}" class="selected-text" th:text="${selected}">
+                입력하신 상황
+            </div>
+            <!-- 일반 검색일 경우 -->
+            <div th:unless="${type}" style="color: white; font-size: 18px; font-weight: 600;" th:text="${selected}">
+                검색어
+            </div>
+        </div>
+    </div>
+
+    <h2 class="search-title">🎯 추천 결과</h2>
     <div id="place-counter" th:text="'총 ' + ${places.size()} + '개의 장소'">총 0개의 장소</div>
 
     <!-- 페이지 인디케이터 -->

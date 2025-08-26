@@ -540,7 +540,6 @@
     <h2 class="modal-title">위치 기반 맞춤 추천</h2>
     <p class="modal-description">
       현재 위치를 공유해주시면
-
       더욱 정확한 장소를 추천해드릴 수 있어요!
     </p>
     <div class="modal-buttons">
@@ -583,20 +582,19 @@
   </div>
 
   <div class="selection-buttons">
-    <a href="/selection?mode=emotion" class="selection-btn">
+    <a href="#" class="selection-btn" id="emotionBtn">
       <div class="selection-icon">😊</div>
       <div class="selection-label">감정</div>
       <div class="selection-description">현재 기분이나 감정으로
         장소를 찾아드려요</div>
     </a>
 
-    <a href="/situationSearching" methods="post" class="selection-btn">
+    <a href="#" class="selection-btn" id="situationBtn">
       <div class="selection-icon">📍</div>
       <div class="selection-label">상황</div>
       <div class="selection-description">현재 상황이나 목적으로
         장소를 찾아드려요</div>
     </a>
-
   </div>
 
   <button class="back-btn" onclick="goBackToMain()">
@@ -684,11 +682,11 @@
     );
   }
 
-  // 위치 건너뛰기 - 메인 화면으로 돌아가기
+  // 위치 건너뛰기
   function skipLocation() {
     document.getElementById('locationModal').style.display = 'none';
+    showEmotionSelection();
     console.log('위치 정보 요청을 건너뛰었습니다.');
-    // 메인 화면은 이미 보이는 상태이므로 추가 작업 불필요
   }
 
   // 감정/상황 선택 화면 표시
@@ -714,20 +712,27 @@
     locationText.textContent = `위치 확인 완료! (${shortLat}, ${shortLng})`;
   }
 
-  // 선택 페이지로 이동 시 위치 정보 함께 전달
+  // 감정/상황 버튼 클릭 이벤트 설정
   document.addEventListener('DOMContentLoaded', function() {
-    const emotionBtn = document.querySelector('a[href="/selection?mode=emotion"]');
-    const situationBtn = document.querySelector('a[href="/selection?mode=situation"]');
+    const emotionBtn = document.getElementById('emotionBtn');
+    const situationBtn = document.getElementById('situationBtn');
 
-    [emotionBtn, situationBtn].forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        if (userLocation) {
-          e.preventDefault();
-          const mode = this.href.includes('emotion') ? 'emotion' : 'situation';
-          const url = `/selection?mode=${mode}&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
-          window.location.href = url;
-        }
-      });
+    emotionBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      let url = '/selection?mode=emotion';
+      if (userLocation) {
+        url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
+      }
+      window.location.href = url;
+    });
+
+    situationBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      let url = '/selection?mode=situation';
+      if (userLocation) {
+        url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
+      }
+      window.location.href = url;
     });
   });
 
