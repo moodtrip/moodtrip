@@ -123,6 +123,19 @@
         .tags-container:hover .tags {
             animation-play-state: paused;
         }
+        .back-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -139,6 +152,9 @@
     <div class="logo">
         <img src="/images/moodtrip-logo.png" alt="MOODTRIP" onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold;\'>MOODTRIP</span>'">
     </div>
+    <a class="back-btn" href="/">
+        ← 메인으로 돌아가기
+    </a>
     <!--  <div class="header-buttons">-->
     <!--    &lt;!&ndash; 로그인 상태가 아닐 때 &ndash;&gt;-->
     <!--    <div th:if="${user == null}">-->
