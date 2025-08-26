@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
             box-sizing: border-box;
         }
 
@@ -32,27 +32,26 @@
 
         .header {
             text-align: center;
-            margin-bottom: 10px;
         }
 
         .title {
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin: 10px;
             color: #2c3e50;
         }
 
         .subtitle {
             font-size: 18px;
+            margin: 10px;
             color: #666;
-            margin-bottom: 10px;
         }
 
         .instruction {
             font-size: 16px;
             color: #888;
             background: #f8f9fa;
-            padding: 12px 20px;
+            padding: 10px 10px;
             border-radius: 25px;
             display: inline-block;
         }
@@ -76,7 +75,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px 20px;
+            padding: 25px 20px;
             border: 3px solid #e0e0e0;
             border-radius: 20px;
             cursor: pointer;
@@ -123,7 +122,7 @@
 
         .emotion-icon {
             font-size: 48px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             transition: all 0.3s ease;
         }
 
@@ -141,7 +140,7 @@
 
         .selected-counter {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 16px;
             font-weight: 600;
             color: #667eea;
@@ -156,7 +155,6 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 15px;
         }
 
         .btn {
@@ -255,7 +253,7 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 30px 20px;
+                padding: 20px 20px;
             }
 
             .title {
@@ -303,198 +301,198 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">현재 기분을 선택해주세요</h1>
-            <p class="subtitle">당신의 감정에 맞는 완벽한 장소를 찾아드릴게요</p>
-            <div class="instruction">✨ 여러 개 선택 가능 (최소 1개)</div>
-        </div>
-
-        <div class="selected-counter">
-            <span id="counterText">선택된 감정: 0개</span>
-        </div>
-
-        <form id="emotionForm" th:action="@{/processEmotion}" method="post">
-            <input type="hidden" name="lat" th:value="${latitude}">
-            <input type="hidden" name="lng" th:value="${longitude}">
-
-            <div class="emotion-grid">
-                <div class="emotion-item">
-                    <input type="checkbox" id="happy" name="emotions" value="행복" class="emotion-checkbox">
-                    <label for="happy" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">😊</div>
-                        <div class="emotion-name">행복</div>
-                        <div class="emotion-desc">즐거운 마음으로 특별한 시간을</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="excited" name="emotions" value="신남" class="emotion-checkbox">
-                    <label for="excited" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">🤩</div>
-                        <div class="emotion-name">신남</div>
-                        <div class="emotion-desc">에너지가 넘치는 활동적인 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="peaceful" name="emotions" value="평온" class="emotion-checkbox">
-                    <label for="peaceful" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">😌</div>
-                        <div class="emotion-name">평온</div>
-                        <div class="emotion-desc">조용하고 차분한 휴식의 시간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="romantic" name="emotions" value="로맨틱" class="emotion-checkbox">
-                    <label for="romantic" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">💕</div>
-                        <div class="emotion-name">로맨틱</div>
-                        <div class="emotion-desc">특별한 사람과 함께하는 시간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="nostalgic" name="emotions" value="그리움" class="emotion-checkbox">
-                    <label for="nostalgic" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">🥺</div>
-                        <div class="emotion-name">그리움</div>
-                        <div class="emotion-desc">추억을 되새기는 감성적인 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="curious" name="emotions" value="호기심" class="emotion-checkbox">
-                    <label for="curious" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">🤔</div>
-                        <div class="emotion-name">호기심</div>
-                        <div class="emotion-desc">새로운 것을 탐험하고 배우는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="stressed" name="emotions" value="스트레스" class="emotion-checkbox">
-                    <label for="stressed" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">😵</div>
-                        <div class="emotion-name">스트레스</div>
-                        <div class="emotion-desc">마음의 짐을 내려놓을 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="sad" name="emotions" value="우울" class="emotion-checkbox">
-                    <label for="sad" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">😔</div>
-                        <div class="emotion-name">우울</div>
-                        <div class="emotion-desc">위로받고 치유받을 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="lonely" name="emotions" value="외로움" class="emotion-checkbox">
-                    <label for="lonely" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">😢</div>
-                        <div class="emotion-name">외로움</div>
-                        <div class="emotion-desc">혼자만의 시간을 의미있게</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="energetic" name="emotions" value="활기" class="emotion-checkbox">
-                    <label for="energetic" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">⚡</div>
-                        <div class="emotion-name">활기</div>
-                        <div class="emotion-desc">역동적이고 생동감 넘치는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="contemplative" name="emotions" value="사색" class="emotion-checkbox">
-                    <label for="contemplative" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">🤯</div>
-                        <div class="emotion-name">사색</div>
-                        <div class="emotion-desc">깊이 생각하고 성찰할 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="adventurous" name="emotions" value="모험" class="emotion-checkbox">
-                    <label for="adventurous" class="emotion-label">
-                        <div class="checkmark">✓</div>
-                        <div class="emotion-icon">🌟</div>
-                        <div class="emotion-name">모험</div>
-                        <div class="emotion-desc">새로운 경험과 도전이 기다리는 곳</div>
-                    </label>
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    장소 추천받기 ✨
-                </button>
-                <a href="/" class="btn btn-secondary">
-                    처음으로 돌아가기
-                </a>
-            </div>
-        </form>
+<div class="container">
+    <div class="header">
+        <h1 class="title">현재 기분을 선택해주세요</h1>
+        <p class="subtitle">당신의 감정에 맞는 완벽한 장소를 찾아드릴게요</p>
+        <div class="instruction">✨ 여러 개 선택 가능 (최소 1개)</div>
     </div>
 
-    <script>
-        // 체크박스 상태 관리
-        const checkboxes = document.querySelectorAll('.emotion-checkbox');
-        const submitBtn = document.getElementById('submitBtn');
-        const counterText = document.getElementById('counterText');
+    <div class="selected-counter">
+        <span id="counterText">선택된 감정: 0개</span>
+    </div>
 
-        function updateCounter() {
-            const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
-            counterText.textContent = `선택된 감정: ${checkedCount}개`;
-            
-            if (checkedCount > 0) {
-                submitBtn.classList.add('active');
-            } else {
-                submitBtn.classList.remove('active');
+    <form id="emotionForm" th:action="@{/processEmotion}" method="post">
+        <input type="hidden" name="lat" th:value="${latitude}">
+        <input type="hidden" name="lng" th:value="${longitude}">
+
+        <div class="emotion-grid">
+            <div class="emotion-item">
+                <input type="checkbox" id="happy" name="emotions" value="행복" class="emotion-checkbox">
+                <label for="happy" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">😊</div>
+                    <div class="emotion-name">행복</div>
+                    <div class="emotion-desc">즐거운 마음으로 특별한 시간을</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="excited" name="emotions" value="신남" class="emotion-checkbox">
+                <label for="excited" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">🤩</div>
+                    <div class="emotion-name">신남</div>
+                    <div class="emotion-desc">에너지가 넘치는 활동적인 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="peaceful" name="emotions" value="평온" class="emotion-checkbox">
+                <label for="peaceful" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">😌</div>
+                    <div class="emotion-name">평온</div>
+                    <div class="emotion-desc">조용하고 차분한 휴식의 시간</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="romantic" name="emotions" value="로맨틱" class="emotion-checkbox">
+                <label for="romantic" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">💕</div>
+                    <div class="emotion-name">로맨틱</div>
+                    <div class="emotion-desc">특별한 사람과 함께하는 시간</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="nostalgic" name="emotions" value="그리움" class="emotion-checkbox">
+                <label for="nostalgic" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">🥺</div>
+                    <div class="emotion-name">그리움</div>
+                    <div class="emotion-desc">추억을 되새기는 감성적인 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="curious" name="emotions" value="호기심" class="emotion-checkbox">
+                <label for="curious" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">🤔</div>
+                    <div class="emotion-name">호기심</div>
+                    <div class="emotion-desc">새로운 것을 탐험하고 배우는 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="stressed" name="emotions" value="스트레스" class="emotion-checkbox">
+                <label for="stressed" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">😵</div>
+                    <div class="emotion-name">스트레스</div>
+                    <div class="emotion-desc">마음의 짐을 내려놓을 수 있는 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="sad" name="emotions" value="우울" class="emotion-checkbox">
+                <label for="sad" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">😔</div>
+                    <div class="emotion-name">우울</div>
+                    <div class="emotion-desc">위로받고 치유받을 수 있는 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="lonely" name="emotions" value="외로움" class="emotion-checkbox">
+                <label for="lonely" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">😢</div>
+                    <div class="emotion-name">외로움</div>
+                    <div class="emotion-desc">혼자만의 시간을 의미있게</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="energetic" name="emotions" value="활기" class="emotion-checkbox">
+                <label for="energetic" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">⚡</div>
+                    <div class="emotion-name">활기</div>
+                    <div class="emotion-desc">역동적이고 생동감 넘치는 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="contemplative" name="emotions" value="사색" class="emotion-checkbox">
+                <label for="contemplative" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">🤯</div>
+                    <div class="emotion-name">사색</div>
+                    <div class="emotion-desc">깊이 생각하고 성찰할 수 있는 곳</div>
+                </label>
+            </div>
+
+            <div class="emotion-item">
+                <input type="checkbox" id="adventurous" name="emotions" value="모험" class="emotion-checkbox">
+                <label for="adventurous" class="emotion-label">
+                    <div class="checkmark">✓</div>
+                    <div class="emotion-icon">🌟</div>
+                    <div class="emotion-name">모험</div>
+                    <div class="emotion-desc">새로운 경험과 도전이 기다리는 곳</div>
+                </label>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                장소 추천받기 ✨
+            </button>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                ← 선택으로 돌아가기
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 체크박스 상태 관리
+    const checkboxes = document.querySelectorAll('.emotion-checkbox');
+    const submitBtn = document.getElementById('submitBtn');
+    const counterText = document.getElementById('counterText');
+
+    function updateCounter() {
+        const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
+        counterText.textContent = `선택된 감정: ${checkedCount}개`;
+
+        if (checkedCount > 0) {
+            submitBtn.classList.add('active');
+        } else {
+            submitBtn.classList.remove('active');
+        }
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateCounter);
+    });
+
+    // 폼 제출 시 검증
+    document.getElementById('emotionForm').addEventListener('submit', function(e) {
+        const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
+        if (checkedCount === 0) {
+            e.preventDefault();
+            alert('최소 하나의 감정을 선택해주세요!');
+        }
+    });
+
+    // 초기 상태 설정
+    updateCounter();
+
+    // 키보드 접근성
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const focusedElement = document.activeElement;
+            if (focusedElement.classList.contains('emotion-label')) {
+                const checkbox = focusedElement.previousElementSibling;
+                checkbox.checked = !checkbox.checked;
+                updateCounter();
             }
         }
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateCounter);
-        });
-
-        // 폼 제출 시 검증
-        document.getElementById('emotionForm').addEventListener('submit', function(e) {
-            const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
-            if (checkedCount === 0) {
-                e.preventDefault();
-                alert('최소 하나의 감정을 선택해주세요!');
-            }
-        });
-
-        // 초기 상태 설정
-        updateCounter();
-
-        // 키보드 접근성
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const focusedElement = document.activeElement;
-                if (focusedElement.classList.contains('emotion-label')) {
-                    const checkbox = focusedElement.previousElementSibling;
-                    checkbox.checked = !checkbox.checked;
-                    updateCounter();
-                }
-            }
-        });
-    </script>
+    });
+</script>
 </body>
 </html>

@@ -437,7 +437,7 @@
         <div class="selected-content">
             <!-- 감정 선택일 경우 태그 형태로 표시 -->
             <div th:if="${type == 'emotion'}" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
-                <span th:each="emotion, iterStat : ${#strings.split(selected, ' ')}" 
+                <span th:each="emotion, iterStat : ${#strings.split(selected, ' ')}"
                       class="selected-tag"
                       th:text="${emotion}">감정</span>
             </div>

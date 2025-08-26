@@ -720,18 +720,34 @@
     emotionBtn.addEventListener('click', function(e) {
       e.preventDefault();
       let url = '/selection?mode=emotion';
+
+      // 위치 정보가 있으면 함께 전달
       if (userLocation) {
         url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
       }
+
+      // 위치 정보를 세션 스토리지에도 저장 (뒤로가기 시 활용)
+      if (userLocation) {
+        sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
+      }
+
       window.location.href = url;
     });
 
     situationBtn.addEventListener('click', function(e) {
       e.preventDefault();
       let url = '/selection?mode=situation';
+
+      // 위치 정보가 있으면 함께 전달
       if (userLocation) {
         url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
       }
+
+      // 위치 정보를 세션 스토리지에도 저장 (뒤로가기 시 활용)
+      if (userLocation) {
+        sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
+      }
+
       window.location.href = url;
     });
   });

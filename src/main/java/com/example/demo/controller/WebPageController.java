@@ -95,25 +95,28 @@ public class WebPageController {
                                 @RequestParam(value = "selected", required = false) String selected,
                                 HttpSession session,
                                 Model model) {
-        try {
-            if (keyword == null || keyword.trim().isEmpty()) {
-                return "redirect:/";
-            }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return "redirect:/";
+        }
 
+        try {
             User user = (User) session.getAttribute("user");
             List<PlaceInfo> places = recommendService.recommendPlaces(keyword);
 
             model.addAttribute("user", user);
             model.addAttribute("keyword", keyword);
-            model.addAttribute("places", places != null ? places : List.of());
-            model.addAttribute("type", type); // emotion 또는 situation
-            model.addAttribute("selected", selected); // 선택된 감정/상황 텍스트
+            model.addAttribute("places", (places != null) ? places : List.of());
+            model.addAttribute("type", (type != null) ? type : "");
+            model.addAttribute("selected", (selected != null) ? selected : "");
+
+            return "recommendResult";
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
             e.printStackTrace();
+            // 에러 페이지 전용 뷰로 분리
+            model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
+            return "index";
         }
-        return "recommendResult";
     }
 
     @GetMapping("/place/{index}")

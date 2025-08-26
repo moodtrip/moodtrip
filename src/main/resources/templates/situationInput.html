@@ -23,7 +23,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 25px;
-            padding: 10px;
+            padding: 30px;
             width: 100%;
             max-width: 700px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -38,7 +38,7 @@
         .title {
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #2c3e50;
         }
 
@@ -55,11 +55,11 @@
             padding: 15px 25px;
             border-radius: 25px;
             display: inline-block;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .input-section {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .text-input {
@@ -91,13 +91,13 @@
 
         .char-counter {
             text-align: right;
-            margin-top: 10px;
+            margin-top: 5px;
             font-size: 14px;
             color: #666;
         }
 
         .suggestions {
-            margin: 25px 0;
+            margin: 20px 0;
         }
 
         .suggestions-title {
@@ -189,7 +189,7 @@
         .examples-title {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin: 10px;
             color: #555;
             text-align: center;
         }
@@ -202,7 +202,7 @@
 
         .example-item {
             background: #f8f9fa;
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             border-left: 4px solid #667eea;
             font-size: 14px;
@@ -287,166 +287,166 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">현재 상황을 알려주세요</h1>
-            <p class="subtitle">상황에 맞는 완벽한 장소를 추천해드릴게요</p>
-            <div class="instruction floating-animation">💭 자유롭게 상황이나 원하는 것을 적어주세요</div>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1 class="title">현재 상황을 알려주세요</h1>
+        <p class="subtitle">상황에 맞는 완벽한 장소를 추천해드릴게요</p>
+        <div class="instruction floating-animation">💭 자유롭게 상황이나 원하는 것을 적어주세요</div>
+    </div>
 
-        <form id="situationForm" th:action="@{/processSituation}" method="post">
-            <input type="hidden" name="lat" th:value="${latitude}">
-            <input type="hidden" name="lng" th:value="${longitude}">
+    <form id="situationForm" th:action="@{/processSituation}" method="post">
+        <input type="hidden" name="lat" th:value="${latitude}">
+        <input type="hidden" name="lng" th:value="${longitude}">
 
-            <div class="input-section">
-                <textarea 
-                    name="situationText" 
-                    id="situationInput" 
-                    class="text-input" 
-                    placeholder="예: 
+        <div class="input-section">
+                <textarea
+                        name="situationText"
+                        id="situationInput"
+                        class="text-input"
+                        placeholder="예:
 • 친구들과 즐거운 시간을 보내고 싶어요
 • 혼자 조용히 책을 읽을 수 있는 곳을 찾아요
 • 데이트하기 좋은 분위기 있는 장소가 필요해요
 • 스트레스를 풀고 싶어서 신나게 놀 수 있는 곳을 원해요
 • 가족과 함께 맛있는 음식을 먹으러 가고 싶어요"
-                    maxlength="500"
-                    required></textarea>
-                <div class="char-counter">
-                    <span id="charCount">0</span>/500자
+                        maxlength="500"
+                        required></textarea>
+            <div class="char-counter">
+                <span id="charCount">0</span>/500자
+            </div>
+        </div>
+
+        <div class="suggestions">
+            <div class="suggestions-title">💡 빠른 선택</div>
+            <div class="suggestion-tags">
+                <span class="suggestion-tag" onclick="setSuggestion('친구들과 재미있게 놀 수 있는 곳')">친구들과 놀기</span>
+                <span class="suggestion-tag" onclick="setSuggestion('혼자만의 시간을 보낼 수 있는 조용한 곳')">혼자만의 시간</span>
+                <span class="suggestion-tag" onclick="setSuggestion('연인과 로맨틱한 데이트를 할 수 있는 곳')">로맨틱 데이트</span>
+                <span class="suggestion-tag" onclick="setSuggestion('가족과 함께 즐길 수 있는 곳')">가족과 함께</span>
+                <span class="suggestion-tag" onclick="setSuggestion('스트레스를 풀고 힐링할 수 있는 곳')">스트레스 해소</span>
+                <span class="suggestion-tag" onclick="setSuggestion('새로운 경험을 할 수 있는 흥미로운 곳')">새로운 경험</span>
+                <span class="suggestion-tag" onclick="setSuggestion('맛있는 음식을 먹을 수 있는 곳')">맛집 탐방</span>
+                <span class="suggestion-tag" onclick="setSuggestion('문화생활을 즐길 수 있는 곳')">문화생활</span>
+            </div>
+        </div>
+
+        <div class="examples-section">
+            <div class="examples-title">📝 이런 식으로 적어보세요</div>
+            <div class="examples-grid">
+                <div class="example-item">
+                    <div class="example-label">감정 표현</div>
+                    "요즘 너무 우울해서 기분전환이 필요해요"
+                </div>
+                <div class="example-item">
+                    <div class="example-label">구체적 상황</div>
+                    "회사 동료들과 회식 후 2차로 갈 곳을 찾아요"
+                </div>
+                <div class="example-item">
+                    <div class="example-label">목적 중심</div>
+                    "아이와 함께 교육적이면서 재미있는 곳에 가고 싶어요"
                 </div>
             </div>
+        </div>
 
-            <div class="suggestions">
-                <div class="suggestions-title">💡 빠른 선택</div>
-                <div class="suggestion-tags">
-                    <span class="suggestion-tag" onclick="setSuggestion('친구들과 재미있게 놀 수 있는 곳')">친구들과 놀기</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('혼자만의 시간을 보낼 수 있는 조용한 곳')">혼자만의 시간</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('연인과 로맨틱한 데이트를 할 수 있는 곳')">로맨틱 데이트</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('가족과 함께 즐길 수 있는 곳')">가족과 함께</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('스트레스를 풀고 힐링할 수 있는 곳')">스트레스 해소</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('새로운 경험을 할 수 있는 흥미로운 곳')">새로운 경험</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('맛있는 음식을 먹을 수 있는 곳')">맛집 탐방</span>
-                    <span class="suggestion-tag" onclick="setSuggestion('문화생활을 즐길 수 있는 곳')">문화생활</span>
-                </div>
-            </div>
+        <div class="action-buttons">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                상황에 맞는 장소 찾기 🔍
+            </button>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                ← 선택으로 돌아가기
+            </a>
+        </div>
+    </form>
+</div>
 
-            <div class="examples-section">
-                <div class="examples-title">📝 이런 식으로 적어보세요</div>
-                <div class="examples-grid">
-                    <div class="example-item">
-                        <div class="example-label">감정 표현</div>
-                        "요즘 너무 우울해서 기분전환이 필요해요"
-                    </div>
-                    <div class="example-item">
-                        <div class="example-label">구체적 상황</div>
-                        "회사 동료들과 회식 후 2차로 갈 곳을 찾아요"
-                    </div>
-                    <div class="example-item">
-                        <div class="example-label">분위기 중심</div>
-                        "조용하고 차분한 분위기에서 커피를 마시며 생각을 정리하고 싶어요"
-                    </div>
-                </div>
-            </div>
+<script>
+    const situationInput = document.getElementById('situationInput');
+    const charCount = document.getElementById('charCount');
+    const submitBtn = document.getElementById('submitBtn');
 
-            <div class="action-buttons">
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    상황에 맞는 장소 찾기 🔍
-                </button>
-                <a href="/" class="btn btn-secondary">
-                    처음으로 돌아가기
-                </a>
-            </div>
-        </form>
-    </div>
+    // 글자 수 카운터 업데이트
+    function updateCharCount() {
+        const length = situationInput.value.length;
+        charCount.textContent = length;
 
-    <script>
-        const situationInput = document.getElementById('situationInput');
-        const charCount = document.getElementById('charCount');
-        const submitBtn = document.getElementById('submitBtn');
-
-        // 글자 수 카운터 업데이트
-        function updateCharCount() {
-            const length = situationInput.value.length;
-            charCount.textContent = length;
-            
-            // 버튼 활성화/비활성화
-            if (length > 0 && length <= 500) {
-                submitBtn.classList.add('active');
-            } else {
-                submitBtn.classList.remove('active');
-            }
-            
-            // 글자 수 색상 변경
-            if (length > 450) {
-                charCount.style.color = '#dc3545';
-            } else if (length > 400) {
-                charCount.style.color = '#ffc107';
-            } else {
-                charCount.style.color = '#666';
-            }
+        // 버튼 활성화/비활성화
+        if (length > 0 && length <= 500) {
+            submitBtn.classList.add('active');
+        } else {
+            submitBtn.classList.remove('active');
         }
 
-        // 추천 태그 클릭 시 텍스트 설정
-        function setSuggestion(text) {
-            situationInput.value = text;
-            updateCharCount();
-            situationInput.focus();
-            
-            // 애니메이션 효과
-            situationInput.style.transform = 'scale(1.02)';
-            setTimeout(() => {
-                situationInput.style.transform = 'scale(1)';
-            }, 200);
+        // 글자 수 색상 변경
+        if (length > 450) {
+            charCount.style.color = '#dc3545';
+        } else if (length > 400) {
+            charCount.style.color = '#ffc107';
+        } else {
+            charCount.style.color = '#666';
         }
+    }
 
-        // 이벤트 리스너
-        situationInput.addEventListener('input', updateCharCount);
-        situationInput.addEventListener('paste', () => {
-            setTimeout(updateCharCount, 10);
-        });
-
-        // 폼 제출 시 검증
-        document.getElementById('situationForm').addEventListener('submit', function(e) {
-            const text = situationInput.value.trim();
-            if (text.length === 0) {
-                e.preventDefault();
-                alert('상황을 입력해주세요!');
-                situationInput.focus();
-            } else if (text.length > 500) {
-                e.preventDefault();
-                alert('500자 이내로 입력해주세요!');
-                situationInput.focus();
-            }
-        });
-
-        // 초기 상태 설정
+    // 추천 태그 클릭 시 텍스트 설정
+    function setSuggestion(text) {
+        situationInput.value = text;
         updateCharCount();
+        situationInput.focus();
 
-        // 자동 높이 조절
-        situationInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.max(this.scrollHeight, 120) + 'px';
-        });
+        // 애니메이션 효과
+        situationInput.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+            situationInput.style.transform = 'scale(1)';
+        }, 200);
+    }
 
-        // 포커스 시 플레이스홀더 효과
-        situationInput.addEventListener('focus', function() {
-            this.style.borderColor = '#667eea';
-            this.style.boxShadow = '0 0 0 5px rgba(102, 126, 234, 0.1)';
-        });
+    // 이벤트 리스너
+    situationInput.addEventListener('input', updateCharCount);
+    situationInput.addEventListener('paste', () => {
+        setTimeout(updateCharCount, 10);
+    });
 
-        situationInput.addEventListener('blur', function() {
-            if (!this.value) {
-                this.style.borderColor = '#e0e0e0';
-                this.style.boxShadow = 'none';
-            }
-        });
+    // 폼 제출 시 검증
+    document.getElementById('situationForm').addEventListener('submit', function(e) {
+        const text = situationInput.value.trim();
+        if (text.length === 0) {
+            e.preventDefault();
+            alert('상황을 입력해주세요!');
+            situationInput.focus();
+        } else if (text.length > 500) {
+            e.preventDefault();
+            alert('500자 이내로 입력해주세요!');
+            situationInput.focus();
+        }
+    });
 
-        // 엔터키로 제출 방지 (Shift+Enter는 허용)
-        situationInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-            }
-        });
-    </script>
+    // 초기 상태 설정
+    updateCharCount();
+
+    // 자동 높이 조절
+    situationInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.max(this.scrollHeight, 120) + 'px';
+    });
+
+    // 포커스 시 플레이스홀더 효과
+    situationInput.addEventListener('focus', function() {
+        this.style.borderColor = '#667eea';
+        this.style.boxShadow = '0 0 0 5px rgba(102, 126, 234, 0.1)';
+    });
+
+    situationInput.addEventListener('blur', function() {
+        if (!this.value) {
+            this.style.borderColor = '#e0e0e0';
+            this.style.boxShadow = 'none';
+        }
+    });
+
+    // 엔터키로 제출 방지 (Shift+Enter는 허용)
+    situationInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>
