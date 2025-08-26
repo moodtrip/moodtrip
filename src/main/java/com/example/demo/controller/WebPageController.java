@@ -31,6 +31,12 @@ public class WebPageController {
         return "index";  // 로그인 한 경우만 index.html 렌더링
     }
 
+    @GetMapping("/situationSearching")
+    public String situationSearching() {
+
+        return "SituationSearch";
+    }
+
     // 로그인 폼
 //    @GetMapping("/signin")
 //    public String showLoginForm(Model model) {

@@ -11,183 +11,742 @@
       font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #000;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-      border-bottom: 1px solid #333;
-    }
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
-    .logo img {
-      height: 40px;
-      width: auto;
-    }
-    .header-buttons {
-      display: flex;
-    }
-    .header-button {
-      margin-left: 15px;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-    }
-    .main-content {
+
+    .main-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 70vh;
       text-align: center;
+      gap: 40px;
     }
-    .main-title {
-      font-size: 32px;
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 48px;
       font-weight: bold;
-      margin-bottom: 20px;
-      line-height: 1.4;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 2px;
     }
-    .sub-title {
-      font-size: 16px;
-      margin-bottom: 30px;
-      color: #000;
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
     }
-    .search-box {
-      width: 80%;
-      max-width: 600px;
-      position: relative;
-      margin-bottom: 30px;
+
+    .subtitle {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 300;
+      margin-top: 10px;
     }
-    .search-input {
-      width: 100%;
-      padding: 15px 20px;
-      border-radius: 8px;
+
+    .start-button {
+      padding: 18px 40px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #667eea;
+      background: white;
       border: none;
-      background-color: #D9D9D9;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    .search-button {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
+      border-radius: 50px;
       cursor: pointer;
-    }
-    .tags-container {
-      width: 80%;
-      max-width: 600px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
       overflow: hidden;
+    }
+
+    .start-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    .start-button:hover::before {
+      left: 100%;
+    }
+
+    .start-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .start-button:active {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 위치 정보 요청 모달 */
+    .location-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlideUp 0.4s ease-out;
       position: relative;
     }
-    .tags {
+
+    .modal-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .modal-description {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .modal-buttons {
       display: flex;
       gap: 15px;
-      animation: scrollTags 20s linear infinite;
-      white-space: nowrap;
+      justify-content: center;
     }
-    .tag {
-      padding: 8px 16px;
+
+    .modal-btn {
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 120px;
+    }
+
+    .allow-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .allow-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .skip-btn {
+      background: #f8f9fa;
+      color: #666;
+      border: 2px solid #e9ecef;
+    }
+
+    .skip-btn:hover {
+      background: #e9ecef;
+      color: #333;
+    }
+
+    /* 위치 정보 표시 */
+    .location-info {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 12px 20px;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.5s ease-out;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+    }
+
+    .location-icon {
+      font-size: 18px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .location-text {
+      font-size: 14px;
+    }
+
+    /* 감정/상황 선택 화면 */
+    .emotion-selection {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      text-align: center;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .selection-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .selection-subtitle {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px;
+    }
+
+    .selection-buttons {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .selection-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 40px;
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
       border-radius: 20px;
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      color: #333;
+      min-width: 180px;
+    }
+
+    .selection-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+      background: white;
+    }
+
+    .selection-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .selection-btn:hover .selection-icon {
+      transform: scale(1.1);
+    }
+
+    .selection-label {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .selection-description {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .back-btn {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 25px;
       cursor: pointer;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
-      flex-shrink: 0;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
     }
-    .tag:hover {
-      background-color: rgba(255, 255, 255, 0.4);
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.8);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    @keyframes scrollTags {
-      0% {
-        transform: translateX(0);
+
+    /* 애니메이션 */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
       }
-      100% {
-        transform: translateX(-100%);
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
-    .tags-container:hover .tags {
-      animation-play-state: paused;
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main-container > * {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .logo-container {
+      animation-delay: 0.2s;
+      animation-fill-mode: both;
+    }
+
+    .start-button {
+      animation-delay: 0.6s;
+      animation-fill-mode: both;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 36px;
+      }
+
+      .logo img {
+        height: 60px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .start-button {
+        padding: 16px 35px;
+        font-size: 18px;
+      }
+
+      .modal-content {
+        padding: 30px 25px;
+        max-width: 350px;
+      }
+
+      .modal-icon {
+        font-size: 50px;
+        margin-bottom: 15px;
+      }
+
+      .modal-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+
+      .modal-description {
+        font-size: 14px;
+        margin-bottom: 25px;
+      }
+
+      .modal-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        min-width: 100px;
+      }
+
+      .modal-buttons {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .location-info {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+
+      .location-icon {
+        font-size: 16px;
+      }
+
+      .location-text {
+        font-size: 13px;
+      }
+
+      .selection-title {
+        font-size: 28px;
+      }
+
+      .selection-buttons {
+        gap: 20px;
+      }
+
+      .selection-btn {
+        padding: 25px 30px;
+        min-width: 150px;
+      }
+
+      .selection-icon {
+        font-size: 50px;
+      }
+
+      .selection-label {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-container {
+        gap: 30px;
+        padding: 20px;
+      }
+
+      .logo {
+        font-size: 28px;
+      }
+
+      .logo img {
+        height: 50px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .start-button {
+        padding: 14px 30px;
+        font-size: 16px;
+      }
+
+      .selection-title {
+        font-size: 24px;
+      }
+
+      .selection-subtitle {
+        font-size: 16px;
+      }
+
+      .selection-buttons {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+      }
+
+      .selection-btn {
+        padding: 20px 25px;
+        min-width: auto;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .selection-icon {
+        font-size: 45px;
+      }
+
+      .selection-label {
+        font-size: 16px;
+      }
+
+      .selection-description {
+        font-size: 13px;
+      }
+    }
+
+    /* 배경 효과 */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+              radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-<script>
-  function searchByTag(keyword) {
-    event.preventDefault();
-    const form = document.querySelector('form[action="/recommend"]');
-    const input = form.querySelector('input[name="keyword"]');
-    input.value = keyword;
-    form.submit();
-  }
-</script>
-<header>
-  <div class="logo">
-    <img src="/images/moodtrip-logo.png" alt="MOODTRIP" onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold;\'>MOODTRIP</span>'">
-  </div>
-<!--  <div class="header-buttons">-->
-<!--    &lt;!&ndash; 로그인 상태가 아닐 때 &ndash;&gt;-->
-<!--    <div th:if="${user == null}">-->
-<!--      <a href="/signin" class="header-button">Sign In</a>-->
-<!--      <a href="/signup" class="header-button">Sign Up</a>-->
-<!--    </div>-->
+<!-- 위치 정보 요청 모달 -->
+<div class="location-modal" id="locationModal">
+  <div class="modal-content">
+    <div class="modal-icon">
+      📍
+    </div>
+    <h2 class="modal-title">위치 기반 맞춤 추천</h2>
+    <p class="modal-description">
+      현재 위치를 공유해주시면
 
-<!--    &lt;!&ndash; 로그인 상태일 때 &ndash;&gt;-->
-<!--    <div th:if="${user != null}" style="display: flex; align-items: center;">-->
-<!--      <span th:text="${user.name}" style="margin-right: 15px; font-weight: bold;"></span>-->
-<!--      <a href="/logout" class="header-button">Sign Out</a>-->
-<!--    </div>-->
-<!--  </div>-->
-</header>
-
-<div class="main-content">
-  <div class="main-title">
-    감정을 기반한 키워드로 장소를<br>
-    추천 하는 사이트, "MOODTRIP"
-  </div>
-  <div class="sub-title">
-    키워드 분석을 통해, 당신의 감정에 알맞은 장소를 추천 받아보세요.
-  </div>
-  <form action="/recommend" method="post" class="search-box">
-    <input type="text" name="keyword" class="search-input" placeholder="검색할 키워드를 입력하세요" required>
-    <button type="submit" class="search-button">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="#666"/>
-      </svg>
-    </button>
-  </form>
-  <div class="tags-container">
-    <div class="tags">
-      <a href="/recommend" class="tag" onclick="searchByTag('즐거움')">#즐거움</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('감동')">#감동</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('편안함')">#편안함</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('여유')">#여유</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('설렘')">#설렘</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('평온')">#평온</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('신남')">#신남</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('우울')">#우울</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('스트레스')">#스트레스</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('힐링')">#힐링</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('로맨틱')">#로맨틱</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('활기')">#활기</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('고독')">#고독</a>
-      <a href="/recommend" class="tag" onclick="searchByTag('희망')">#희망</a>
+      더욱 정확한 장소를 추천해드릴 수 있어요!
+    </p>
+    <div class="modal-buttons">
+      <button class="modal-btn allow-btn" onclick="requestLocation()">
+        위치 공유하기
+      </button>
+      <button class="modal-btn skip-btn" onclick="skipLocation()">
+        건너뛰기
+      </button>
     </div>
   </div>
 </div>
+
+<!-- 위치 정보 표시 -->
+<div class="location-info" id="locationInfo">
+  <span class="location-icon">📍</span>
+  <span class="location-text" id="locationText">위치를 확인하고 있어요...</span>
+</div>
+
+<!-- 메인 화면 -->
+<div class="main-container" id="mainScreen">
+  <div class="logo-container">
+    <div class="logo">
+      <img src="/images/moodtrip-logo.png" alt="MOODTRIP" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span style="display: none;">MOODTRIP</span>
+    </div>
+    <div class="subtitle">감정과 상황을 기반한 장소 추천 서비스</div>
+  </div>
+
+  <button class="start-button" onclick="showLocationModal()">
+    시작하기
+  </button>
+</div>
+
+<!-- 감정/상황 선택 화면 -->
+<div class="emotion-selection" id="emotionScreen">
+  <div>
+    <h2 class="selection-title">어떤 방식으로 찾아드릴까요?</h2>
+    <p class="selection-subtitle">원하는 검색 방식을 선택해주세요</p>
+  </div>
+
+  <div class="selection-buttons">
+    <a href="/selection?mode=emotion" class="selection-btn">
+      <div class="selection-icon">😊</div>
+      <div class="selection-label">감정</div>
+      <div class="selection-description">현재 기분이나 감정으로
+        장소를 찾아드려요</div>
+    </a>
+
+    <a href="/situationSearching" methods="post" class="selection-btn">
+      <div class="selection-icon">📍</div>
+      <div class="selection-label">상황</div>
+      <div class="selection-description">현재 상황이나 목적으로
+        장소를 찾아드려요</div>
+    </a>
+
+  </div>
+
+  <button class="back-btn" onclick="goBackToMain()">
+    ← 메인으로 돌아가기
+  </button>
+</div>
+
+<script>
+  let userLocation = null;
+
+  // 시작하기 버튼 클릭 시 위치 모달 표시
+  function showLocationModal() {
+    document.getElementById('locationModal').style.display = 'flex';
+  }
+
+  // 위치 정보 요청
+  function requestLocation() {
+    const modal = document.getElementById('locationModal');
+    const locationInfo = document.getElementById('locationInfo');
+    const locationText = document.getElementById('locationText');
+
+    if (!navigator.geolocation) {
+      alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.');
+      showEmotionSelection();
+      return;
+    }
+
+    // 모달 숨기기
+    modal.style.display = 'none';
+
+    // 위치 정보 표시
+    locationInfo.style.display = 'flex';
+    locationText.textContent = '위치를 확인하고 있어요...';
+
+    navigator.geolocation.getCurrentPosition(
+            // 성공 콜백
+            function(position) {
+              userLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+              };
+
+              // 역지오코딩으로 주소 가져오기 (간단한 표시)
+              getAddressFromCoords(position.coords.latitude, position.coords.longitude);
+
+              // 로컬 스토리지에 위치 정보 저장
+              localStorage.setItem('userLocation', JSON.stringify(userLocation));
+
+              console.log('위치 정보:', userLocation);
+
+              // 2초 후 감정/상황 선택 화면으로 이동
+              setTimeout(() => {
+                locationInfo.style.display = 'none';
+                showEmotionSelection();
+              }, 2000);
+            },
+            // 오류 콜백
+            function(error) {
+              console.error('위치 정보 오류:', error);
+              locationText.textContent = '위치 정보를 가져올 수 없어요';
+
+              setTimeout(() => {
+                locationInfo.style.display = 'none';
+                showEmotionSelection(); // 위치 정보 없이도 다음 화면으로
+              }, 2000);
+
+              switch(error.code) {
+                case error.PERMISSION_DENIED:
+                  console.log("사용자가 위치 정보 요청을 거부했습니다.");
+                  break;
+                case error.POSITION_UNAVAILABLE:
+                  console.log("위치 정보를 사용할 수 없습니다.");
+                  break;
+                case error.TIMEOUT:
+                  console.log("위치 정보 요청이 시간 초과되었습니다.");
+                  break;
+              }
+            },
+            // 옵션
+            {
+              enableHighAccuracy: true,
+              timeout: 10000,
+              maximumAge: 300000 // 5분
+            }
+    );
+  }
+
+  // 위치 건너뛰기 - 메인 화면으로 돌아가기
+  function skipLocation() {
+    document.getElementById('locationModal').style.display = 'none';
+    console.log('위치 정보 요청을 건너뛰었습니다.');
+    // 메인 화면은 이미 보이는 상태이므로 추가 작업 불필요
+  }
+
+  // 감정/상황 선택 화면 표시
+  function showEmotionSelection() {
+    document.getElementById('mainScreen').style.display = 'none';
+    document.getElementById('emotionScreen').style.display = 'flex';
+  }
+
+  // 메인 화면으로 돌아가기
+  function goBackToMain() {
+    document.getElementById('emotionScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'flex';
+  }
+
+  // 좌표를 주소로 변환 (간단한 버전)
+  function getAddressFromCoords(lat, lng) {
+    const locationText = document.getElementById('locationText');
+
+    // 실제 서비스에서는 카카오맵 API나 네이버 지도 API를 사용하세요
+    // 여기서는 간단하게 좌표만 표시
+    const shortLat = lat.toFixed(3);
+    const shortLng = lng.toFixed(3);
+    locationText.textContent = `위치 확인 완료! (${shortLat}, ${shortLng})`;
+  }
+
+  // 선택 페이지로 이동 시 위치 정보 함께 전달
+  document.addEventListener('DOMContentLoaded', function() {
+    const emotionBtn = document.querySelector('a[href="/selection?mode=emotion"]');
+    const situationBtn = document.querySelector('a[href="/selection?mode=situation"]');
+
+    [emotionBtn, situationBtn].forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        if (userLocation) {
+          e.preventDefault();
+          const mode = this.href.includes('emotion') ? 'emotion' : 'situation';
+          const url = `/selection?mode=${mode}&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
+          window.location.href = url;
+        }
+      });
+    });
+  });
+
+  // ESC 키로 모달 닫기
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('locationModal');
+      if (modal.style.display === 'flex') {
+        skipLocation();
+      }
+    }
+  });
+
+  // 모달 배경 클릭시 닫기
+  document.getElementById('locationModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      skipLocation();
+    }
+  });
+</script>
 </body>
 </html>
