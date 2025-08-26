@@ -4,6 +4,7 @@ import com.example.demo.model.PlaceInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,6 +46,9 @@ public class RecommendService {
             List<PlaceInfo> placesList = naverCrawlerService.crawlPlaces(keywordStr);
             places.addAll(placesList);
         }
+
+        Collections.shuffle(places);
+
         System.out.println("🕸 크롤링 완료. 장소 수: " + places.size());
 
         // 5. 평점 내림차순 정렬

@@ -165,6 +165,12 @@ public class NaverCrawlerService {
         cache.put(keyword, resultList);
         System.out.println("크롤링 후 캐시에 저장: " + keyword);
 
+        List<PlaceInfo> returnList = new ArrayList<>();
+
+        for(int i = 0 ; i < 25; i++){
+            returnList.add(resultList.get(i));
+        }
+
         return resultList;
     }
 }
