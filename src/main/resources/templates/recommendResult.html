@@ -471,7 +471,10 @@
                      th:onclick="|location.href='@{/place/{index}(index=${iterStat.index}, keyword=${keyword})}'|">
                     <div class="place-image-wrapper">
                         <img th:src="${place.imageUrl}" alt="장소 이미지" class="place-image"
-                             onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>이미지 없음</div>'"/>
+                             onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex'"/>
+                        <div class="image-placeholder" style="display:none;">
+                            <img src="/images/no.png" alt="이미지 없음" />
+                        </div>
                     </div>
 
                     <div class="place-info">
