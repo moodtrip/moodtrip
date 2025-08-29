@@ -171,6 +171,6 @@ public class NaverCrawlerService {
             returnList.add(resultList.get(i));
         }
 
-        return resultList;
+        return returnList;
     }
 }

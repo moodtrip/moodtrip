@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOODTRIP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #000;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+        .header-buttons {
+            display: flex;
+        }
+        .header-button {
+            margin-left: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            text-align: center;
+        }
+        .main-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .sub-title {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #000;
+        }
+        .search-box {
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #D9D9D9;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .search-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .tags-container {
+            width: 80%;
+            max-width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+        .tags {
+            display: flex;
+            gap: 15px;
+            animation: scrollTags 20s linear infinite;
+            white-space: nowrap;
+        }
+        .tag {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #000;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .tag:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes scrollTags {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        .tags-container:hover .tags {
+            animation-play-state: paused;
+        }
+        .back-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+<script>
+    function searchByTag(keyword) {
+        event.preventDefault();
+        const form = document.querySelector('form[action="/recommend"]');
+        const input = form.querySelector('input[name="keyword"]');
+        input.value = keyword;
+        form.submit();
+    }
+</script>
+<header>
+    <div class="logo">
+        <img src="/images/moodtrip-logo.png" alt="MOODTRIP" onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold;\'>MOODTRIP</span>'">
+    </div>
+    <a class="back-btn" href="/">
+        ← 메인으로 돌아가기
+    </a>
+</header>
+
+<div class="main-content">
+    <div class="main-title">
+        감정을 기반한 키워드로 장소를<br>
+        추천 하는 사이트, "MOODTRIP"
+    </div>
+    <div class="sub-title">
+        키워드 분석을 통해, 당신의 감정에 알맞은 장소를 추천 받아보세요.
+    </div>
+    <form action="/recommend" method="post" class="search-box">
+        <input type="text" name="keyword" class="search-input" placeholder="검색할 키워드를 입력하세요" required>
+        <button type="submit" class="search-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="#666"/>
+            </svg>
+        </button>
+    </form>
+</div>
+</body>
+</html>
