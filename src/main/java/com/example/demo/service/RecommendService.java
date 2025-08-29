@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.PlaceDto;
 import com.example.demo.model.PlaceInfo;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class RecommendService {
         this.naverCrawlerService = naverCrawlerService;
     }
 
-    public List<PlaceInfo> recommendPlaces(String userInput) throws Exception {
+    public PlaceDto recommendPlaces(String userInput) throws Exception {
         // 1. 키워드 추출
         List<String> keyword = openAiService.extractKeyword(userInput);
         System.out.println("🔍 올라마가 생성한 키워드: " + keyword);
@@ -42,9 +43,18 @@ public class RecommendService {
         // 4. 크롤링
 //        List<PlaceInfo> places = naverCrawlerService.crawlPlaces(keyword);
         List<PlaceInfo> places = new ArrayList<>();
-        for(String keywordStr : keyword) {
-            List<PlaceInfo> placesList = naverCrawlerService.crawlPlaces(keywordStr);
-            places.addAll(placesList);
+        String comment = "";
+        for(int i = 0; i < keyword.size(); i++) {
+            if(i<keyword.size() - 1) {
+                // 테스트용 문구
+                System.out.println(i+"번째 장소 검색 중");
+
+                List<PlaceInfo> placesList = naverCrawlerService.crawlPlaces(keyword.get(i));
+                places.addAll(placesList);
+            }
+            else{
+                comment = keyword.get(i);
+            }
         }
 
         Collections.shuffle(places);
@@ -54,6 +64,6 @@ public class RecommendService {
         // 5. 평점 내림차순 정렬
         places.sort((p1, p2) -> Double.compare(p2.getRating(), p1.getRating()));
 
-        return places;
+        return new PlaceDto(places, comment);
     }
 }

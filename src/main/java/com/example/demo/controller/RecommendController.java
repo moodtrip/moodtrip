@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.EmotionRequest;
+import com.example.demo.dto.PlaceDto;
 import com.example.demo.model.PlaceInfo;
 import com.example.demo.service.RecommendService;
 import jakarta.servlet.http.HttpSession;
@@ -20,8 +21,8 @@ public class RecommendController {
     }
 
     @PostMapping
-    public ResponseEntity<List<PlaceInfo>> recommend(@RequestBody EmotionRequest request) throws Exception {
-        List<PlaceInfo> places = recommendService.recommendPlaces(request.getInput());
+    public ResponseEntity<PlaceDto> recommend(@RequestBody EmotionRequest request) throws Exception {
+        PlaceDto places = recommendService.recommendPlaces(request.getInput());
         return ResponseEntity.ok(places);
     }
 }

@@ -15,11 +15,18 @@ import java.util.Scanner;
 
 @Service
 public class OpenAiService {
+    public String markdownCleaner(String str){
+        String cleaned = str
+                .replaceAll("```json", "")
+                .replaceAll("```", "")
+                .trim();
+        return cleaned;
+    }
 
     public List<String> extractKeyword(String input) throws Exception {
         String prompt = "."
                 + "너는 사용자의 입력을 바탕으로 \"검색에 사용할 장소 키워드\"를 생성하는 역할을 한다.\n"
-                + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
+                + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드들과 마지막 이유 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
                 + "\n"
                 + "----------------------------------\n"
                 + "[규칙]\n"
@@ -34,12 +41,14 @@ public class OpenAiService {
                 + "   - 헤어짐/실연: 술집, 카페, 노래방, 드라이브코스, 야경스팟 등\n"
                 + "5) \"친구\"라는 단어가 나와도 남자친구/여자친구로 오해하지 않는다. 특정 관계가 명시되지 않았다면 데이트 관련 키워드는 생성하지 않는다.\n"
                 + "6) 지역/지하철역/지명 등이 포함되면 그 장소 앞에 그대로 접두로 붙인다. (예: \"용산구 카페\", \"강남역 영화관\")\n"
-                + "7) 키워드는 1~5개만 생성한다. 간결하게 장소 범주만 출력한다.\n"
-                + "8) 출력은 반드시 JSON 배열만 포함한다. 다른 텍스트는 포함하지 않는다.\n"
+                + "7) 키워드는 3개만 생성한다. 간결하게 장소 범주만 출력한다.\n"
+                + "8) 키워드 생성 후, 마지막 원소로 이 키워드들을 선택한 전체적인 이유를 한 문장으로 추가한다.\n"
+                + "9) 출력은 반드시 JSON 배열만 포함한다. 다른 텍스트는 포함하지 않는다.\n"
+                + "10) 출력형식은 반드시 따라야한다.\n"
                 + "\n"
                 + "----------------------------------\n"
                 + "[출력 형식]\n"
-                + "[\"키워드1\", \"키워드2\", \"키워드3\"]\n"
+                + "[\"키워드1\", \"키워드2\", \"키워드3\", \"선정 이유\"]\n"
                 + "\n"
                 + "----------------------------------\n"
                 + "[사용자 입력]\n"
@@ -52,6 +61,9 @@ public class OpenAiService {
         System.out.println("올라마가 생성한 키워드 : " + responseText);
 
         // AI 응답(JSON 배열)을 파싱
+        // 0. 마크다운 제거
+        responseText = markdownCleaner(responseText);
+
         // 1. 최상위 JSON 파싱
         JSONObject obj = new JSONObject(responseText);
 

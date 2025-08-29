@@ -168,6 +168,7 @@ public class NaverCrawlerService {
         List<PlaceInfo> returnList = new ArrayList<>();
 
         for(int i = 0 ; i < 25; i++){
+            if(resultList.size() <= i )break;
             returnList.add(resultList.get(i));
         }
 

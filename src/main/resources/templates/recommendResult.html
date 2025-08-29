@@ -449,6 +449,10 @@
             <div th:unless="${type}" style="color: white; font-size: 18px; font-weight: 600;" th:text="${selected}">
                 검색어
             </div>
+
+            <div class="selected-text">
+                선택 이유 : <span th:text="${comment}"></span>
+            </div>
         </div>
     </div>
 
@@ -489,7 +493,7 @@
     <!-- 네비게이션 버튼 -->
     <div class="nav-buttons">
         <a href="/" class="back-btn">« 처음으로 돌아가기 »</a>
-        <a href="/situationSearching" class="back-btn">« 검색으로 돌아가기 »</a>
+        <a href="/SituationS" class="back-btn">« 검색으로 돌아가기 »</a>
     </div>
 </div>
 

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PlaceDto;
 import com.example.demo.model.PlaceInfo;
 import com.example.demo.model.User;
 import com.example.demo.service.RecommendService;
@@ -53,6 +54,11 @@ public class WebPageController {
         return "redirect:/";
     }
 
+    @GetMapping("/SituationS")
+    public String SituationS() {
+        return "situationInput";
+    }
+
     // 감정 선택 처리
     @PostMapping("/processEmotion")
     public String processEmotion(@RequestParam("emotions") List<String> emotions,
@@ -101,13 +107,17 @@ public class WebPageController {
             }
 
             User user = (User) session.getAttribute("user");
-            List<PlaceInfo> places = recommendService.recommendPlaces(keyword);
+            PlaceDto placesDto = recommendService.recommendPlaces(keyword);
+            List<PlaceInfo> places = placesDto.getPlaces();
+            String comment = placesDto.getComment();
 
             model.addAttribute("user", user);
             model.addAttribute("keyword", keyword);
             model.addAttribute("places", places != null ? places : List.of());
+            model.addAttribute("comment", comment);
             model.addAttribute("type", type); // emotion 또는 situation
             model.addAttribute("selected", selected); // 선택된 감정/상황 텍스트
+
 
         } catch (Exception e) {
             model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
@@ -122,7 +132,8 @@ public class WebPageController {
                               HttpSession session,
                               Model model) {
         try {
-            List<PlaceInfo> places = recommendService.recommendPlaces(keyword);
+            PlaceDto placesDto = recommendService.recommendPlaces(keyword);
+            List<PlaceInfo> places = placesDto.getPlaces();
 
             if (index >= 0 && index < places.size()) {
                 PlaceInfo place = places.get(index);
