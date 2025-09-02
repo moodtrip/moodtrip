@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebPageController {
@@ -107,6 +108,7 @@ public class WebPageController {
             User user = (User) session.getAttribute("user");
             PlaceDto placesDto = recommendService.recommendPlaces(keyword);
             List<PlaceInfo> places = placesDto.getPlaces();
+            places = places.stream().distinct().collect(Collectors.toList());
             String comment = placesDto.getComment();
 
             model.addAttribute("user", user);

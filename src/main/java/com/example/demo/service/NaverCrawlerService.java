@@ -105,10 +105,10 @@ public class NaverCrawlerService {
 
     public List<PlaceInfo> crawlPlaces(String keyword) throws Exception {
         // 이미 캐시에 있으면 바로 반환
-        if (cache.containsKey(keyword)) {
-            System.out.println("캐시에서 결과 반환: " + keyword);
-            return cache.get(keyword);
-        }
+//        if (cache.containsKey(keyword)) {
+//            System.out.println("캐시에서 결과 반환: " + keyword);
+//            return cache.get(keyword);
+//        }
 
         String url = "https://m.map.naver.com/search2/search.naver?query=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
         WebDriver driver = new ChromeDriver();
@@ -162,7 +162,7 @@ public class NaverCrawlerService {
         }
 
         // 캐시에 저장
-        cache.put(keyword, resultList);
+//        cache.put(keyword, resultList);
         System.out.println("크롤링 후 캐시에 저장: " + keyword);
 
         List<PlaceInfo> returnList = new ArrayList<>();
