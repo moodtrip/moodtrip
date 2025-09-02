@@ -83,10 +83,12 @@ public class OpenAiService {
         return keywords;
     }
 
-    //강정검색 테스트버전
+    //감정검색 테스트버전
     public List<String> emotionAiSearch(String input) throws Exception {
         String prompt = "."
-                + "너는 사용자의 입력한 감정 태그를 바탕으로 \"검색에 사용할 장소 키워드\"를 생성하는 역할을 한다.\n"
+                + "너는 아래와 같은 형식의 사용자의 입력 감정 태그를 바탕으로 \"검색에 사용할 장소 키워드\"를 생성하는 역할을 한다.\n"
+                + "[사용자의 입력 형식]\n"
+                + "[키워드1] [키워드2] [키워드3] ..."
                 + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드들과 마지막 이유 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
                 + "\n"
                 + "----------------------------------\n"
@@ -120,6 +122,8 @@ public class OpenAiService {
                 + input + "\n"
                 + "\n"
                 + "[출력]\n";
+
+        System.out.println("사용자의 입력 : " + input);
 
         // Ollama 호출
         String responseText = callOllama(prompt).trim();

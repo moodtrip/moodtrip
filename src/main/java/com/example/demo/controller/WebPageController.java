@@ -67,6 +67,7 @@ public class WebPageController {
         // 선택된 감정들을 키워드로 변환하여 추천 처리
         String emotionKeyword = String.join(" ", emotions);
         String encodedKeyword = URLEncoder.encode(emotionKeyword, StandardCharsets.UTF_8);
+        System.out.println(emotionKeyword);
 
         return "redirect:/recommend/emotion?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
     }
@@ -126,15 +127,13 @@ public class WebPageController {
                 return "redirect:/";
             }
 
-            System.out.println("용재 너무햄 ㅠㅠ" + searchType);
-
             // searchType 검증 (emotion, situation, general만 허용)
             if (!searchType.equals("emotion") && !searchType.equals("situation") && !searchType.equals("general")) {
                 return "redirect:/";
             }
 
             User user = (User) session.getAttribute("user");
-            PlaceDto placesDto = recommendService.recommendPlaces(keyword);
+            PlaceDto placesDto = recommendService.recommendPlaces(keyword, searchType);
             List<PlaceInfo> places = placesDto.getPlaces();
             places = places.stream().distinct().collect(Collectors.toList());
             String comment = placesDto.getComment();
@@ -159,7 +158,7 @@ public class WebPageController {
                               HttpSession session,
                               Model model) {
         try {
-            PlaceDto placesDto = recommendService.recommendPlaces(keyword);
+            PlaceDto placesDto = recommendService.detailPlace(keyword);
             List<PlaceInfo> places = placesDto.getPlaces();
 
             if (index >= 0 && index < places.size()) {

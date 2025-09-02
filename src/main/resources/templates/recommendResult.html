@@ -511,9 +511,8 @@
         <div class="selected-content">
             <!-- 감정 선택일 경우 태그 형태로 표시 -->
             <div th:if="${type == 'emotion'}" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
-                <span th:each="emotion, iterStat : ${#strings.split(selected, ' ')}"
-                      class="selected-tag"
-                      th:text="${emotion}">감정</span>
+                <span class="selected-tag"
+                      th:text="${selected}">감정</span>
             </div>
             <!-- 상황 입력일 경우 텍스트 박스로 표시 -->
             <div th:if="${type == 'situation'}" class="selected-text" th:text="${selected}">
@@ -572,7 +571,8 @@
     <!-- 네비게이션 버튼 -->
     <div class="nav-buttons">
         <a href="/" class="back-btn">« 처음으로 돌아가기 »</a>
-        <a href="/SituationS" class="back-btn">« 검색으로 돌아가기 »</a>
+        <a th:if="${type == 'emotion'}" href="/SituationS" class="back-btn">« 이전 검색으로 돌아가기 »</a>
+        <a th:if="${type == 'situation'}" href="/SituationS" class="back-btn">« 이전 검색으로 돌아가기 »</a>
     </div>
 </div>
 
