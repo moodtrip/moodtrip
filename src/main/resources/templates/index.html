@@ -613,154 +613,112 @@
             return;
         }
 
-        // 모달 숨기기
         modal.style.display = 'none';
-
-        // 위치 정보 표시
         locationInfo.style.display = 'flex';
         locationText.textContent = '위치를 확인하고 있어요...';
 
         navigator.geolocation.getCurrentPosition(
-            // 성공 콜백
             function (position) {
                 userLocation = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                 };
 
-                // 역지오코딩으로 주소 가져오기 (간단한 표시)
-                getAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                getAddressFromCoords(userLocation.latitude, userLocation.longitude);
 
-                // 로컬 스토리지에 위치 정보 저장
                 localStorage.setItem('userLocation', JSON.stringify(userLocation));
 
-                console.log('위치 정보:', userLocation);
-
-                // 2초 후 감정/상황 선택 화면으로 이동
                 setTimeout(() => {
                     locationInfo.style.display = 'none';
                     showEmotionSelection();
                 }, 2000);
             },
-            // 오류 콜백
             function (error) {
                 console.error('위치 정보 오류:', error);
                 locationText.textContent = '위치 정보를 가져올 수 없어요';
 
                 setTimeout(() => {
                     locationInfo.style.display = 'none';
-                    showEmotionSelection(); // 위치 정보 없이도 다음 화면으로
+                    showEmotionSelection();
                 }, 2000);
-
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        console.log('사용자가 위치 정보 요청을 거부했습니다.');
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        console.log('위치 정보를 사용할 수 없습니다.');
-                        break;
-                    case error.TIMEOUT:
-                        console.log('위치 정보 요청이 시간 초과되었습니다.');
-                        break;
-                }
             },
-            // 옵션
             {
                 enableHighAccuracy: true,
                 timeout: 10000,
-                maximumAge: 300000, // 5분
+                maximumAge: 300000,
             }
         );
-
-// 위치 건너뛰기
-        function skipLocation() {
-            document.getElementById('locationModal').style.display = 'none';
-            showEmotionSelection();
-            console.log('위치 정보 요청을 건너뛰었습니다.');
-        }
-
-// 감정/상황 선택 화면 표시
-        function showEmotionSelection() {
-            document.getElementById('mainScreen').style.display = 'none';
-            document.getElementById('emotionScreen').style.display = 'flex';
-        }
-
-// 메인 화면으로 돌아가기
-        function goBackToMain() {
-            document.getElementById('emotionScreen').style.display = 'none';
-            document.getElementById('mainScreen').style.display = 'flex';
-        }
-
-// 좌표를 주소로 변환 (간단한 버전)
-        function getAddressFromCoords(lat, lng) {
-            const locationText = document.getElementById('locationText');
-
-            // 실제 서비스에서는 카카오맵 API나 네이버 지도 API를 사용하세요
-            // 여기서는 간단하게 좌표만 표시
-            const shortLat = lat.toFixed(3);
-            const shortLng = lng.toFixed(3);
-            locationText.textContent = `위치 확인 완료! (${shortLat}, ${shortLng})`;
-        }
-
-// 감정/상황 버튼 클릭 이벤트 설정
-        document.addEventListener('DOMContentLoaded', function () {
-            const emotionBtn = document.getElementById('emotionBtn');
-            const situationBtn = document.getElementById('situationBtn');
-
-            emotionBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                let url = '/selection?mode=emotion';
-
-                // 위치 정보가 있으면 함께 전달
-                if (userLocation) {
-                    url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
-                }
-
-                // 위치 정보를 세션 스토리지에도 저장 (뒤로가기 시 활용)
-                if (userLocation) {
-                    sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
-                }
-
-                window.location.href = url;
-            });
-
-            situationBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                let url = '/selection?mode=situation';
-
-                // 위치 정보가 있으면 함께 전달
-                if (userLocation) {
-                    url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
-                }
-
-                // 위치 정보를 세션 스토리지에도 저장 (뒤로가기 시 활용)
-                if (userLocation) {
-                    sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
-                }
-
-                window.location.href = url;
-            });
-        });
-
-// ESC 키로 모달 닫기
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('locationModal');
-                if (modal.style.display === 'flex') {
-                    skipLocation();
-                }
-            }
-        });
-
-// 모달 배경 클릭시 닫기
-        document
-            .getElementById('locationModal')
-            .addEventListener('click', function (e) {
-                if (e.target === this) {
-                    skipLocation();
-                }
-            });
     }
+
+    // 위치 건너뛰기
+    function skipLocation() {
+        document.getElementById('locationModal').style.display = 'none';
+        showEmotionSelection();
+        console.log('위치 정보 요청을 건너뛰었습니다.');
+    }
+
+    // 감정/상황 선택 화면 표시
+    function showEmotionSelection() {
+        document.getElementById('mainScreen').style.display = 'none';
+        document.getElementById('emotionScreen').style.display = 'flex';
+    }
+
+    // 메인 화면으로 돌아가기
+    function goBackToMain() {
+        document.getElementById('emotionScreen').style.display = 'none';
+        document.getElementById('mainScreen').style.display = 'flex';
+    }
+
+    // 좌표를 주소로 변환
+    function getAddressFromCoords(lat, lng) {
+        const locationText = document.getElementById('locationText');
+        const shortLat = lat.toFixed(3);
+        const shortLng = lng.toFixed(3);
+        locationText.textContent = `위치 확인 완료! (${shortLat}, ${shortLng})`;
+    }
+
+    // 감정/상황 버튼 이벤트
+    document.addEventListener('DOMContentLoaded', function () {
+        const emotionBtn = document.getElementById('emotionBtn');
+        const situationBtn = document.getElementById('situationBtn');
+
+        emotionBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let url = '/selection?mode=emotion';
+            if (userLocation) {
+                url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
+                sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
+            }
+            window.location.href = url;
+        });
+
+        situationBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let url = '/selection?mode=situation';
+            if (userLocation) {
+                url += `&lat=${userLocation.latitude}&lng=${userLocation.longitude}`;
+                sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
+            }
+            window.location.href = url;
+        });
+    });
+
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('locationModal');
+            if (modal.style.display === 'flex') {
+                skipLocation();
+            }
+        }
+    });
+
+    // 모달 배경 클릭시 닫기
+    document.getElementById('locationModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            skipLocation();
+        }
+    });
 </script>
 </body>
 </html>

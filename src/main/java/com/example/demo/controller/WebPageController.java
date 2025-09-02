@@ -33,7 +33,7 @@ public class WebPageController {
     @GetMapping("/situationSearching")
     public String situationSearching() {
         return "situationSearch";
-    }
+    } // 프로토타입 (메인화면)
 
     // 감정/상황 선택 화면
     @GetMapping("/selection")
