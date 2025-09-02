@@ -54,7 +54,11 @@ public class WebPageController {
     }
 
     @GetMapping("/SituationS")
-    public String SituationS() {
+    public String SituationS(@RequestParam(value = "lat", required = false) String latitude,
+                             @RequestParam(value = "lng", required = false) String longitude,
+                             Model model) {
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
         return "situationInput";
     }
 
@@ -69,7 +73,16 @@ public class WebPageController {
         String encodedKeyword = URLEncoder.encode(emotionKeyword, StandardCharsets.UTF_8);
         System.out.println(emotionKeyword);
 
-        return "redirect:/recommend/emotion?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
+        // lat, lng 파라미터도 함께 전달
+        String redirectUrl = "redirect:/recommend/emotion?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
+        if (latitude != null && !latitude.isEmpty()) {
+            redirectUrl += "&lat=" + URLEncoder.encode(latitude, StandardCharsets.UTF_8);
+        }
+        if (longitude != null && !longitude.isEmpty()) {
+            redirectUrl += "&lng=" + URLEncoder.encode(longitude, StandardCharsets.UTF_8);
+        }
+
+        return redirectUrl;
     }
 
     // 상황 입력 처리
@@ -79,11 +92,28 @@ public class WebPageController {
                                    @RequestParam(value = "lng", required = false) String longitude,
                                    Model model) {
         if (situationText == null || situationText.trim().isEmpty()) {
-            return "redirect:/selection?mode=situation";
+            String redirectUrl = "redirect:/selection?mode=situation";
+            if (latitude != null && !latitude.isEmpty()) {
+                redirectUrl += "&lat=" + URLEncoder.encode(latitude, StandardCharsets.UTF_8);
+            }
+            if (longitude != null && !longitude.isEmpty()) {
+                redirectUrl += "&lng=" + URLEncoder.encode(longitude, StandardCharsets.UTF_8);
+            }
+            return redirectUrl;
         }
 
         String encodedKeyword = URLEncoder.encode(situationText, StandardCharsets.UTF_8);
-        return "redirect:/recommend/situation?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
+
+        // lat, lng 파라미터도 함께 전달
+        String redirectUrl = "redirect:/recommend/situation?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
+        if (latitude != null && !latitude.isEmpty()) {
+            redirectUrl += "&lat=" + URLEncoder.encode(latitude, StandardCharsets.UTF_8);
+        }
+        if (longitude != null && !longitude.isEmpty()) {
+            redirectUrl += "&lng=" + URLEncoder.encode(longitude, StandardCharsets.UTF_8);
+        }
+
+        return redirectUrl;
     }
 
     @PostMapping("/recommend")
@@ -100,6 +130,8 @@ public class WebPageController {
     public String showRecommendLegacy(@RequestParam("keyword") String keyword,
                                       @RequestParam(value = "type", required = false) String type,
                                       @RequestParam(value = "selected", required = false) String selected,
+                                      @RequestParam(value = "lat", required = false) String latitude,
+                                      @RequestParam(value = "lng", required = false) String longitude,
                                       HttpSession session,
                                       Model model) {
         // type이 있으면 새로운 URL로 리다이렉트
@@ -108,11 +140,24 @@ public class WebPageController {
             if (selected != null) {
                 redirectUrl += "&selected=" + URLEncoder.encode(selected, StandardCharsets.UTF_8);
             }
+            if (latitude != null && !latitude.isEmpty()) {
+                redirectUrl += "&lat=" + URLEncoder.encode(latitude, StandardCharsets.UTF_8);
+            }
+            if (longitude != null && !longitude.isEmpty()) {
+                redirectUrl += "&lng=" + URLEncoder.encode(longitude, StandardCharsets.UTF_8);
+            }
             return "redirect:" + redirectUrl;
         }
 
         // type이 없으면 general로 처리
-        return "redirect:/recommend/general?keyword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+        String redirectUrl = "redirect:/recommend/general?keyword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+        if (latitude != null && !latitude.isEmpty()) {
+            redirectUrl += "&lat=" + URLEncoder.encode(latitude, StandardCharsets.UTF_8);
+        }
+        if (longitude != null && !longitude.isEmpty()) {
+            redirectUrl += "&lng=" + URLEncoder.encode(longitude, StandardCharsets.UTF_8);
+        }
+        return redirectUrl;
     }
 
     // 새로운 PathVariable 기반 엔드포인트
@@ -120,6 +165,8 @@ public class WebPageController {
     public String showRecommend(@PathVariable("searchType") String searchType,
                                 @RequestParam("keyword") String keyword,
                                 @RequestParam(value = "selected", required = false) String selected,
+                                @RequestParam(value = "lat", required = false) String latitude,
+                                @RequestParam(value = "lng", required = false) String longitude,
                                 HttpSession session,
                                 Model model) {
         try {
@@ -142,8 +189,11 @@ public class WebPageController {
             model.addAttribute("keyword", keyword);
             model.addAttribute("places", places != null ? places : List.of());
             model.addAttribute("comment", comment);
-            model.addAttribute("type", searchType); // PathVariable로 받은 searchType 사용
-            model.addAttribute("selected", selected); // 선택된 감정/상황 텍스트
+            model.addAttribute("type", searchType);
+            model.addAttribute("selected", selected);
+            // lat, lng도 모델에 추가
+            model.addAttribute("latitude", latitude);
+            model.addAttribute("longitude", longitude);
 
         } catch (Exception e) {
             model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
@@ -155,6 +205,8 @@ public class WebPageController {
     @GetMapping("/place/{index}")
     public String placeDetail(@PathVariable("index") int index,
                               @RequestParam("keyword") String keyword,
+                              @RequestParam(value = "lat", required = false) String latitude,
+                              @RequestParam(value = "lng", required = false) String longitude,
                               HttpSession session,
                               Model model) {
         try {
@@ -166,6 +218,8 @@ public class WebPageController {
                 model.addAttribute("place", place);
                 model.addAttribute("keyword", keyword);
                 model.addAttribute("user", session.getAttribute("user"));
+                model.addAttribute("latitude", latitude);
+                model.addAttribute("longitude", longitude);
                 return "placeDetail";
             } else {
                 return "redirect:/";

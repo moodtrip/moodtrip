@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" href="/images/moodtrip.png"/>
+    <link rel="apple-touch-icon" href="/images/moodtrip.png"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>MOODTRIP - Recommend</title>
@@ -571,8 +573,13 @@
     <!-- 네비게이션 버튼 -->
     <div class="nav-buttons">
         <a href="/" class="back-btn">« 처음으로 돌아가기 »</a>
-        <a th:if="${type == 'emotion'}" href="/SituationS" class="back-btn">« 이전 검색으로 돌아가기 »</a>
-        <a th:if="${type == 'situation'}" href="/SituationS" class="back-btn">« 이전 검색으로 돌아가기 »</a>
+        <!-- 감정 선택에서 온 경우 -->
+        <a th:if="${type == 'emotion'}"
+           th:href="@{/selection(mode='emotion', lat=${latitude}, lng=${longitude})}"
+           class="back-btn">« 이전 검색으로 돌아가기 »</a>
+        <a th:if="${type == 'situation'}"
+           th:href="@{/selection(mode='situation', lat=${latitude}, lng=${longitude})}"
+           class="back-btn">« 이전 검색으로 돌아가기 »</a>
     </div>
 </div>
 
