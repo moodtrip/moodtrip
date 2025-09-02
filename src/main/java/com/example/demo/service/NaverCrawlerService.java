@@ -105,10 +105,10 @@ public class NaverCrawlerService {
 
     public List<PlaceInfo> crawlPlaces(String keyword) throws Exception {
         // 이미 캐시에 있으면 바로 반환
-        if (cache.containsKey(keyword)) {
-            System.out.println("캐시에서 결과 반환: " + keyword);
-            return cache.get(keyword);
-        }
+//        if (cache.containsKey(keyword)) {
+//            System.out.println("캐시에서 결과 반환: " + keyword);
+//            return cache.get(keyword);
+//        }
 
         String url = "https://m.map.naver.com/search2/search.naver?query=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
         WebDriver driver = new ChromeDriver();
@@ -161,8 +161,9 @@ public class NaverCrawlerService {
             resultList.add(info);
         }
 
-        // 캐시에 저장
-        cache.put(keyword, resultList);
+        // 캐시에 저장 <- 캐시 사용 시 검색 결과가 75개 이상 나오는 문제 발생
+        // 때문에 주석 처리바꿈
+//        cache.put(keyword, resultList);
         System.out.println("크롤링 후 캐시에 저장: " + keyword);
 
         List<PlaceInfo> returnList = new ArrayList<>();
@@ -171,7 +172,7 @@ public class NaverCrawlerService {
             if(resultList.size() <= i )break;
             returnList.add(resultList.get(i));
         }
-
+        System.out.println(returnList.size()+"개 저장 됌");
         return returnList;
     }
 }

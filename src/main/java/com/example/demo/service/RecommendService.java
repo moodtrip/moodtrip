@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecommendService {
@@ -56,8 +57,12 @@ public class RecommendService {
                 comment = keyword.get(i);
             }
         }
+        
+        //중복제거
+        places = places.stream().distinct().collect(Collectors.toList());
 
-        Collections.shuffle(places);
+        //리스트 배열 섞기
+//        Collections.shuffle(places);
 
         System.out.println("🕸 크롤링 완료. 장소 수: " + places.size());
 

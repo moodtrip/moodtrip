@@ -83,6 +83,70 @@ public class OpenAiService {
         return keywords;
     }
 
+    //강정검색 테스트버전
+    public List<String> emotionAiSearch(String input) throws Exception {
+        String prompt = "."
+                + "너는 사용자의 입력한 감정 태그를 바탕으로 \"검색에 사용할 장소 키워드\"를 생성하는 역할을 한다.\n"
+                + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드들과 마지막 이유 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
+                + "\n"
+                + "----------------------------------\n"
+                + "[규칙]\n"
+                + "1) 반드시 장소로 해석 가능한 키워드만 생성한다. (예: 카페, 공원, 영화관, 놀거리, 음식점/맛집, 도서관, 술집, 스파, 북카페, 노래방, 미술관, 박물관, 서점, 전시회, 실내체육시설, 보드게임카페, 방탈출, 찜질방, 온천 등)\n"
+                + "2) \"근처, 부근\" 같은 의존 명사는 키워드에 포함하지 않는다.\n"
+                + "3) 신체 부위/증상(머리, 배, 다리, 팔, 두통 등)은 장소 키워드로 만들지 않는다. 단, 의료 관련이면 \"병원\" 같은 장소로 변환한다.\n"
+                + "4) 감정 표현을 장소로 매핑한다. 입력된 감정이 여러 개일 수 있으며, 복합적일수록 그 상황에 어울리는 장소를 종합적으로 선택한다.\n"
+                + " - 단일 감정은 해당 감정에 맞는 장소를 중심으로 추천한다.\n"
+                + " - 두 가지 이상의 감정이 주어지면, 공통된 분위기를 고려해 장소를 제안한다.\n"
+                + "  - 우울: 카페, 공원, 북카페, 산책로, 미술관 등\n"
+                + "  - 스트레스: 놀거리, 영화관, 보드게임카페, 방탈출, 오락실 등\n"
+                + "  - 즐거움/신남: 놀이공원, 맛집, 전시회, 페스티벌 등\n"
+                + "  - 조용히 쉬기/사색: 도서관, 북카페, 공원, 스파, 찜질방, 온천 등\n"
+                + "  - 헤어짐/실연/그리움: 술집, 카페, 노래방, 드라이브코스, 야경스팟 등\n"
+                + "  - 외로움, 즐거움: 바다, 클럽, 술집 등\n"
+                + "  - 우울, 외로움: 카페, 서점, 공원 등\n"
+                + "  - 스트레스, 활기 : 헬스장, 노래방, 클럽\n"
+                + "5) 지역/지하철역/지명 등이 포함되면 그 장소 앞에 그대로 접두로 붙인다. (예: \"용산구 카페\", \"강남역 영화관\")\n"
+                + "6) 키워드는 3개만 생성한다. 간결하게 장소 범주만 출력한다.\n"
+                + "7) 키워드 생성 후, 마지막 원소로 이 키워드들을 선택한 전체적인 이유를 한 문장으로 추가한다.\n"
+                + "8) 출력은 반드시 JSON 배열만 포함한다. 다른 텍스트는 포함하지 않는다.\n"
+                + "9) 출력형식은 반드시 따라야한다.\n"
+                + "\n"
+                + "----------------------------------\n"
+                + "[출력 형식]\n"
+                + "[\"키워드1\", \"키워드2\", \"키워드3\", \"선정 이유\"]\n"
+                + "\n"
+                + "----------------------------------\n"
+                + "[사용자 입력]\n"
+                + input + "\n"
+                + "\n"
+                + "[출력]\n";
+
+        // Ollama 호출
+        String responseText = callOllama(prompt).trim();
+        System.out.println("올라마가 생성한 키워드 : " + responseText);
+
+        // AI 응답(JSON 배열)을 파싱
+        // 0. 마크다운 제거
+        responseText = markdownCleaner(responseText);
+
+        // 1. 최상위 JSON 파싱
+        JSONObject obj = new JSONObject(responseText);
+
+        // 2. "response" 필드 꺼내기 (String 타입)
+        String responseArrayStr = obj.getString("response");
+
+        // 3. String → JSONArray 변환
+        JSONArray arr = new JSONArray(responseArrayStr);
+
+        List<String> keywords = new ArrayList<>();
+
+        for (int i = 0; i < arr.length(); i++) {
+            keywords.add(arr.getString(i));
+        }
+
+        return keywords;
+    }
+
     public List<PlaceInfo> summarizeAndSortPlaces(List<PlaceInfo> places) throws Exception {
         StringBuilder prompt = new StringBuilder();
         prompt.append("다음은 장소 추천 결과입니다. 평점이 높은 순으로 5곳을 추천하고 요약해서 JSON 형식으로 정리해주세요.\n");
@@ -104,6 +168,25 @@ public class OpenAiService {
     }
 
     private String callOllama(String prompt) throws Exception {
+//        URL url = new URL("http://localhost:11434/api/generate");
+//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//        conn.setRequestMethod("POST");
+//        conn.setRequestProperty("Content-Type", "application/json");
+//        conn.setDoOutput(true);
+//
+//        JSONObject body = new JSONObject();
+//        body.put("model", "gemma3:4b");
+//        body.put("prompt", prompt);
+//        body.put("stream", false);
+//
+//        try (OutputStream os = conn.getOutputStream()) {
+//            os.write(body.toString().getBytes());
+//        }
+//
+//        try (Scanner scanner = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
+//            return scanner.hasNext() ? scanner.next() : "";
+//        }
+//    }
         URL url = new URL("http://localhost:11434/api/generate");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -113,14 +196,31 @@ public class OpenAiService {
         JSONObject body = new JSONObject();
         body.put("model", "gemma3:4b");
         body.put("prompt", prompt);
-        body.put("stream", false);
+        body.put("stream", false); // ✅ 그대로 false 유지
 
         try (OutputStream os = conn.getOutputStream()) {
             os.write(body.toString().getBytes());
         }
 
-        try (Scanner scanner = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
-            return scanner.hasNext() ? scanner.next() : "";
+        // 전체 응답 읽기
+        StringBuilder rawResponse = new StringBuilder();
+        try (Scanner scanner = new Scanner(conn.getInputStream())) {
+            while (scanner.hasNextLine()) {
+                rawResponse.append(scanner.nextLine().trim());
+            }
         }
+
+        // 응답 문자열에 JSON 객체가 여러 개 붙어있을 수 있으니
+        // 마지막 JSON 객체만 안전하게 추출
+        String responseText = rawResponse.toString();
+
+        // 여러 JSON이 붙어있으면 "}{", "}{" 기준으로 split
+        int lastObjIndex = responseText.lastIndexOf("{");
+        if (lastObjIndex != -1) {
+            responseText = responseText.substring(lastObjIndex);
+        }
+
+        JSONObject obj = new JSONObject(responseText);
+        return responseText; // ✅ response 필드만 반환
     }
 }

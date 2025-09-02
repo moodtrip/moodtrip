@@ -6,6 +6,7 @@ import com.example.demo.model.User;
 import com.example.demo.service.RecommendService;
 import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -95,11 +96,12 @@ public class WebPageController {
         return "redirect:/recommend?keyword=" + encodedKeyword;
     }
 
-    @GetMapping("/recommend")
+    @GetMapping("/recommend/(type)")
     public String showRecommend(@RequestParam("keyword") String keyword,
                                 @RequestParam(value = "type", required = false) String type,
                                 @RequestParam(value = "selected", required = false) String selected,
                                 HttpSession session,
+                                @PathVariable(name="type") String searchType,
                                 Model model) {
         try {
             if (keyword == null || keyword.trim().isEmpty()) {
