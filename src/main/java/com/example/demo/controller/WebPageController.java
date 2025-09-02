@@ -6,16 +6,14 @@ import com.example.demo.model.User;
 import com.example.demo.service.RecommendService;
 import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Path;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebPageController {
@@ -34,7 +32,7 @@ public class WebPageController {
 
     @GetMapping("/situationSearching")
     public String situationSearching() {
-        return "SituationSearch";
+        return "situationSearch";
     }
 
     // 감정/상황 선택 화면
@@ -70,7 +68,7 @@ public class WebPageController {
         String emotionKeyword = String.join(" ", emotions);
         String encodedKeyword = URLEncoder.encode(emotionKeyword, StandardCharsets.UTF_8);
 
-        return "redirect:/recommend?keyword=" + encodedKeyword + "&type=emotion&selected=" + encodedKeyword;
+        return "redirect:/recommend/emotion?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
     }
 
     // 상황 입력 처리
@@ -84,7 +82,7 @@ public class WebPageController {
         }
 
         String encodedKeyword = URLEncoder.encode(situationText, StandardCharsets.UTF_8);
-        return "redirect:/recommend?keyword=" + encodedKeyword + "&type=situation&selected=" + encodedKeyword;
+        return "redirect:/recommend/situation?keyword=" + encodedKeyword + "&selected=" + encodedKeyword;
     }
 
     @PostMapping("/recommend")
@@ -93,33 +91,60 @@ public class WebPageController {
             return "redirect:/";
         }
         String encodedKeyword = URLEncoder.encode(input, StandardCharsets.UTF_8);
-        return "redirect:/recommend?keyword=" + encodedKeyword;
+        return "redirect:/recommend/general?keyword=" + encodedKeyword;
     }
 
-    @GetMapping("/recommend/(type)")
-    public String showRecommend(@RequestParam("keyword") String keyword,
-                                @RequestParam(value = "type", required = false) String type,
+    // 기존 /recommend 엔드포인트 (하위 호환성을 위해 유지)
+    @GetMapping("/recommend")
+    public String showRecommendLegacy(@RequestParam("keyword") String keyword,
+                                      @RequestParam(value = "type", required = false) String type,
+                                      @RequestParam(value = "selected", required = false) String selected,
+                                      HttpSession session,
+                                      Model model) {
+        // type이 있으면 새로운 URL로 리다이렉트
+        if (type != null) {
+            String redirectUrl = "/recommend/" + type + "?keyword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+            if (selected != null) {
+                redirectUrl += "&selected=" + URLEncoder.encode(selected, StandardCharsets.UTF_8);
+            }
+            return "redirect:" + redirectUrl;
+        }
+
+        // type이 없으면 general로 처리
+        return "redirect:/recommend/general?keyword=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+    }
+
+    // 새로운 PathVariable 기반 엔드포인트
+    @GetMapping("/recommend/{searchType}")
+    public String showRecommend(@PathVariable("searchType") String searchType,
+                                @RequestParam("keyword") String keyword,
                                 @RequestParam(value = "selected", required = false) String selected,
                                 HttpSession session,
-                                @PathVariable(name="type") String searchType,
                                 Model model) {
         try {
             if (keyword == null || keyword.trim().isEmpty()) {
                 return "redirect:/";
             }
 
+            System.out.println("용재 너무햄 ㅠㅠ" + searchType);
+
+            // searchType 검증 (emotion, situation, general만 허용)
+            if (!searchType.equals("emotion") && !searchType.equals("situation") && !searchType.equals("general")) {
+                return "redirect:/";
+            }
+
             User user = (User) session.getAttribute("user");
             PlaceDto placesDto = recommendService.recommendPlaces(keyword);
             List<PlaceInfo> places = placesDto.getPlaces();
+            places = places.stream().distinct().collect(Collectors.toList());
             String comment = placesDto.getComment();
 
             model.addAttribute("user", user);
             model.addAttribute("keyword", keyword);
             model.addAttribute("places", places != null ? places : List.of());
             model.addAttribute("comment", comment);
-            model.addAttribute("type", type); // emotion 또는 situation
+            model.addAttribute("type", searchType); // PathVariable로 받은 searchType 사용
             model.addAttribute("selected", selected); // 선택된 감정/상황 텍스트
-
 
         } catch (Exception e) {
             model.addAttribute("errorMessage", "추천 결과를 가져오는 중 오류가 발생했습니다.");
