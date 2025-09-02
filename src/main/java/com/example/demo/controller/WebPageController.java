@@ -6,10 +6,8 @@ import com.example.demo.model.User;
 import com.example.demo.service.RecommendService;
 import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
@@ -33,7 +31,7 @@ public class WebPageController {
 
     @GetMapping("/situationSearching")
     public String situationSearching() {
-        return "SituationSearch";
+        return "situationSearch";
     }
 
     // 감정/상황 선택 화면
