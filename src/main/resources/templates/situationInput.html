@@ -9,7 +9,6 @@
     <style>
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -295,6 +294,7 @@
             background: rgba(255,255,255,0.9);
             backdrop-filter: blur(5px);
             z-index: 9999;
+            border-radius: 45px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -302,20 +302,42 @@
             color: #333;
         }
 
-        /* 스피너 */
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(102, 126, 234, 0.2);
-            border-top: 6px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+        /* 로딩 애니메이션 Loader */
+        .loader {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            animation: loader-1 0.8s infinite linear;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
+        .loader:before,
+        .loader:after {
+            content: '';
+            position: absolute;
+            margin: -25px 0 0 -25px;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: #718aef; /* 밝은 파랑-보라 계열 */
+            border-radius: 50%;
+            animation: loader-2 1.5s infinite ease-in-out;
+        }
+
+        .loader:after {
+            background-color: #9560c8; /* 보라색으로 포인트 */
+            animation-direction: reverse;
+        }
+
+        @keyframes loader-1 {
+            0%   { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes loader-2 {
+            0%   { transform: scale(0.2); left:   0%; }
+            50%  { transform: scale(1.0); left:  50%; }
+            100% { transform: scale(0.2); left: 100%; }
         }
     </style>
 </head>
@@ -393,7 +415,8 @@
 
     <!-- 로딩 오버레이 -->
     <div id="loadingOverlay">
-        <div class="spinner"></div>
+        <div class="loader"></div>
+        <br>
         <p>추천 결과를 불러오는 중입니다...</p>
     </div>
 </div>

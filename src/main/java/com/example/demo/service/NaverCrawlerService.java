@@ -113,7 +113,7 @@ public class NaverCrawlerService {
         String url = "https://m.map.naver.com/search2/search.naver?query=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
         WebDriver driver = new ChromeDriver();
         driver.get(url);
-        Thread.sleep(3000);
+        Thread.sleep(800); // 기본값 : 3000 || 최적화 값 : 800 ~ 1600
 
         String html = driver.getPageSource();
         driver.quit();
