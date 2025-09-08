@@ -79,7 +79,7 @@ public class OpenAiService {
             keywords.add(arr.getString(i));
         }
 
-//        System.out.println("🔍 올라마가 생성한 키워드: " + keywords);
+//        System.out.println("올라마가 생성한 키워드: " + keywords);
         return keywords;
     }
 
@@ -200,7 +200,7 @@ public class OpenAiService {
         JSONObject body = new JSONObject();
         body.put("model", "gemma3:4b");
         body.put("prompt", prompt);
-        body.put("stream", false); // ✅ 그대로 false 유지
+        body.put("stream", false); // 그대로 false 유지
 
         try (OutputStream os = conn.getOutputStream()) {
             os.write(body.toString().getBytes());
@@ -225,6 +225,6 @@ public class OpenAiService {
         }
 
         JSONObject obj = new JSONObject(responseText);
-        return responseText; // ✅ response 필드만 반환
+        return responseText; // response 필드만 반환
     }
 }
