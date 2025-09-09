@@ -90,12 +90,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 @Service
 public class NaverCrawlerService {
@@ -111,7 +113,14 @@ public class NaverCrawlerService {
 //        }
 
         String url = "https://m.map.naver.com/search2/search.naver?query=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
-        WebDriver driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
+
         driver.get(url);
         Thread.sleep(800); // 기본값 : 3000 || 최적화 값 : 800 ~ 1600
 
