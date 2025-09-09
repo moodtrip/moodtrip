@@ -125,6 +125,8 @@ public class NaverCrawlerService {
         Elements item = doc.select("button.btn_address");
         String address = item.text();
 
+        address = address.split(" ")[0];
+
         return address;
     }
 
