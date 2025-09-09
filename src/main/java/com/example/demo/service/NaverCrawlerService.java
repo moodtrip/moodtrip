@@ -105,6 +105,29 @@ public class NaverCrawlerService {
     // 키워드별 임시 캐시
     private final Map<String, List<PlaceInfo>> cache = new ConcurrentHashMap<>();
 
+    public String crawUserLocate(String lat, String lng) throws Exception {
+        String url = "https://map.naver.com/p?lat="+ lat +"&lng="+ lng;
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
+        driver.get(url);
+
+        Thread.sleep(800);
+
+        String html = driver.getPageSource();
+        driver.quit();
+        Document doc = Jsoup.parse(html);
+
+        Elements item = doc.select("button.btn_address");
+        String address = item.text();
+
+        return address;
+    }
+
     public List<PlaceInfo> crawlPlaces(String keyword) throws Exception {
         // 이미 캐시에 있으면 바로 반환
 //        if (cache.containsKey(keyword)) {
