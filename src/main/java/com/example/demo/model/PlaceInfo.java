@@ -8,6 +8,7 @@ import java.util.List;
 public class PlaceInfo {
     private String name;
     private String category;
+    private String keyword;
     private String address;
     private String imageUrl;
     private String placeUrl;
@@ -16,6 +17,9 @@ public class PlaceInfo {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getKeyword() {return keyword; }
+    public void setKeyword(String keyword) { this.keyword = keyword; }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
