@@ -296,7 +296,7 @@
 
         .place-image-wrapper {
             width: 100%;
-            height: 200px;
+            height: 170px;
             overflow: hidden;
             border-radius: 12px;
             background: #eee;
@@ -321,6 +321,31 @@
             color: #999;
             font-size: 14px;
             text-align: center;
+        }
+
+        .keyword_tag {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .keyword_title {
+            background: linear-gradient(135deg, #5c97e9, #a539b9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            line-height: 1.4;
+            max-width: 140px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-word;
         }
 
         .place-info {
@@ -431,6 +456,12 @@
                 padding: 20px 25px;
                 margin: 0 15px 25px;
             }
+
+            .keyword_title {
+                font-size: 13px;
+                padding: 7px 14px;
+                max-width: 120px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -469,6 +500,12 @@
             .selected-text {
                 padding: 12px 18px;
                 font-size: 14px;
+            }
+
+            .keyword_title {
+                font-size: 12px;
+                padding: 6px 12px;
+                max-width: 100px;
             }
         }
 
@@ -561,10 +598,13 @@
                         </div>
                     </div>
 
+                    <div class="keyword_tag">
+                        <div class="keyword_title" th:text="${place.keyword}">검색한 키워드</div>
+                    </div>
+
                     <div class="place-info">
                         <div class="place-name" th:text="${place.name}">장소명</div>
                         <div class="place-address" th:text="${place.address}">주소</div>
-                        <div class="place-keyword" th:text="${place.keyword}">검색한 키워드</div>
                     </div>
                 </div>
             </div>
@@ -577,10 +617,10 @@
         <!-- 감정 선택에서 온 경우 -->
         <a th:if="${type == 'emotion'}"
            th:href="@{/selection(mode='emotion', lat=${latitude}, lng=${longitude})}"
-           class="back-btn">« 이전 검색으로 돌아가기 »</a>
+           class="back-btn">« 이전으로 돌아가기 »</a>
         <a th:if="${type == 'situation'}"
            th:href="@{/selection(mode='situation', lat=${latitude}, lng=${longitude})}"
-           class="back-btn">« 이전 검색으로 돌아가기 »</a>
+           class="back-btn">« 이전으로 돌아가기 »</a>
     </div>
 </div>
 
