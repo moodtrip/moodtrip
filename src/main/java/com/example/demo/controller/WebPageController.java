@@ -180,7 +180,15 @@ public class WebPageController {
             }
 
             User user = (User) session.getAttribute("user");
-            PlaceDto placesDto = recommendService.recommendPlaces(keyword, searchType);
+            PlaceDto placesDto = new PlaceDto(null, null);
+
+            if(latitude != null && !latitude.isEmpty() && longitude != null && !longitude.isEmpty()) {
+                String userLocate = recommendService.userLocateSearch(latitude, longitude);
+
+                placesDto = recommendService.recommendPlacesByUserLocate(keyword, selected, userLocate);
+            }else {
+                placesDto = recommendService.recommendPlaces(keyword, searchType);
+            }
             List<PlaceInfo> places = placesDto.getPlaces();
             places = places.stream().distinct().collect(Collectors.toList());
             String comment = placesDto.getComment();

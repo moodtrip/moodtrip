@@ -90,6 +90,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -97,11 +98,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 @Service
 public class NaverCrawlerService {
 
     // 키워드별 임시 캐시
     private final Map<String, List<PlaceInfo>> cache = new ConcurrentHashMap<>();
+
+    public String crawUserLocate(String lat, String lng) throws Exception {
+        String url = "https://map.naver.com/p?lat="+ lat +"&lng="+ lng;
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
+        driver.get(url);
+
+        Thread.sleep(800);
+
+        String html = driver.getPageSource();
+        driver.quit();
+        Document doc = Jsoup.parse(html);
+
+        Elements item = doc.select("button.btn_address");
+        String address = item.text();
+
+        address = address.split(" ")[0];
+
+        return address;
+    }
 
     public List<PlaceInfo> crawlPlaces(String keyword) throws Exception {
         // 이미 캐시에 있으면 바로 반환
@@ -111,7 +138,14 @@ public class NaverCrawlerService {
 //        }
 
         String url = "https://m.map.naver.com/search2/search.naver?query=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
-        WebDriver driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        WebDriver driver = new ChromeDriver(options);
+
         driver.get(url);
         Thread.sleep(800); // 기본값 : 3000 || 최적화 값 : 800 ~ 1600
 
