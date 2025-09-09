@@ -39,6 +39,10 @@
             color: inherit;
         }
 
+        a{
+           text-decoration: none;
+        }
+
         .content {
             display: flex;
             flex-direction: column;
@@ -588,8 +592,8 @@
         <!-- 가로 스크롤 영역 -->
         <div class="places-scroll-wrapper">
             <div class="places-list" id="placesList">
-                <div th:each="place, iterStat : ${places}" class="place-card"
-                     th:onclick="|location.href='@{/place/{index}(index=${iterStat.index}, keyword=${keyword})}'|">
+                <a th:each="place, iterStat : ${places}" class="place-card"
+                   th:href="${place.placeUrl}" target="_blank">
                     <div class="place-image-wrapper">
                         <img th:src="${place.imageUrl}" alt="장소 이미지" class="place-image"
                              onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex'"/>
@@ -606,7 +610,7 @@
                         <div class="place-name" th:text="${place.name}">장소명</div>
                         <div class="place-address" th:text="${place.address}">주소</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
