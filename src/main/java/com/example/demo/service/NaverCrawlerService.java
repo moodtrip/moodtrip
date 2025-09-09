@@ -124,6 +124,7 @@ public class NaverCrawlerService {
 
         for (Element item : items) {
             PlaceInfo info = new PlaceInfo();
+            info.setKeyword(keyword);
 
             Element nameEl = item.selectFirst("strong._item_name_sis14_275");
             if (nameEl != null) info.setName(nameEl.text());

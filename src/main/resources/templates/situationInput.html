@@ -346,7 +346,7 @@
     <div class="header">
         <h1 class="title">현재 상황을 알려주세요</h1>
         <p class="subtitle">상황에 맞는 완벽한 장소를 추천해드릴게요</p>
-        <div class="instruction floating-animation">💭 자유롭게 상황이나 원하는 것을 적어주세요</div>
+        <div class="instruction floating-animation">&#128173; 자유롭게 상황이나 원하는 것을 적어주세요</div>
     </div>
 
     <form id="situationForm" th:action="@{/processSituation}" method="post">
@@ -372,7 +372,7 @@
         </div>
 
         <div class="suggestions">
-            <div class="suggestions-title">💡 빠른 선택</div>
+            <div class="suggestions-title">&#128161; 빠른 선택</div>
             <div class="suggestion-tags">
                 <span class="suggestion-tag" onclick="setSuggestion('친구들과 재미있게 놀 수 있는 곳')">친구들과 놀기</span>
                 <span class="suggestion-tag" onclick="setSuggestion('혼자만의 시간을 보낼 수 있는 조용한 곳')">혼자만의 시간</span>
@@ -386,7 +386,7 @@
         </div>
 
         <div class="examples-section">
-            <div class="examples-title">📝 이런 식으로 적어보세요</div>
+            <div class="examples-title">&#128221; 이런 식으로 적어보세요</div>
             <div class="examples-grid">
                 <div class="example-item">
                     <div class="example-label">감정 표현</div>
@@ -405,7 +405,7 @@
 
         <div class="action-buttons">
             <button type="submit" class="btn btn-primary" id="submitBtn">
-                상황에 맞는 장소 찾기 🔍
+                상황에 맞는 장소 찾기 &#128269;
             </button>
             <a href="/" class="btn btn-secondary">
                 ← 선택으로 돌아가기
@@ -479,8 +479,8 @@
             alert('500자 이내로 입력해주세요!');
             situationInput.focus();
         } else {
-        // ✅ 로딩 화면 표시
-        loadingOverlay.style.display = 'flex';
+            // ✅ 로딩 화면 표시
+            loadingOverlay.style.display = 'flex';
         }
     });
 

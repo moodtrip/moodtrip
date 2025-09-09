@@ -506,9 +506,9 @@
     <!-- 선택된 감정/상황 표시 박스 -->
     <div class="selected-info" th:if="${selected}">
         <div class="selected-title">
-            <span th:if="${type == 'emotion'}">😊 선택하신 감정</span>
-            <span th:if="${type == 'situation'}">📝 입력하신 상황</span>
-            <span th:unless="${type}">🔍 검색 키워드</span>
+            <span th:if="${type == 'emotion'}">&#128522; 선택하신 감정</span>
+            <span th:if="${type == 'situation'}">&#128221; 입력하신 상황</span>
+            <span th:unless="${type}">&#128269; 검색 키워드</span>
         </div>
         <div class="selected-content">
             <!-- 감정 선택일 경우 태그 형태로 표시 -->
@@ -529,14 +529,14 @@
 
     <div class="reason-box" th:if="${comment}">
         <div class="reason-title">
-            🤔 AI의 추천 이유
+            &#129300; AI의 추천 이유
         </div>
         <div class="reason-content" th:text="${comment}">
             추천 이유가 여기에 표시됩니다
         </div>
     </div>
 
-    <h2 class="search-title">🎯 추천 결과</h2>
+    <h2 class="search-title">&#127919; 추천 결과</h2>
     <div id="place-counter" th:text="'총 ' + ${places.size()} + '개의 장소'">총 0개의 장소</div>
 
     <!-- 페이지 인디케이터 -->
@@ -564,6 +564,7 @@
                     <div class="place-info">
                         <div class="place-name" th:text="${place.name}">장소명</div>
                         <div class="place-address" th:text="${place.address}">주소</div>
+                        <div class="place-keyword" th:text="${place.keyword}">검색한 키워드</div>
                     </div>
                 </div>
             </div>
