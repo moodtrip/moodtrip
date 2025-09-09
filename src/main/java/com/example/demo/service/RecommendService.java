@@ -161,7 +161,7 @@ public class RecommendService {
         List<CompletableFuture<List<PlaceInfo>>> futures = searchKeywords.stream()
                 .map(k -> CompletableFuture.supplyAsync(() -> {
                     try {
-                        System.out.println("장소 검색: " + userLocate + k);
+                        System.out.println("장소 검색: " + userLocate + " " + k);
                         return naverCrawlerService.crawlPlaces(userLocate+ " " +k);
                     } catch (Exception e) {
                         e.printStackTrace();
