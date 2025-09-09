@@ -186,7 +186,7 @@
             color: #333;
         }
 
-        /* 위치 정보 표시 */
+        /* 위치 정보 표시 - 수정된 부분 */
         .location-info {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -195,16 +195,29 @@
             color: white;
             font-size: 16px;
             font-weight: 500;
-            display: none;
             align-items: center;
             gap: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 0.5s ease-out;
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             z-index: 1000;
+            /* 초기 상태 - 숨김 */
+            display: flex;
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            /* 콘텐츠 크기 맞춤 */
+            white-space: nowrap;
+            min-width: max-content;
+        }
+
+        /* 표시 상태 */
+        .location-info.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) translateY(0);
         }
 
         .location-icon {
@@ -601,7 +614,7 @@
         document.getElementById('locationModal').style.display = 'flex';
     }
 
-    // 위치 정보 요청
+    // 위치 정보 요청 - 수정된 부분
     function requestLocation() {
         const modal = document.getElementById('locationModal');
         const locationInfo = document.getElementById('locationInfo');
@@ -614,7 +627,9 @@
         }
 
         modal.style.display = 'none';
-        locationInfo.style.display = 'flex';
+
+        // CSS 클래스를 사용하여 표시
+        locationInfo.classList.add('show');
         locationText.textContent = '위치를 확인하고 있어요...';
 
         navigator.geolocation.getCurrentPosition(
@@ -629,8 +644,10 @@
                 localStorage.setItem('userLocation', JSON.stringify(userLocation));
 
                 setTimeout(() => {
-                    locationInfo.style.display = 'none';
-                    showEmotionSelection();
+                    locationInfo.classList.remove('show');
+                    setTimeout(() => {
+                        showEmotionSelection();
+                    }, 400); // 애니메이션 완료 후 화면 전환
                 }, 2000);
             },
             function (error) {
@@ -638,8 +655,10 @@
                 locationText.textContent = '위치 정보를 가져올 수 없어요';
 
                 setTimeout(() => {
-                    locationInfo.style.display = 'none';
-                    showEmotionSelection();
+                    locationInfo.classList.remove('show');
+                    setTimeout(() => {
+                        showEmotionSelection();
+                    }, 400); // 애니메이션 완료 후 화면 전환
                 }, 2000);
             },
             {
