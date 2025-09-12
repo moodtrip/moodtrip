@@ -19,6 +19,33 @@
             color: #000;
         }
 
+        /* Header 스타일 수정 */
+        #header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1500;
+            /* 초기 상태 - 숨김 */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+            transition: all 0.4s ease-in-out;
+        }
+
+        #header.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #logo img {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
         .main-container {
             display: flex;
             flex-direction: column;
@@ -390,6 +417,15 @@
 
         /* 반응형 디자인 */
         @media (max-width: 768px) {
+            #header {
+                top: 15px;
+                left: 15px;
+            }
+
+            #logo img {
+                height: 50px;
+            }
+
             .logo {
                 font-size: 36px;
             }
@@ -474,6 +510,18 @@
         }
 
         @media (max-width: 480px) {
+            #header {
+                padding: 10px 10px 0;
+            }
+
+            #logo img {
+                height: 35px;
+            }
+
+            .header-line {
+                margin: 10px 0 0 0;
+            }
+
             .main-container {
                 gap: 30px;
                 padding: 20px;
@@ -545,6 +593,14 @@
         }
     </style>
 </head>
+
+<!-- Header 수정 - 초기에 숨김 상태 -->
+<header id="header">
+    <div id="logo">
+        <img src="/images/moodtrip-logo-short.png" alt="MOODTRIP">
+    </div>
+</header>
+
 <body>
 <!-- 위치 정보 요청 모달 -->
 <div class="location-modal" id="locationModal">
@@ -609,6 +665,11 @@
 <script>
     let userLocation = null;
 
+    // Header 표시 함수
+    function showHeader() {
+        document.getElementById('header').classList.add('show');
+    }
+
     // 시작하기 버튼 클릭 시 위치 모달 표시
     function showLocationModal() {
         document.getElementById('locationModal').style.display = 'flex';
@@ -622,11 +683,14 @@
 
         if (!navigator.geolocation) {
             alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.');
+            modal.style.display = 'none';
+            showHeader(); // Header 표시
             showEmotionSelection();
             return;
         }
 
         modal.style.display = 'none';
+        showHeader(); // Header 표시
 
         // CSS 클래스를 사용하여 표시
         locationInfo.classList.add('show');
@@ -672,6 +736,7 @@
     // 위치 건너뛰기
     function skipLocation() {
         document.getElementById('locationModal').style.display = 'none';
+        showHeader(); // Header 표시
         showEmotionSelection();
         console.log('위치 정보 요청을 건너뛰었습니다.');
     }
@@ -686,6 +751,8 @@
     function goBackToMain() {
         document.getElementById('emotionScreen').style.display = 'none';
         document.getElementById('mainScreen').style.display = 'flex';
+        // Header 숨기기
+        document.getElementById('header').classList.remove('show');
     }
 
     // 좌표를 주소로 변환

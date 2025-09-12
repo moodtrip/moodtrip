@@ -16,8 +16,34 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 80px 20px 20px 20px; /* 상단에 헤더 공간 확보 */
             box-sizing: border-box;
+        }
+
+        /* Header 스타일 */
+        #header-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1500;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px 0;
+        }
+
+        #logo img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .header-line {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            margin: 15px 0 0 0;
+            width: 100%;
         }
 
         .container {
@@ -237,53 +263,19 @@
             50% { transform: translateY(-10px); }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 25px;
-            }
-
-            .title {
-                font-size: 28px;
-            }
-
-            .subtitle {
-                font-size: 16px;
-            }
-
-            .text-input {
-                font-size: 16px;
-                padding: 18px;
-                min-height: 100px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .btn {
-                padding: 12px 30px;
-                font-size: 16px;
-            }
-
-            .examples-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px 20px;
-            }
-
-            .suggestion-tags {
-                justify-content: center;
-            }
-
-            .suggestion-tag {
-                padding: 8px 15px;
-                font-size: 13px;
-            }
+        /* 배경 효과 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* 로딩 오버레이 */
@@ -339,9 +331,99 @@
             50%  { transform: scale(1.0); left:  50%; }
             100% { transform: scale(0.2); left: 100%; }
         }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            body {
+                padding: 70px 10px 20px 10px;
+            }
+
+            #header-logo {
+                padding: 12px 15px 0;
+            }
+
+            #logo img {
+                height: 40px;
+            }
+
+            .header-line {
+                margin: 12px 0 0 0;
+            }
+
+            .container {
+                padding: 30px 25px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .text-input {
+                font-size: 16px;
+                padding: 18px;
+                min-height: 100px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 60px 10px 20px 10px;
+            }
+
+            #header-logo {
+                padding: 10px 10px 0;
+            }
+
+            #logo img {
+                height: 35px;
+            }
+
+            .header-line {
+                margin: 10px 0 0 0;
+            }
+
+            .container {
+                padding: 25px 20px;
+            }
+
+            .suggestion-tags {
+                justify-content: center;
+            }
+
+            .suggestion-tag {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
+<!-- Header -->
+<header id="header-logo">
+    <div id="logo">
+        <img src="/images/moodtrip-logo-short.png" alt="MOODTRIP">
+    </div>
+    <hr class="header-line">
+</header>
+
 <div class="container">
     <div class="header">
         <h1 class="title">현재 상황을 알려주세요</h1>
@@ -480,7 +562,7 @@
             situationInput.focus();
         } else {
             // ✅ 로딩 화면 표시
-            loadingOverlay.style.display = 'flex';
+            document.getElementById('loadingOverlay').style.display = 'flex';
         }
     });
 
