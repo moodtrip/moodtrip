@@ -90,7 +90,7 @@ java    389140     root    9u  IPv6 6627507      0t0  TCP *:http (LISTEN)
 java    389140     root   13u  IPv6 6634488      0t0  TCP 2025-moodtrip:http->19                                                    2.168.24.195:64074 (ESTABLISHED)
 java    389140     root   14u  IPv6 6634627      0t0  TCP 2025-moodtrip:http->19                                                    2.168.24.195:64091 (ESTABLISHED)
 ```
-##사용 중인 서비스 정지 코드
+## 사용 중인 서비스 정지 코드
 ```
 moodtrip@2025-moodtrip:~/moodtrip$ sudo kill -9 (해당 PID 코드)
 ```
