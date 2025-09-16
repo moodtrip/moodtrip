@@ -7,6 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상황 입력 - MOODTRIP</title>
     <style>
+        /* 전역 드래그 방지 스타일 */
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
+
+        /* 텍스트 입력 필드는 선택 허용 */
+        .text-input {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+        }
+
+        /* 이미지 특별 처리 */
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
+
         body {
             margin: 0;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
@@ -278,7 +309,7 @@
             z-index: -1;
         }
 
-        /* 로딩 오버레이 */
+        /* 로딩 오버레이 - 드래그 방지 추가 */
         #loadingOverlay {
             display: none;
             position: fixed;
@@ -292,6 +323,17 @@
             align-items: center;
             font-size: 18px;
             color: #333;
+            /* 드래그 방지 속성 추가 */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            pointer-events: auto;
         }
 
         /* 로딩 애니메이션 Loader */
@@ -504,6 +546,61 @@
 </div>
 
 <script>
+    // 전역 드래그 방지 이벤트 핸들러 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        // 드래그 시작 방지
+        document.addEventListener('dragstart', function(e) {
+            // 텍스트 입력 필드는 예외 처리
+            if (e.target.classList.contains('text-input')) {
+                return true;
+            }
+            e.preventDefault();
+            return false;
+        });
+
+        // 선택 방지 (텍스트 입력 필드 제외)
+        document.addEventListener('selectstart', function(e) {
+            if (e.target.classList.contains('text-input')) {
+                return true;
+            }
+            e.preventDefault();
+            return false;
+        });
+
+        // 우클릭 컨텍스트 메뉴 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 마우스 다운 이벤트에서 드래그 방지
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.tagName === 'IMG' && !e.target.classList.contains('text-input')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 터치 이벤트 드래그 방지 (모바일)
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1 && !e.target.classList.contains('text-input')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 키보드 단축키 방지 (텍스트 입력 필드에서는 허용)
+        document.addEventListener('keydown', function(e) {
+            if (e.target.classList.contains('text-input')) {
+                return true;
+            }
+            if (e.ctrlKey && (e.keyCode === 65 || e.keyCode === 83 || e.keyCode === 67)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+
     const situationInput = document.getElementById('situationInput');
     const charCount = document.getElementById('charCount');
     const submitBtn = document.getElementById('submitBtn');
@@ -561,7 +658,7 @@
             alert('500자 이내로 입력해주세요!');
             situationInput.focus();
         } else {
-            // ✅ 로딩 화면 표시
+            // 로딩 화면 표시
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
     });
@@ -593,6 +690,22 @@
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
         }
+    });
+
+    // 로딩 오버레이에서 드래그 방지 이벤트 리스너 추가
+    document.getElementById('loadingOverlay').addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.getElementById('loadingOverlay').addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.getElementById('loadingOverlay').addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
     });
 </script>
 </body>
