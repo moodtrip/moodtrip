@@ -87,6 +87,7 @@ public class RecommendService {
         List<PlaceInfo> places = new ArrayList<>();
         List<String> keyword = new ArrayList<>();
 
+        System.out.println(searchType);
         if(searchType == "situation") {
             // 1. 키워드 추출
             keyword = openAiService.extractKeyword(userInput);
