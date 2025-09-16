@@ -528,447 +528,305 @@
         <form id="emotionForm" th:action="@{/processEmotion}" method="post">
             <input type="hidden" name="lat" th:value="${latitude}">
             <input type="hidden" name="lng" th:value="${longitude}">
-
             <div class="emotion-grid">
-                <!-- 기존 감정들 -->
+
+                <!-- 1. 분노 관련 -->
                 <div class="emotion-item">
-                    <input type="checkbox" id="happy" name="emotions" value="행복" class="emotion-checkbox">
-                    <label for="happy" class="emotion-label">
+                    <input type="checkbox" id="anger" name="emotions" value="분노" class="emotion-checkbox">
+                    <label for="anger" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128522;</div>
-                        <div class="emotion-name">행복</div>
-                        <div class="emotion-desc">즐거운 마음으로 특별한 시간을</div>
+                        <div class="emotion-icon">&#128545;</div>
+                        <div class="emotion-name">분노</div>
+                        <div class="emotion-desc">화를 느끼고 불쾌한 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="resentment" name="emotions" value="원망" class="emotion-checkbox">
+                    <label for="resentment" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128561;</div>
+                        <div class="emotion-name">원망</div>
+                        <div class="emotion-desc">누군가에게 섭섭함을 느끼는 감정</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="jealousy" name="emotions" value="질투" class="emotion-checkbox">
+                    <label for="jealousy" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128568;</div>
+                        <div class="emotion-name">질투</div>
+                        <div class="emotion-desc">남을 부러워하며 불쾌한 마음</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="disgust" name="emotions" value="불쾌" class="emotion-checkbox">
+                    <label for="disgust" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128128;</div>
+                        <div class="emotion-name">불쾌</div>
+                        <div class="emotion-desc">기분이 좋지 않고 짜증나는 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="boredom" name="emotions" value="권태" class="emotion-checkbox">
+                    <label for="boredom" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128560;</div>
+                        <div class="emotion-name">무기력</div>
+                        <div class="emotion-desc">무기력하고 흥미가 없는 상태</div>
                     </label>
                 </div>
 
+                <!-- 2. 슬픔 관련 -->
                 <div class="emotion-item">
-                    <input type="checkbox" id="excited" name="emotions" value="신남" class="emotion-checkbox">
-                    <label for="excited" class="emotion-label">
+                    <input type="checkbox" id="sadness" name="emotions" value="슬픔" class="emotion-checkbox">
+                    <label for="sadness" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#129321;</div>
-                        <div class="emotion-name">신남</div>
-                        <div class="emotion-desc">에너지가 넘치는 활동적인 곳</div>
+                        <div class="emotion-icon">&#128542;</div>
+                        <div class="emotion-name">슬픔</div>
+                        <div class="emotion-desc">마음이 아프고 우울한 상태</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="peaceful" name="emotions" value="평온" class="emotion-checkbox">
-                    <label for="peaceful" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128524;</div>
-                        <div class="emotion-name">평온</div>
-                        <div class="emotion-desc">조용하고 차분한 휴식의 시간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="romantic" name="emotions" value="로맨틱" class="emotion-checkbox">
-                    <label for="romantic" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128149;</div>
-                        <div class="emotion-name">로맨틱</div>
-                        <div class="emotion-desc">특별한 사람과 함께하는 시간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="nostalgic" name="emotions" value="그리움" class="emotion-checkbox">
-                    <label for="nostalgic" class="emotion-label">
+                    <input type="checkbox" id="nostalgia" name="emotions" value="그리움" class="emotion-checkbox">
+                    <label for="nostalgia" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
                         <div class="emotion-icon">&#129402;</div>
                         <div class="emotion-name">그리움</div>
-                        <div class="emotion-desc">추억을 되새기는 감성적인 곳</div>
+                        <div class="emotion-desc">잃어버린 것을 아쉬워하는 마음</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="curious" name="emotions" value="호기심" class="emotion-checkbox">
-                    <label for="curious" class="emotion-label">
+                    <input type="checkbox" id="despair" name="emotions" value="절망" class="emotion-checkbox">
+                    <label for="despair" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#129300;</div>
-                        <div class="emotion-name">호기심</div>
-                        <div class="emotion-desc">새로운 것을 탐험하고 배우는 곳</div>
+                        <div class="emotion-icon">&#128557;</div>
+                        <div class="emotion-name">절망</div>
+                        <div class="emotion-desc">희망이 사라지고 막막한 감정</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="regret" name="emotions" value="후회" class="emotion-checkbox">
+                    <label for="regret" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128533;</div>
+                        <div class="emotion-name">후회</div>
+                        <div class="emotion-desc">이미 지나간 일을 아쉬워하는 마음</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="lament" name="emotions" value="한탄" class="emotion-checkbox">
+                    <label for="lament" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128577;</div>
+                        <div class="emotion-name">한탄</div>
+                        <div class="emotion-desc">억울하거나 안타까운 마음</div>
                     </label>
                 </div>
 
+                <!-- 3. 아픔/스트레스 관련 -->
                 <div class="emotion-item">
-                    <input type="checkbox" id="stressed" name="emotions" value="스트레스" class="emotion-checkbox">
-                    <label for="stressed" class="emotion-label">
+                    <input type="checkbox" id="pain" name="emotions" value="아픔" class="emotion-checkbox">
+                    <label for="pain" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
                         <div class="emotion-icon">&#128565;</div>
-                        <div class="emotion-name">스트레스</div>
-                        <div class="emotion-desc">마음의 짐을 내려놓을 수 있는 곳</div>
+                        <div class="emotion-name">아픔</div>
+                        <div class="emotion-desc">신체적/정신적 고통을 느끼는 상태</div>
                     </label>
                 </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="sad" name="emotions" value="우울" class="emotion-checkbox">
-                    <label for="sad" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128532;</div>
-                        <div class="emotion-name">우울</div>
-                        <div class="emotion-desc">위로받고 치유받을 수 있는 곳</div>
-                    </label>
-                </div>
-
                 <div class="emotion-item">
                     <input type="checkbox" id="lonely" name="emotions" value="외로움" class="emotion-checkbox">
                     <label for="lonely" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
                         <div class="emotion-icon">&#128546;</div>
                         <div class="emotion-name">외로움</div>
-                        <div class="emotion-desc">혼자만의 시간을 의미있게</div>
+                        <div class="emotion-desc">혼자여서 느끼는 쓸쓸함</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="energetic" name="emotions" value="활기" class="emotion-checkbox">
-                    <label for="energetic" class="emotion-label">
+                    <input type="checkbox" id="stress" name="emotions" value="스트레스" class="emotion-checkbox">
+                    <label for="stress" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#9889;</div>
-                        <div class="emotion-name">활기</div>
-                        <div class="emotion-desc">역동적이고 생동감 넘치는 곳</div>
+                        <div class="emotion-icon">&#128565;</div>
+                        <div class="emotion-name">스트레스</div>
+                        <div class="emotion-desc">마음이 긴장되고 지친 상태</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="contemplative" name="emotions" value="사색" class="emotion-checkbox">
-                    <label for="contemplative" class="emotion-label">
+                    <input type="checkbox" id="frustration" name="emotions" value="답답함" class="emotion-checkbox">
+                    <label for="frustration" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#129327;</div>
-                        <div class="emotion-name">사색</div>
-                        <div class="emotion-desc">깊이 생각하고 성찰할 수 있는 곳</div>
+                        <div class="emotion-icon">&#128560;</div>
+                        <div class="emotion-name">답답함</div>
+                        <div class="emotion-desc">해결되지 않아 답답한 마음</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="bored" name="emotions" value="지루함" class="emotion-checkbox">
+                    <label for="bored" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128530;</div>
+                        <div class="emotion-name">지루함</div>
+                        <div class="emotion-desc">관심이 없어 심심한 상태</div>
                     </label>
                 </div>
 
-                <!-- 새로 추가된 감정들 -->
+                <!-- 4. 불안 관련 -->
                 <div class="emotion-item">
-                    <input type="checkbox" id="grateful" name="emotions" value="감사" class="emotion-checkbox">
-                    <label for="grateful" class="emotion-label">
+                    <input type="checkbox" id="anxiety" name="emotions" value="불안" class="emotion-checkbox">
+                    <label for="anxiety" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128552;</div>
+                        <div class="emotion-name">불안</div>
+                        <div class="emotion-desc">앞일이 걱정되는 마음</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="fear" name="emotions" value="두려움" class="emotion-checkbox">
+                    <label for="fear" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128561;</div>
+                        <div class="emotion-name">두려움</div>
+                        <div class="emotion-desc">위험이나 결과가 걱정되는 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="worry" name="emotions" value="걱정" class="emotion-checkbox">
+                    <label for="worry" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128533;</div>
+                        <div class="emotion-name">걱정</div>
+                        <div class="emotion-desc">마음이 안정되지 못하고 불안함</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="nervous" name="emotions" value="초조" class="emotion-checkbox">
+                    <label for="nervous" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128552;</div>
+                        <div class="emotion-name">초조</div>
+                        <div class="emotion-desc">결과를 기다리며 긴장되는 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="shame" name="emotions" value="부끄러움" class="emotion-checkbox">
+                    <label for="shame" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128557;</div>
+                        <div class="emotion-name">부끄러움</div>
+                        <div class="emotion-desc">실수나 잘못으로 민망한 상태</div>
+                    </label>
+                </div>
+
+                <!-- 5. 기쁨 관련 -->
+                <div class="emotion-item">
+                    <input type="checkbox" id="joy" name="emotions" value="기쁨" class="emotion-checkbox">
+                    <label for="joy" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128522;</div>
+                        <div class="emotion-name">기쁨</div>
+                        <div class="emotion-desc">즐거운 마음과 행복을 느끼는 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="pride" name="emotions" value="고소함" class="emotion-checkbox">
+                    <label for="pride" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128521;</div>
+                        <div class="emotion-name">뿌듯함</div>
+                        <div class="emotion-desc">자신감 있고 뿌듯한 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="thrill" name="emotions" value="박진감" class="emotion-checkbox">
+                    <label for="thrill" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128293;</div>
+                        <div class="emotion-name">박진감</div>
+                        <div class="emotion-desc">짜릿하고 신나는 순간</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="fun" name="emotions" value="즐거움" class="emotion-checkbox">
+                    <label for="fun" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#127881;</div>
+                        <div class="emotion-name">즐거움</div>
+                        <div class="emotion-desc">행복하고 유쾌한 기분</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="happy" name="emotions" value="행복함" class="emotion-checkbox">
+                    <label for="happy" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128522;</div>
+                        <div class="emotion-name">행복함</div>
+                        <div class="emotion-desc">마음이 따뜻해지고 만족스러운 상태</div>
+                    </label>
+                </div>
+
+                <!-- 6. 사랑 관련 -->
+                <div class="emotion-item">
+                    <input type="checkbox" id="love" name="emotions" value="사랑" class="emotion-checkbox">
+                    <label for="love" class="emotion-label">
+                        <div class="checkmark">&#10003;</div>
+                        <div class="emotion-icon">&#128149;</div>
+                        <div class="emotion-name">사랑</div>
+                        <div class="emotion-desc">따뜻하고 깊은 애정을 느끼는 상태</div>
+                    </label>
+                </div>
+                <div class="emotion-item">
+                    <input type="checkbox" id="care" name="emotions" value="배려" class="emotion-checkbox">
+                    <label for="care" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
                         <div class="emotion-icon">&#128591;</div>
-                        <div class="emotion-name">감사</div>
-                        <div class="emotion-desc">소중한 것들을 되돌아보는 곳</div>
+                        <div class="emotion-name">배려</div>
+                        <div class="emotion-desc">다른 사람을 생각하는 따뜻한 마음</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="inspired" name="emotions" value="영감" class="emotion-checkbox">
-                    <label for="inspired" class="emotion-label">
+                    <input type="checkbox" id="hope" name="emotions" value="희망" class="emotion-checkbox">
+                    <label for="hope" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128161;</div>
-                        <div class="emotion-name">영감</div>
-                        <div class="emotion-desc">창의적 아이디어가 떠오르는 곳</div>
+                        <div class="emotion-icon">&#127775;</div>
+                        <div class="emotion-name">희망</div>
+                        <div class="emotion-desc">밝은 미래를 기대하는 마음</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="playful" name="emotions" value="장난기" class="emotion-checkbox">
-                    <label for="playful" class="emotion-label">
+                    <input type="checkbox" id="desire" name="emotions" value="욕망" class="emotion-checkbox">
+                    <label for="desire" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#129323;</div>
-                        <div class="emotion-name">장난기</div>
-                        <div class="emotion-desc">유쾌하고 재미있는 시간을 위한 곳</div>
+                        <div class="emotion-icon">&#128293;</div>
+                        <div class="emotion-name">욕망</div>
+                        <div class="emotion-desc">무언가를 강하게 원하고 갈망하는 상태</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="confident" name="emotions" value="자신감" class="emotion-checkbox">
-                    <label for="confident" class="emotion-label">
+                    <input type="checkbox" id="confidence" name="emotions" value="자신감" class="emotion-checkbox">
+                    <label for="confidence" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
                         <div class="emotion-icon">&#128170;</div>
                         <div class="emotion-name">자신감</div>
-                        <div class="emotion-desc">당당하고 멋진 나를 보여줄 곳</div>
+                        <div class="emotion-desc">당당하게 행동할 수 있는 마음</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="melancholy" name="emotions" value="멜랑꼴리" class="emotion-checkbox">
-                    <label for="melancholy" class="emotion-label">
+                    <input type="checkbox" id="curiosity" name="emotions" value="호기심" class="emotion-checkbox">
+                    <label for="curiosity" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127756;</div>
-                        <div class="emotion-name">멜랑꼴리</div>
-                        <div class="emotion-desc">달콤쌉싸름한 감성에 빠지는 곳</div>
+                        <div class="emotion-icon">&#129300;</div>
+                        <div class="emotion-name">호기심</div>
+                        <div class="emotion-desc">새로운 것을 탐험하고 싶은 마음</div>
                     </label>
                 </div>
-
                 <div class="emotion-item">
-                    <input type="checkbox" id="cozy" name="emotions" value="아늑함" class="emotion-checkbox">
-                    <label for="cozy" class="emotion-label">
+                    <input type="checkbox" id="excitement" name="emotions" value="설렘" class="emotion-checkbox">
+                    <label for="excitement" class="emotion-label">
                         <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127968;</div>
-                        <div class="emotion-name">아늑함</div>
-                        <div class="emotion-desc">따뜻하고 포근한 분위기의 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="refreshed" name="emotions" value="상쾌함" class="emotion-checkbox">
-                    <label for="refreshed" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127787;</div>
-                        <div class="emotion-name">상쾌함</div>
-                        <div class="emotion-desc">맑고 깨끗한 기운을 느낄 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="warm" name="emotions" value="따뜻함" class="emotion-checkbox">
-                    <label for="warm" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#9728;</div>
-                        <div class="emotion-name">따뜻함</div>
-                        <div class="emotion-desc">마음까지 따뜻해지는 공간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="focused" name="emotions" value="집중" class="emotion-checkbox">
-                    <label for="focused" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127919;</div>
-                        <div class="emotion-name">집중</div>
-                        <div class="emotion-desc">온전히 몰입할 수 있는 환경</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="dreamy" name="emotions" value="몽환적" class="emotion-checkbox">
-                    <label for="dreamy" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127769;</div>
-                        <div class="emotion-name">몽환적</div>
-                        <div class="emotion-desc">꿈처럼 아름다운 순간을 위한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="rebellious" name="emotions" value="반항적" class="emotion-checkbox">
-                    <label for="rebellious" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128520;</div>
-                        <div class="emotion-name">반항적</div>
-                        <div class="emotion-desc">색다르고 개성있는 공간에서</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="hopeful" name="emotions" value="희망적" class="emotion-checkbox">
-                    <label for="hopeful" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127775;</div>
-                        <div class="emotion-name">희망적</div>
-                        <div class="emotion-desc">밝은 미래를 그려보는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="serene" name="emotions" value="고요함" class="emotion-checkbox">
-                    <label for="serene" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128716;</div>
-                        <div class="emotion-name">고요함</div>
-                        <div class="emotion-desc">마음의 평화를 찾을 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="festive" name="emotions" value="축제적" class="emotion-checkbox">
-                    <label for="festive" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127881;</div>
-                        <div class="emotion-name">축제적</div>
-                        <div class="emotion-desc">즐거운 축제 분위기를 느낄 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="sophisticated" name="emotions" value="세련됨" class="emotion-checkbox">
-                    <label for="sophisticated" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127866;</div>
-                        <div class="emotion-name">세련됨</div>
-                        <div class="emotion-desc">우아하고 품격있는 시간을 위한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="creative" name="emotions" value="창조적" class="emotion-checkbox">
-                    <label for="creative" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127912;</div>
-                        <div class="emotion-name">창조적</div>
-                        <div class="emotion-desc">예술적 영감이 샘솟는 공간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="nostalgic_modern" name="emotions" value="레트로" class="emotion-checkbox">
-                    <label for="nostalgic_modern" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128250;</div>
-                        <div class="emotion-name">레트로</div>
-                        <div class="emotion-desc">옛날 감성이 살아있는 특별한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="luxurious" name="emotions" value="럭셔리" class="emotion-checkbox">
-                    <label for="luxurious" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128142;</div>
-                        <div class="emotion-name">럭셔리</div>
-                        <div class="emotion-desc">특별하고 고급스러운 경험을 위한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="adventurous2" name="emotions" value="도전적" class="emotion-checkbox">
-                    <label for="adventurous2" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127942;</div>
-                        <div class="emotion-name">도전적</div>
-                        <div class="emotion-desc">한계를 뛰어넘는 스릴을 위한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="healing" name="emotions" value="치유" class="emotion-checkbox">
-                    <label for="healing" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127793;</div>
-                        <div class="emotion-name">치유</div>
-                        <div class="emotion-desc">마음의 상처를 달래주는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="passionate" name="emotions" value="열정적" class="emotion-checkbox">
-                    <label for="passionate" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128293;</div>
-                        <div class="emotion-name">열정적</div>
-                        <div class="emotion-desc">뜨거운 열정을 불러일으키는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="minimal" name="emotions" value="미니멀" class="emotion-checkbox">
-                    <label for="minimal" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#11035;</div>
-                        <div class="emotion-name">미니멀</div>
-                        <div class="emotion-desc">심플하고 깔끔한 공간에서</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="wild" name="emotions" value="자유로움" class="emotion-checkbox">
-                    <label for="wild" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128038;</div>
-                        <div class="emotion-name">자유로움</div>
-                        <div class="emotion-desc">속박 없이 자연스럽게 지낼 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="sporty" name="emotions" value="스포티" class="emotion-checkbox">
-                    <label for="sporty" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#9975;</div>
-                        <div class="emotion-name">스포티</div>
-                        <div class="emotion-desc">활동적이고 건강한 라이프스타일</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="vintage" name="emotions" value="빈티지" class="emotion-checkbox">
-                    <label for="vintage" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128247;</div>
-                        <div class="emotion-name">빈티지</div>
-                        <div class="emotion-desc">오래된 것의 아름다움을 느끼는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="artistic" name="emotions" value="예술적" class="emotion-checkbox">
-                    <label for="artistic" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127912;</div>
-                        <div class="emotion-name">예술적</div>
-                        <div class="emotion-desc">아름다움과 창작 정신이 깃든 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="social" name="emotions" value="사교적" class="emotion-checkbox">
-                    <label for="social" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128101;</div>
-                        <div class="emotion-name">사교적</div>
-                        <div class="emotion-desc">사람들과 즐겁게 어울릴 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="futuristic" name="emotions" value="미래적" class="emotion-checkbox">
-                    <label for="futuristic" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128640;</div>
-                        <div class="emotion-name">미래적</div>
-                        <div class="emotion-desc">첨단 기술과 혁신이 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="earthy" name="emotions" value="자연친화" class="emotion-checkbox">
-                    <label for="earthy" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127793;</div>
-                        <div class="emotion-name">자연친화</div>
-                        <div class="emotion-desc">푸르른 자연과 함께하는 시간</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="glamorous" name="emotions" value="화려함" class="emotion-checkbox">
-                    <label for="glamorous" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#10024;</div>
-                        <div class="emotion-name">화려함</div>
-                        <div class="emotion-desc">눈부시게 아름다운 순간을 위한 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="intellectual" name="emotions" value="지적" class="emotion-checkbox">
-                    <label for="intellectual" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#128218;</div>
-                        <div class="emotion-name">지적</div>
-                        <div class="emotion-desc">지식과 교양을 쌓을 수 있는 곳</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="bohemian" name="emotions" value="보헤미안" class="emotion-checkbox">
-                    <label for="bohemian" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#127752;</div>
-                        <div class="emotion-name">보헤미안</div>
-                        <div class="emotion-desc">자유분방하고 낭만적인 분위기</div>
-                    </label>
-                </div>
-
-                <div class="emotion-item">
-                    <input type="checkbox" id="zen" name="emotions" value="선적" class="emotion-checkbox">
-                    <label for="zen" class="emotion-label">
-                        <div class="checkmark">&#10003;</div>
-                        <div class="emotion-icon">&#9775;</div>
-                        <div class="emotion-name">선적</div>
-                        <div class="emotion-desc">명상과 깨달음이 있는 정신적 공간</div>
+                        <div class="emotion-icon">&#128525;</div>
+                        <div class="emotion-name">설렘</div>
+                        <div class="emotion-desc">두근거리고 기대되는 마음</div>
                     </label>
                 </div>
             </div>
