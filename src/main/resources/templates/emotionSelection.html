@@ -147,7 +147,7 @@
             align-items: center;
             padding: 2.5px;
             border: 3px solid #e0e0e0;
-            border-radius: 80px;
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background: white;
@@ -440,15 +440,155 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(5px);
-            z-index: 9999;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
             border-radius: 45px;
+            z-index: 9999;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-size: 18px;
             color: #333;
+        }
+        /* 텍스트 애니메이션 컨테이너 */
+        .loading-text-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+
+        /* 메인 텍스트 애니메이션 */
+        .loading-main-text {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            min-height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 서브 텍스트 애니메이션 */
+        .loading-sub-text {
+            font-size: 16px;
+            color: #666;
+            min-height: 50px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 타이핑 효과 */
+        .typing-effect {
+            border-right: 2px solid #667eea;
+            animation: blink 1s infinite;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: #667eea; }
+            51%, 100% { border-color: transparent; }
+        }
+
+        /* 페이드 인/아웃 효과 */
+        .fade-effect {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .fade-effect.active {
+            opacity: 1;
+        }
+
+        /* 슬라이드 효과 */
+        .slide-effect {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease-out;
+        }
+
+        .slide-effect.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* 색상 변화 효과 */
+        .color-changing {
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 200%;
+            animation: colorShift 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 점 애니메이션 */
+        .dots {
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        .dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        /* 진행 바 */
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            width: 0%;
+            animation: progress 8s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            25% { width: 30%; }
+            50% { width: 60%; }
+            75% { width: 85%; }
+            100% { width: 100%; }
+        }
+
+        /* 반응형 디자인 추가 */
+        @media (max-width: 768px) {
+            .loading-main-text {
+                font-size: 20px;
+            }
+            .loading-sub-text {
+                font-size: 14px;
+            }
+            .loading-text-container {
+                max-width: 90%;
+            }
         }
 
         .loader {
@@ -847,14 +987,21 @@
     </div>
 
     <!-- 로딩 오버레이 -->
+    <!-- 기존 로딩 오버레이를 이것으로 교체하세요 -->
     <div id="loadingOverlay">
         <div class="loader"></div>
-        <br>
-        <p>추천 결과를 불러오는 중입니다...</p>
+        <div class="loading-text-container">
+            <div class="loading-main-text" id="mainText"></div>
+            <div class="loading-sub-text" id="subText"></div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+
     // 체크박스 상태 관리
     const checkboxes = document.querySelectorAll('.emotion-checkbox');
     const submitBtn = document.getElementById('submitBtn');
@@ -919,6 +1066,184 @@
             fixedBottom.style.boxShadow = '0 -2px 10px rgba(0, 0, 0, 0.1)';
         } else {
             fixedBottom.style.boxShadow = 'none';
+        }
+    });
+    // 로딩 텍스트 배열들
+    const mainTexts = [
+        "당신의 감정을 분석하고 있어요",
+        "완벽한 장소를 찾고 있어요",
+        "맞춤 추천을 준비하고 있어요",
+        "특별한 장소들을 선별하고 있어요",
+        "거의 완료되었어요"
+    ];
+
+    const subTexts = [
+        "선택하신 감정들을 바탕으로\n최적의 장소를 찾고 있습니다",
+        "수많은 장소 중에서\n당신에게 딱 맞는 곳들을 골라내고 있어요",
+        "위치 정보와 취향을 고려하여\n개인화된 추천을 만들고 있습니다",
+        "리뷰와 평점, 분위기까지 고려한\n특별한 장소들을 준비하고 있어요",
+        "잠시만 기다려주세요\n곧 멋진 장소들을 보여드릴게요!"
+    ];
+
+    // 상황 입력용 텍스트들
+    const situationMainTexts = [
+        "상황을 분석하고 있어요",
+        "적합한 장소를 찾고 있어요",
+        "맞춤형 추천을 준비하고 있어요",
+        "완벽한 장소들을 골라내고 있어요",
+        "곧 완료됩니다"
+    ];
+
+    const situationSubTexts = [
+        "입력해주신 상황을 바탕으로\n최적의 장소를 찾고 있습니다",
+        "다양한 옵션 중에서\n상황에 맞는 장소들을 선별하고 있어요",
+        "위치와 상황을 고려한\n개인화된 추천을 만들고 있습니다",
+        "분위기와 특성을 고려한\n특별한 장소들을 준비하고 있어요",
+        "잠시만 기다려주세요\n멋진 추천 결과를 보여드릴게요!"
+    ];
+
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    // 타이핑 효과
+    function typeText(element, text, speed = 50) {
+        return new Promise((resolve) => {
+            element.innerHTML = '';
+            element.classList.add('typing-effect');
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    element.classList.remove('typing-effect');
+                    clearInterval(timer);
+                    resolve();
+                }
+            }, speed);
+        });
+    }
+
+    // 페이드 효과
+    function fadeInText(element, text) {
+        return new Promise((resolve) => {
+            element.classList.add('fade-effect');
+            element.innerHTML = text.replace(/\n/g, '<br>');
+            setTimeout(() => {
+                element.classList.add('active');
+                setTimeout(resolve, 800);
+            }, 100);
+        });
+    }
+
+    // 슬라이드 효과
+    function slideInText(element, text) {
+        return new Promise((resolve) => {
+            element.classList.add('slide-effect');
+            element.innerHTML = text.replace(/\n/g, '<br>');
+            setTimeout(() => {
+                element.classList.add('active');
+                setTimeout(resolve, 600);
+            }, 100);
+        });
+    }
+
+    // 색상 변화 효과
+    function colorChangeText(element, text) {
+        return new Promise((resolve) => {
+            element.classList.add('color-changing');
+            element.innerHTML = text.replace(/\n/g, '<br>');
+            setTimeout(resolve, 1500);
+        });
+    }
+
+    // 텍스트 초기화
+    function resetTextEffects(element) {
+        element.classList.remove('fade-effect', 'active', 'slide-effect', 'color-changing', 'typing-effect');
+    }
+
+    // 메인 애니메이션 함수
+    async function animateTexts(isEmotion = true) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const mainTextEl = document.getElementById('mainText');
+        const subTextEl = document.getElementById('subText');
+        // 감정 선택 페이지인지 상황 입력 페이지인지에 따라 다른 텍스트 사용
+        const currentMainTexts = isEmotion ? mainTexts : situationMainTexts;
+        const currentSubTexts = isEmotion ? subTexts : situationSubTexts;
+
+        for (let i = 0; i < currentMainTexts.length; i++) {
+            currentIndex = i;
+            // 이전 효과 제거
+            resetTextEffects(mainTextEl);
+            resetTextEffects(subTextEl);
+
+            // 다양한 애니메이션 효과를 순환
+            const effects = ['typing', 'fade', 'slide', 'color'];
+            const currentEffect = effects[i % effects.length];
+
+            switch (currentEffect) {
+                case 'typing':
+                    await typeText(mainTextEl, currentMainTexts[i], 60);
+                    await fadeInText(subTextEl, currentSubTexts[i]);
+                    break;
+                case 'fade':
+                    await fadeInText(mainTextEl, currentMainTexts[i]);
+                    await slideInText(subTextEl, currentSubTexts[i]);
+                    break;
+                case 'slide':
+                    await slideInText(mainTextEl, currentMainTexts[i]);
+                    await colorChangeText(subTextEl, currentSubTexts[i]);
+                    break;
+                case 'color':
+                    await colorChangeText(mainTextEl, currentMainTexts[i]);
+                    await typeText(subTextEl, currentSubTexts[i], 40);
+                    break;
+            }
+
+            // 다음 텍스트로 넘어가기 전 잠시 대기
+            if (i < currentMainTexts.length - 1) {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+
+        // 마지막 텍스트에서 점 애니메이션 추가
+        const finalText = document.createElement('span');
+        finalText.innerHTML = currentMainTexts[currentMainTexts.length - 1] + '<span class="dots"></span>';
+        mainTextEl.innerHTML = '';
+        mainTextEl.appendChild(finalText);
+
+        isAnimating = false;
+    }
+
+    // 기존 폼 제출 이벤트를 수정하세요
+    // emotionSelection.html의 경우:
+    document.getElementById('emotionForm').addEventListener('submit', function(e) {
+        const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
+        if (checkedCount === 0) {
+            e.preventDefault();
+            alert('최소 하나의 감정을 선택해주세요!');
+        } else {
+            // 로딩 화면 표시 및 텍스트 애니메이션 시작
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            animateTexts(true); // 감정 선택 페이지
+        }
+    });
+
+    // situationInput.html의 경우:
+    document.getElementById('situationForm').addEventListener('submit', function(e) {
+        const text = document.getElementById('situationInput').value.trim();
+        if (text.length === 0) {
+            e.preventDefault();
+            alert('상황을 입력해주세요!');
+        } else if (text.length > 500) {
+            e.preventDefault();
+            alert('500자 이내로 입력해주세요!');
+        } else {
+            // 로딩 화면 표시 및 텍스트 애니메이션 시작
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            animateTexts(false); // 상황 입력 페이지
         }
     });
 </script>
