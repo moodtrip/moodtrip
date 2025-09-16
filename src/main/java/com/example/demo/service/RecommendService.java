@@ -68,7 +68,7 @@ public class RecommendService {
                 comment = keyword.get(i);
             }
         }
-        
+
         //중복제거
         places = places.stream().distinct().collect(Collectors.toList());
 

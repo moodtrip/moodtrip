@@ -185,7 +185,7 @@ public class WebPageController {
             if(latitude != null && !latitude.isEmpty() && longitude != null && !longitude.isEmpty()) {
                 String userLocate = recommendService.userLocateSearch(latitude, longitude);
 
-                placesDto = recommendService.recommendPlacesByUserLocate(keyword, selected, userLocate);
+                placesDto = recommendService.recommendPlacesByUserLocate(keyword, searchType, userLocate);
             }else {
                 placesDto = recommendService.recommendPlaces(keyword, searchType);
             }
