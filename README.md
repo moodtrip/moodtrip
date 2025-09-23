@@ -7,7 +7,7 @@ sudo apt update && sudo apt upgrade -y
 ```
 sudo apt install curl -y
 ```
-## (ollama 설치)
+## (ollama 설치 / 업데이트)
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
