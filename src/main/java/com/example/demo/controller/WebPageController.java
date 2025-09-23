@@ -2,9 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.PlaceDto;
 import com.example.demo.model.PlaceInfo;
-import com.example.demo.model.User;
 import com.example.demo.service.RecommendService;
-import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +16,10 @@ import java.util.stream.Collectors;
 @Controller
 public class WebPageController {
     private final RecommendService recommendService;
-    private final UserService userService;
+//    private final UserService userService;
 
-    public WebPageController(RecommendService recommendService, UserService userService) {
+    public WebPageController(RecommendService recommendService) {
         this.recommendService = recommendService;
-        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -179,7 +176,7 @@ public class WebPageController {
                 return "redirect:/";
             }
 
-            User user = (User) session.getAttribute("user");
+//            User user = (User) session.getAttribute("user");
             PlaceDto placesDto = new PlaceDto(null, null);
 
             if(latitude != null && !latitude.isEmpty() && longitude != null && !longitude.isEmpty()) {
@@ -193,7 +190,7 @@ public class WebPageController {
             places = places.stream().distinct().collect(Collectors.toList());
             String comment = placesDto.getComment();
 
-            model.addAttribute("user", user);
+//            model.addAttribute("user", user);
             model.addAttribute("keyword", keyword);
             model.addAttribute("places", places != null ? places : List.of());
             model.addAttribute("comment", comment);
