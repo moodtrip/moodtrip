@@ -1077,20 +1077,20 @@
 </div>
 
 <script>
-    // === 개선된 로딩 텍스트 애니메이션 === //
+    // === 개선된 로딩 텍스트 애니메이션 (감정 선택용) === //
 
     const mainTexts = [
         "당신의 감정을 분석하고 있어요",
-        "완벽한 장소를 찾고 있어요",
         "맞춤 추천을 준비하고 있어요",
+        "적절한 장소를 찾고 있어요",
         "특별한 장소들을 선별하고 있어요",
         "거의 완료되었어요"
     ];
 
     const subTexts = [
         "선택하신 감정들을 바탕으로 최적의 장소를 찾고 있습니다",
-        "많은 장소 중에서 당신에게 적절한 장소를 골라내고 있어요",
         "위치 정보와 취향을 고려하여 개인화된 추천을 만들고 있습니다",
+        "많은 장소 중에서 당신에게 적절한 장소를 골라내고 있어요",
         "리뷰와 평점, 분위기까지 고려한 특별한 장소들을 준비하고 있어요",
         "잠시만 기다려주세요. 곧 멋진 장소들을 보여드릴게요!"
     ];
@@ -1098,22 +1098,15 @@
     let currentIndex = 0;
     let isAnimating = false;
 
-    // === 개선된 애니메이션 함수들 === //
-
-    // 텍스트 길이에 따른 클래스 추가
-    function adjustTextForLength(element, text) {
-        if (text.length > 30) {
-            element.classList.add('long-text');
-        } else {
-            element.classList.remove('long-text');
-        }
+    // 텍스트 크기 일관성 유지
+    function applyConsistentTextSize(mainElement, subElement) {
+        mainElement.classList.add('consistent-text-size');
+        subElement.classList.add('consistent-sub-text-size');
     }
 
-    // 개선된 타이핑 효과 - 색상 안정화
+    // 타이핑 효과
     function typeText(element, text, speed = 50) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.innerHTML = '';
             element.classList.add('typing-effect', 'stable-color');
 
@@ -1131,11 +1124,9 @@
         });
     }
 
-    // 개선된 페이드 효과 - 색상 안정화
+    // 페이드 효과
     function fadeInText(element, text, isSubText = false) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('fade-effect');
             if (isSubText) {
                 element.classList.add('stable-sub-color');
@@ -1152,11 +1143,9 @@
         });
     }
 
-    // 개선된 슬라이드 효과 - 색상 안정화
+    // 슬라이드 효과
     function slideInText(element, text, isSubText = false) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('slide-effect');
             if (isSubText) {
                 element.classList.add('stable-sub-color');
@@ -1173,26 +1162,24 @@
         });
     }
 
-    // 개선된 색상 변화 효과 - 더 안정적
+    // 색상 변화 효과
     function colorChangeText(element, text) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('color-changing');
             element.innerHTML = text.replace(/\n/g, '<br>');
             setTimeout(resolve, 1500);
         });
     }
 
-    // 텍스트 효과 초기화 - 개선됨
+    // 효과 초기화
     function resetTextEffects(element) {
         element.classList.remove(
             'fade-effect', 'active', 'slide-effect', 'color-changing',
-            'typing-effect', 'stable-color', 'stable-sub-color', 'long-text'
+            'typing-effect', 'stable-color', 'stable-sub-color'
         );
     }
 
-    // === 메인 애니메이션 함수 === //
+    // 메인 애니메이션 함수
     async function animateTexts() {
         if (isAnimating) return;
         isAnimating = true;
@@ -1200,14 +1187,15 @@
         const mainTextEl = document.getElementById('mainText');
         const subTextEl = document.getElementById('subText');
 
+        // 크기 일관성 적용
+        applyConsistentTextSize(mainTextEl, subTextEl);
+
         for (let i = 0; i < mainTexts.length; i++) {
             currentIndex = i;
 
-            // 이전 효과 제거
             resetTextEffects(mainTextEl);
             resetTextEffects(subTextEl);
 
-            // 다양한 애니메이션 효과를 순환
             const effects = ['typing', 'fade', 'slide', 'color'];
             const currentEffect = effects[i % effects.length];
 
@@ -1230,18 +1218,15 @@
                 case 'color':
                     await colorChangeText(mainTextEl, mainTexts[i]);
                     await typeText(subTextEl, subTexts[i], 40);
-                    // 서브 텍스트 색상 안정화
                     subTextEl.classList.add('stable-sub-color');
                     break;
             }
 
-            // 다음 텍스트로 넘어가기 전 대기
             if (i < mainTexts.length - 1) {
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
         }
 
-        // 마지막 텍스트에 점 애니메이션 추가
         const finalText = document.createElement('span');
         finalText.innerHTML = mainTexts[mainTexts.length - 1] + '<span class="dots"></span>';
         finalText.className = 'stable-color';
@@ -1251,9 +1236,7 @@
         isAnimating = false;
     }
 
-    // === 기존 감정 선택 기능들 === //
-
-    // 체크박스 상태 관리
+    // === 감정 선택 폼 제출 처리 === //
     const checkboxes = document.querySelectorAll('.emotion-checkbox');
     const submitBtn = document.getElementById('submitBtn');
     const counterText = document.getElementById('counterText');
@@ -1273,52 +1256,19 @@
         checkbox.addEventListener('change', updateCounter);
     });
 
-    // 폼 제출 시 검증 + 로딩 애니메이션
     document.getElementById('emotionForm').addEventListener('submit', function(e) {
         const checkedCount = document.querySelectorAll('.emotion-checkbox:checked').length;
         if (checkedCount === 0) {
             e.preventDefault();
             alert('최소 하나의 감정을 선택해주세요!');
         } else {
-            // 로딩 화면 표시 및 텍스트 애니메이션 시작
             document.getElementById('loadingOverlay').style.display = 'flex';
-            animateTexts(); // 감정 선택 페이지용 애니메이션
+            animateTexts();
         }
     });
 
     // 초기 상태 설정
     updateCounter();
-
-    // 키보드 접근성
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            const focusedElement = document.activeElement;
-            if (focusedElement.classList.contains('emotion-label')) {
-                const checkbox = focusedElement.previousElementSibling;
-                checkbox.checked = !checkbox.checked;
-                updateCounter();
-            }
-        }
-    });
-
-    // 스크롤 위치에 따른 그림자 효과
-    const contentArea = document.querySelector('.content-area');
-    const header = document.querySelector('.header');
-    const fixedBottom = document.querySelector('.fixed-bottom');
-
-    contentArea.addEventListener('scroll', function() {
-        if (contentArea.scrollTop > 0) {
-            header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        } else {
-            header.style.boxShadow = 'none';
-        }
-
-        if (contentArea.scrollTop < contentArea.scrollHeight - contentArea.clientHeight - 10) {
-            fixedBottom.style.boxShadow = '0 -2px 10px rgba(0, 0, 0, 0.1)';
-        } else {
-            fixedBottom.style.boxShadow = 'none';
-        }
-    });
 </script>
 </body>
 </html>
