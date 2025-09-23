@@ -19,6 +19,14 @@ ollama --version
 ```
 ollama pull gemma3:4b
 ```
+## (gemma3:4b 실행 확인)
+```
+ollama ps
+```
+## (gemma3:4b 실행 기간 설정)
+```
+ollama run gemma3:4b --keepalive (원하는 시간)h
+```
 # 초기 서비스 설치 과정 (github Repository)
 
 ## (경로 확인)
