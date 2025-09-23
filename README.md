@@ -8,6 +8,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install curl -y
 ```
 ## (ollama 설치 / 업데이트)
+
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
@@ -50,6 +51,7 @@ mvn clean package -DskipTests
 sudo java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=80
 ```
 # 서비스 최신화 과정 (github Repository)
+
 ## (경로 확인)
 ```
 moodtrip@2025-moodtrip:
