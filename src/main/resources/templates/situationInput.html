@@ -456,16 +456,17 @@
             100% { width: 100%; }
         }
 
-        /* 텍스트가 길 때를 위한 추가 스타일 */
-        .long-text {
-            font-size: 20px !important;
+        /* 텍스트 크기 일관성 유지 - 길이에 관계없이 동일한 크기 */
+        .consistent-text-size {
+            font-size: 22px !important;
             line-height: 1.4 !important;
-            max-width: 90% !important;
+            max-width: 95% !important;
         }
 
-        .long-text.loading-sub-text {
+        .consistent-sub-text-size {
             font-size: 16px !important;
             line-height: 1.5 !important;
+            max-width: 95% !important;
         }
 
         /* 애니메이션 중 텍스트 안정성 보장 */
@@ -750,20 +751,15 @@
 
     // === 개선된 애니메이션 함수들 === //
 
-    // 텍스트 길이에 따른 클래스 추가
-    function adjustTextForLength(element, text) {
-        if (text.length > 30) {
-            element.classList.add('long-text');
-        } else {
-            element.classList.remove('long-text');
-        }
+    // 텍스트 크기 일관성 유지 - 모든 텍스트에 동일한 크기 적용
+    function applyConsistentTextSize(mainElement, subElement) {
+        mainElement.classList.add('consistent-text-size');
+        subElement.classList.add('consistent-sub-text-size');
     }
 
-    // 개선된 타이핑 효과 - 색상 안정화
+    // 개선된 타이핑 효과 - 크기 일관성 유지
     function typeText(element, text, speed = 50) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.innerHTML = '';
             element.classList.add('typing-effect', 'stable-color');
 
@@ -781,11 +777,9 @@
         });
     }
 
-    // 개선된 페이드 효과 - 색상 안정화
+    // 개선된 페이드 효과 - 크기 일관성 유지
     function fadeInText(element, text, isSubText = false) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('fade-effect');
             if (isSubText) {
                 element.classList.add('stable-sub-color');
@@ -802,11 +796,9 @@
         });
     }
 
-    // 개선된 슬라이드 효과 - 색상 안정화
+    // 개선된 슬라이드 효과 - 크기 일관성 유지
     function slideInText(element, text, isSubText = false) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('slide-effect');
             if (isSubText) {
                 element.classList.add('stable-sub-color');
@@ -823,23 +815,22 @@
         });
     }
 
-    // 개선된 색상 변화 효과 - 더 안정적
+    // 개선된 색상 변화 효과 - 크기 일관성 유지
     function colorChangeText(element, text) {
         return new Promise((resolve) => {
-            adjustTextForLength(element, text);
-
             element.classList.add('color-changing');
             element.innerHTML = text.replace(/\n/g, '<br>');
             setTimeout(resolve, 1500);
         });
     }
 
-    // 텍스트 효과 초기화 - 개선됨
+    // 텍스트 효과 초기화 - 크기 클래스는 유지
     function resetTextEffects(element) {
         element.classList.remove(
             'fade-effect', 'active', 'slide-effect', 'color-changing',
-            'typing-effect', 'stable-color', 'stable-sub-color', 'long-text'
+            'typing-effect', 'stable-color', 'stable-sub-color'
         );
+        // consistent-text-size 클래스는 유지하여 크기 일관성 보장
     }
 
     // === 메인 애니메이션 함수 === //
@@ -850,10 +841,13 @@
         const mainTextEl = document.getElementById('mainText');
         const subTextEl = document.getElementById('subText');
 
+        // 애니메이션 시작 전에 일관된 텍스트 크기 적용
+        applyConsistentTextSize(mainTextEl, subTextEl);
+
         for (let i = 0; i < situationMainTexts.length; i++) {
             currentIndex = i;
 
-            // 이전 효과 제거
+            // 이전 효과 제거 (크기는 유지)
             resetTextEffects(mainTextEl);
             resetTextEffects(subTextEl);
 
