@@ -28,6 +28,11 @@ ollama ps
 ```
 ollama run gemma3:4b --keepalive (원하는 시간)h
 ```
+# (gemma3:4b 실행 로그 확인)
+```
+history | grep keepalive
+```
+
 # 초기 서비스 설치 과정 (github Repository)
 
 ## (경로 확인)
