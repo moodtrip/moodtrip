@@ -72,7 +72,7 @@ sudo java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=80
 
 ## (프로세스 강제 종료)
 ```
-"ctrl + c"
+"ctrl + c"*
 ```
 # 사용 중인 서비스 확인 코드
 
