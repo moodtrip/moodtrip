@@ -39,6 +39,12 @@ history | grep keepalive
 ```
 moodtrip@2025-moodtrip:
 ```
+## (Git, Maven, Java 설치)
+```
+sudo apt install -y openjdk-17-jdk
+sudo apt install -y maven
+sudo apt install -y git
+```
 ## (프로젝트 다운로드)
 ```
 git clone https://github.com/moodtrip/moodtrip.git
