@@ -211,6 +211,7 @@ public class OpenAiService {
 
         JSONObject body = new JSONObject();
         body.put("model", "gemma3:4b");
+        body.put("keep_alive", "8760h");
         body.put("prompt", prompt);
         body.put("stream", false); // 그대로 false 유지
 
