@@ -28,6 +28,11 @@ ollama ps
 ```
 ollama run gemma3:4b --keepalive (원하는 시간)h
 ```
+# (gemma3:4b 실행 기간 확인)
+```
+history | grep keepalive
+```
+
 # 초기 서비스 설치 과정 (github Repository)
 
 ## (경로 확인)
@@ -104,3 +109,7 @@ java    389140     root   14u  IPv6 6634627      0t0  TCP 2025-moodtrip:http->19
 ```
 moodtrip@2025-moodtrip:~/moodtrip$ sudo kill -9 (해당 PID 코드)
 ```
+
+# apt 또는 dpkg 관련 프로세스가 있는지 확인합니다.
+ps aux | grep -i apt
+ps aux | grep -i dpkg
