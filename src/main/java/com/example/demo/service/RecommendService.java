@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,7 +88,7 @@ public class RecommendService {
         List<PlaceInfo> places = new ArrayList<>();
         List<String> keyword = new ArrayList<>();
 
-        if(searchType == "situation") {
+        if(Objects.equals(searchType, "situation")) {
             // 1. 키워드 추출
             keyword = openAiService.extractKeyword(userInput);
             System.out.println("올라마가 생성한 키워드: " + keyword);
@@ -143,7 +144,7 @@ public class RecommendService {
         List<PlaceInfo> places = new ArrayList<>();
         List<String> keyword = new ArrayList<>();
 
-        if(searchType == "situation") {
+        if(Objects.equals(searchType, "situation")) {
             // 1. 키워드 추출
             keyword = openAiService.extractKeyword(userInput);
             System.out.println("올라마가 생성한 키워드: " + keyword);
