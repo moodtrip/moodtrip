@@ -126,7 +126,7 @@ public class NaverCrawlerService {
         if (results != null) {
             for (PlaceInfo place : results) {
                 String url = place.getPlaceUrl();
-                if (url != null && !url.isEmpty()) {
+                if (url != null && !url.isBlank()) {
                     notNullResults.add(place);
                 }
             }
