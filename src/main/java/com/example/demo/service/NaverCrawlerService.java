@@ -95,12 +95,24 @@ public class NaverCrawlerService {
 
         // 크롤링 실행
         List<PlaceInfo> results = performCrawling(keyword, normalizedKeyword);
+
+        List<PlaceInfo> notNullResults = new ArrayList<>();
+
+        if (results != null) {
+            for (PlaceInfo place : results) {
+                String url = place.getPlaceUrl();
+                if (url != null && !url.isEmpty()) {
+                    notNullResults.add(place);
+                }
+            }
+        }
+
         // 캐시에 저장
         if (!results.isEmpty()) {
             placeCache.put(normalizedKeyword, new CacheEntry(results));
             System.out.println("장소 정보 크롤링 완료 및 캐시 저장: " + keyword + " (" + results.size() + "개)");
         }
-        return results;
+        return notNullResults;
     }
 
     /**
