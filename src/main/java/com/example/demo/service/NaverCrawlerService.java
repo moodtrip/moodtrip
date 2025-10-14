@@ -5,13 +5,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -59,7 +63,10 @@ public class NaverCrawlerService {
         try (WebDriverManager driverManager = new WebDriverManager()) {
             WebDriver driver = driverManager.getDriver();
             driver.get(url);
-            Thread.sleep(CRAWL_DELAY_MS);
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.btn_address")));
+
 
             String html = driver.getPageSource();
             Document doc = Jsoup.parse(html);
@@ -125,7 +132,9 @@ public class NaverCrawlerService {
         try (WebDriverManager driverManager = new WebDriverManager()) {
             WebDriver driver = driverManager.getDriver();
             driver.get(url);
-            Thread.sleep(CRAWL_DELAY_MS);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("li._list_item_sis14_40")));
+
 
             String html = driver.getPageSource();
             Document doc = Jsoup.parse(html);
