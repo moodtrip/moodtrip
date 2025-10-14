@@ -63,7 +63,7 @@ public class NaverCrawlerService {
     /**
      * 사용자 위치 정보 크롤링 (캐시 적용)
      */
-    public String crawUserLocate(String lat, String lng) throws Exception {
+    public String crawUserLocate(String lat, String lng) {
         String cacheKey = lat + "," + lng;
         // 캐시 확인
         CacheEntry cached = locationCache.get(cacheKey);
@@ -91,10 +91,12 @@ public class NaverCrawlerService {
                 // 캐시에 저장 (PlaceInfo 형태로 저장해서 일관성 유지)
                 PlaceInfo locationInfo = new PlaceInfo();
                 locationInfo.setAddress(address);
-                locationCache.put(cacheKey, new CacheEntry(Arrays.asList(locationInfo)));
+                locationCache.put(cacheKey, new CacheEntry(List.of(locationInfo)));
                 System.out.println("위치 정보 크롤링 완료 및 캐시 저장: " + address);
                 return address;
             }
+        } catch (Exception e) {
+            System.err.println("사용자 위치 크롤링 중 오류 발생: " + e.getMessage());
         } finally {
             if (driver != null) {
                 webDriverPool.returnDriver(driver);
@@ -106,7 +108,7 @@ public class NaverCrawlerService {
     /**
      * 장소 정보 크롤링 (중복 방지 및 캐시 적용)
      */
-    public List<PlaceInfo> crawlPlaces(String keyword) throws Exception {
+    public List<PlaceInfo> crawlPlaces(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return new ArrayList<>();
         }
@@ -118,26 +120,33 @@ public class NaverCrawlerService {
             return cached.getData();
         }
 
+        List<PlaceInfo> fin = new ArrayList<>();
+
         // 크롤링 실행
-        List<PlaceInfo> results = performCrawling(keyword, normalizedKeyword);
+        try {
+            List<PlaceInfo> results = performCrawling(keyword, normalizedKeyword);
 
-        List<PlaceInfo> notNullResults = new ArrayList<>();
-
-        if (results != null) {
             for (PlaceInfo place : results) {
                 String url = place.getPlaceUrl();
-                if (url != null && !url.isBlank()) {
-                    notNullResults.add(place);
+
+                if(url != null && !url.isBlank()) {
+                    fin.add(place);
                 }
             }
-        }
 
-        // 캐시에 저장
-        if (!results.isEmpty()) {
-            placeCache.put(normalizedKeyword, new CacheEntry(results));
-            System.out.println("장소 정보 크롤링 완료 및 캐시 저장: " + keyword + " (" + results.size() + "개)");
+            // 캐시에 저장
+            if (!fin.isEmpty()) {
+                placeCache.put(normalizedKeyword, new CacheEntry(results));
+                System.out.println("장소 정보 크롤링 완료 및 캐시 저장: " + keyword + " (" + results.size() + "개)");
+            }
+
+            System.out.println("첫 크롤링 결과 : "+ results.size());
+
+            return fin;
+        } catch (Exception e) {
+            System.err.println("장소 크롤링 중 오류 발생: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return notNullResults;
     }
 
     /**
@@ -167,8 +176,9 @@ public class NaverCrawlerService {
                 if (resultList.size() >= MAX_RESULTS) break;
 
                 PlaceInfo info = extractPlaceInfo(item, originalKeyword);
-                // 중복 체크 (이름 기준)
-                if (info.getName() != null && !processedNames.contains(info.getName())) {
+
+                // info가 null이 아닌 경우(즉, 유효한 URL 선택자가 있는 경우)에만 처리
+                if (info != null && info.getName() != null && !processedNames.contains(info.getName())) {
                     processedNames.add(info.getName());
                     resultList.add(info);
                 }
@@ -185,8 +195,29 @@ public class NaverCrawlerService {
      * HTML 요소에서 PlaceInfo 추출
      */
     private PlaceInfo extractPlaceInfo(Element item, String keyword) {
+        // 상세 페이지 링크(<a> 태그)와 이미지(<img> 태그)를 포함하는 부모 요소를 먼저 찾음
+        Element thumbLinkEl = item.selectFirst("a._item_thumb_sis14_62");
+        if (thumbLinkEl == null) {
+            return null;
+        }
+
+        String href = thumbLinkEl.attr("href");
+        if (href == null || href.isBlank()) {
+            return null; // URL이 비어있으면 건너뜁니다.
+        }
+
         PlaceInfo info = new PlaceInfo();
         info.setKeyword(keyword);
+        info.setPlaceUrl(href);
+
+        // 이미지
+        Element imgEl = thumbLinkEl.selectFirst("img._thumb_img_sis14_77");
+        if (imgEl != null) {
+            String imgSrc = imgEl.attr("src");
+            if (!imgSrc.isEmpty()) {
+                info.setImageUrl(imgSrc);
+            }
+        }
 
         // 이름
         Element nameEl = item.selectFirst("strong._item_name_sis14_275");
@@ -203,28 +234,8 @@ public class NaverCrawlerService {
         // 주소
         Element addressEl = item.selectFirst("button._item_address_sis14_319");
         if (addressEl != null) {
-            String addressText = addressEl.text()
-                    .replace("주소보기", "")
-                    .trim();
+            String addressText = addressEl.text().replace("주소보기", "").trim();
             info.setAddress(addressText);
-        }
-
-        // 이미지
-        Element imgEl = item.selectFirst("img._thumb_img_sis14_77");
-        if (imgEl != null) {
-            String imgSrc = imgEl.attr("src");
-            if (!imgSrc.isEmpty()) {
-                info.setImageUrl(imgSrc);
-            }
-        }
-
-        // 상세 페이지 링크
-        Element urlEl = item.selectFirst("a._item_thumb_sis14_62");
-        if (urlEl != null) {
-            String href = urlEl.attr("href");
-            if (!href.isEmpty()) {
-                info.setPlaceUrl(href);
-            }
         }
 
         // 평점
@@ -234,7 +245,7 @@ public class NaverCrawlerService {
             try {
                 rating = Double.parseDouble(ratingEl.text().trim());
             } catch (NumberFormatException e) {
-                // 기본값 유지
+                // 평점 파싱 실패 시 0.0 유지
             }
         }
         info.setRating(rating);
@@ -291,7 +302,7 @@ public class NaverCrawlerService {
 
         public void returnDriver(WebDriver driver) {
             if (driver != null) {
-                // 드라이버 상태를 초기화하고 풀에 반환 (예: 빈 페이지로 이동)
+                // 드라이버 상태를 초기화하고 풀에 반납
                 driver.get("about:blank");
                 pool.offer(driver);
             }
