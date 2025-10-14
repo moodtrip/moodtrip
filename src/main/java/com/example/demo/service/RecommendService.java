@@ -101,7 +101,7 @@ public class RecommendService {
         String comment = keyword.get(keyword.size() - 1);
         List<String> searchKeywords = keyword.subList(0, keyword.size() - 1);
 
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executor = Executors.newFixedThreadPool(5);
 
         List<CompletableFuture<List<PlaceInfo>>> futures = searchKeywords.stream()
                 .map(k -> CompletableFuture.supplyAsync(() -> {
@@ -157,7 +157,7 @@ public class RecommendService {
         String comment = keyword.get(keyword.size() - 1);
         List<String> searchKeywords = keyword.subList(0, keyword.size() - 1);
 
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executor = Executors.newFixedThreadPool(5);
 
         List<CompletableFuture<List<PlaceInfo>>> futures = searchKeywords.stream()
                 .map(k -> CompletableFuture.supplyAsync(() -> {
