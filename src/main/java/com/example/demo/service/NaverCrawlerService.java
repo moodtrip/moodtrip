@@ -5,17 +5,23 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
 public class NaverCrawlerService {
@@ -24,13 +30,16 @@ public class NaverCrawlerService {
     private static class CacheEntry {
         private final List<PlaceInfo> data;
         private final LocalDateTime timestamp;
+
         public CacheEntry(List<PlaceInfo> data) {
             this.data = data;
             this.timestamp = LocalDateTime.now();
         }
+
         public boolean isExpired(long minutes) {
             return ChronoUnit.MINUTES.between(timestamp, LocalDateTime.now()) > minutes;
         }
+
         public List<PlaceInfo> getData() {
             return new ArrayList<>(data); // 방어적 복사
         }
@@ -41,7 +50,15 @@ public class NaverCrawlerService {
     private final Map<String, CacheEntry> locationCache = new ConcurrentHashMap<>();
     private static final long CACHE_TTL_MINUTES = 30;
     private static final int MAX_RESULTS = 25;
-    private static final int CRAWL_DELAY_MS = 1000;
+    private final WebDriverPool webDriverPool;
+
+    public NaverCrawlerService() {
+        // 서버의 CPU 코어 수에 맞춰 WebDriver 풀 생성
+        int poolSize = Runtime.getRuntime().availableProcessors();
+        this.webDriverPool = new WebDriverPool(poolSize);
+        // 애플리케이션 종료 시 WebDriver 인스턴스들을 모두 정리
+        Runtime.getRuntime().addShutdownHook(new Thread(webDriverPool::closeAll));
+    }
 
     /**
      * 사용자 위치 정보 크롤링 (캐시 적용)
@@ -56,10 +73,14 @@ public class NaverCrawlerService {
         }
 
         String url = "https://map.naver.com/p?lat=" + lat + "&lng=" + lng;
-        try (WebDriverManager driverManager = new WebDriverManager()) {
-            WebDriver driver = driverManager.getDriver();
+        WebDriver driver = null;
+        try {
+            driver = webDriverPool.getDriver();
             driver.get(url);
-            Thread.sleep(CRAWL_DELAY_MS);
+
+            // WebDriverWait를 사용하여 주소 버튼이 나타날 때까지 대기
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.btn_address")));
 
             String html = driver.getPageSource();
             Document doc = Jsoup.parse(html);
@@ -73,6 +94,10 @@ public class NaverCrawlerService {
                 locationCache.put(cacheKey, new CacheEntry(Arrays.asList(locationInfo)));
                 System.out.println("위치 정보 크롤링 완료 및 캐시 저장: " + address);
                 return address;
+            }
+        } finally {
+            if (driver != null) {
+                webDriverPool.returnDriver(driver);
             }
         }
         return ""; // 빈 문자열 반환
@@ -121,11 +146,15 @@ public class NaverCrawlerService {
     private List<PlaceInfo> performCrawling(String originalKeyword, String normalizedKeyword) throws Exception {
         String encodedKeyword = URLEncoder.encode(originalKeyword, StandardCharsets.UTF_8);
         String url = "https://m.map.naver.com/search2/search.naver?query=" + encodedKeyword;
+        WebDriver driver = null;
 
-        try (WebDriverManager driverManager = new WebDriverManager()) {
-            WebDriver driver = driverManager.getDriver();
+        try {
+            driver = webDriverPool.getDriver(); // 풀에서 드라이버 가져오기
             driver.get(url);
-            Thread.sleep(CRAWL_DELAY_MS);
+
+            // WebDriverWait를 사용하여 목록 아이템이 나타날 때까지 대기
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("li._list_item_sis14_40")));
 
             String html = driver.getPageSource();
             Document doc = Jsoup.parse(html);
@@ -144,8 +173,11 @@ public class NaverCrawlerService {
                     resultList.add(info);
                 }
             }
-
             return resultList;
+        } finally {
+            if (driver != null) {
+                webDriverPool.returnDriver(driver); // 풀에 드라이버 반납
+            }
         }
     }
 
@@ -227,12 +259,21 @@ public class NaverCrawlerService {
     }
 
     /**
-     * WebDriver 관리 클래스 (자동 종료 보장)
+     * WebDriver 풀(Pool) 관리 클래스
      */
-    private static class WebDriverManager implements AutoCloseable {
-        private final WebDriver driver;
+    private static class WebDriverPool {
+        private final BlockingQueue<WebDriver> pool;
+        private final int poolSize;
 
-        public WebDriverManager() {
+        public WebDriverPool(int poolSize) {
+            this.poolSize = poolSize;
+            this.pool = new LinkedBlockingQueue<>(poolSize);
+            for (int i = 0; i < poolSize; i++) {
+                this.pool.offer(createDriver());
+            }
+        }
+
+        private WebDriver createDriver() {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
             options.addArguments("--no-sandbox");
@@ -241,21 +282,24 @@ public class NaverCrawlerService {
             options.addArguments("--disable-extensions");
             options.addArguments("--disable-logging");
             options.addArguments("--silent");
-            this.driver = new ChromeDriver(options);
+            return new ChromeDriver(options);
         }
 
-        public WebDriver getDriver() {
-            return driver;
+        public WebDriver getDriver() throws InterruptedException {
+            return pool.take();
         }
 
-        @Override
-        public void close() {
+        public void returnDriver(WebDriver driver) {
             if (driver != null) {
-                try {
-                    driver.quit();
-                } catch (Exception e) {
-                    System.err.println("WebDriver 종료 중 오류: " + e.getMessage());
-                }
+                // 드라이버 상태를 초기화하고 풀에 반환 (예: 빈 페이지로 이동)
+                driver.get("about:blank");
+                pool.offer(driver);
+            }
+        }
+
+        public void closeAll() {
+            for (WebDriver driver : pool) {
+                driver.quit();
             }
         }
     }

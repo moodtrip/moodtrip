@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.PlaceInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStream;
@@ -15,6 +16,10 @@ import java.util.Scanner;
 
 @Service
 public class OpenAiService {
+
+    @Value("${ollama.api.url}")
+    private String ollamaApiUrl;
+
     public String markdownCleaner(String str){
         String cleaned = str
                 .replaceAll("```json", "")
@@ -80,7 +85,6 @@ public class OpenAiService {
             keywords.add(arr.getString(i));
         }
 
-//        System.out.println("올라마가 생성한 키워드: " + keywords);
         return keywords;
     }
 
@@ -88,37 +92,37 @@ public class OpenAiService {
     public List<String> emotionAiSearch(String input) throws Exception {
         String prompt =
                 "너는 아래와 같은 형식의 사용자의 입력 감정 태그를 바탕으로 \"검색에 사용할 장소 키워드\"를 생성하는 역할을 한다.\n"
-                + "[사용자의 입력 형식]\n"
-                + "[키워드1] [키워드2] [키워드3] ..."
-                + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드들과 마지막 이유 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
-                + "\n"
-                + "----------------------------------\n"
-                + "[규칙]\n"
-                + "1) 반드시 장소로 해석 가능한 키워드만 생성한다. 키워드 3개는 반드시 예시로 주어진 키워드 내에서만 생성한다.(예시: 카페, 공원, 영화관, 놀거리, 음식점, 맛집, 도서관, 술집, 스파, 북카페, " +
-                "노래방, 미술관, 박물관, 서점, 전시회, 보드게임카페, 방탈출, 찜질방, 온천, 워터파크, 애견카페, 전망대, 공방, 칵테일바, 재즈바, 극장, " +
-                "PC방, 메이드카페, 타투, 인형뽑기, 캠핑장, 테마파크, 공연장, 번지점프 등)\n"
-                + "2) \"근처, 부근\" 같은 의존 명사는 키워드에 포함하지 않는다.\n"
-                + "3) 신체 부위/증상(머리, 배, 다리, 팔, 두통 등)은 장소 키워드로 만들지 않는다. 단, 의료 관련이면 \"병원\" 같은 장소로 변환한다.\n"
-                + "4) 감정 표현을 장소로 매핑한다. 입력된 감정이 여러 개일 수 있으며, 복합적일수록 그 상황에 어울리는 장소를 종합적으로 선택한다.\n"
-                + "5) 지역/지하철역/지명 등이 포함되면 그 장소 앞에 그대로 접두로 붙인다. (예: \"용산구 카페\", \"강남역 영화관\")\n"
-                + "6) 키워드는 3개만 생성한다. 간결하게 장소 범주만 출력한다.\n"
-                + "7) 키워드 생성 후, 마지막 원소로 사용자가 선택한 감정에 대한 장소 추천의 전체적인 이유를 한 문장으로 추가한다\n"
-                + "7-1) 예시(신남: 신나는 기분을 위해 즐겁고 신나는 장소를 골랐습니다)\n"
-                + "7-2) 장소 추천의 전체적인 이유 한 문장에는 사용자가 입력한 감정이 반드시 포함되어야한다\n"
-                + "8) 출력은 반드시 JSON 배열만 포함한다. 다른 텍스트는 포함하지 않는다.\n"
-                + "9) 출력형식은 반드시 따라야한다.\n"
-                + "10) 검색 키워드는 반드시 한글로만 구성한다.\n"
-                + "11) 컴퓨터 수리나 고장 등 예기치 못한 상황 발생 입력받을 시 키워드를 반드시 전자상가로 검색\n"
-                + "\n"
-                + "----------------------------------\n"
-                + "[출력 형식]\n"
-                + "[\"키워드1\", \"키워드2\", \"키워드3\", \"선정 이유\"]\n"
-                + "\n"
-                + "----------------------------------\n"
-                + "[사용자 입력]\n"
-                + input + "\n"
-                + "\n"
-                + "[출력]\n";
+                        + "[사용자의 입력 형식]\n"
+                        + "[키워드1] [키워드2] [키워드3] ..."
+                        + "출력은 반드시 JSON 배열 형식으로만 해야 하며, 키워드들과 마지막 이유 이외의 문장/설명/마크다운은 절대 포함하지 않는다.\n"
+                        + "\n"
+                        + "----------------------------------\n"
+                        + "[규칙]\n"
+                        + "1) 반드시 장소로 해석 가능한 키워드만 생성한다. 키워드 3개는 반드시 예시로 주어진 키워드 내에서만 생성한다.(예시: 카페, 공원, 영화관, 놀거리, 음식점, 맛집, 도서관, 술집, 스파, 북카페, " +
+                        "노래방, 미술관, 박물관, 서점, 전시회, 보드게임카페, 방탈출, 찜질방, 온천, 워터파크, 애견카페, 전망대, 공방, 칵테일바, 재즈바, 극장, " +
+                        "PC방, 메이드카페, 타투, 인형뽑기, 캠핑장, 테마파크, 공연장, 번지점프 등)\n"
+                        + "2) \"근처, 부근\" 같은 의존 명사는 키워드에 포함하지 않는다.\n"
+                        + "3) 신체 부위/증상(머리, 배, 다리, 팔, 두통 등)은 장소 키워드로 만들지 않는다. 단, 의료 관련이면 \"병원\" 같은 장소로 변환한다.\n"
+                        + "4) 감정 표현을 장소로 매핑한다. 입력된 감정이 여러 개일 수 있으며, 복합적일수록 그 상황에 어울리는 장소를 종합적으로 선택한다.\n"
+                        + "5) 지역/지하철역/지명 등이 포함되면 그 장소 앞에 그대로 접두로 붙인다. (예: \"용산구 카페\", \"강남역 영화관\")\n"
+                        + "6) 키워드는 3개만 생성한다. 간결하게 장소 범주만 출력한다.\n"
+                        + "7) 키워드 생성 후, 마지막 원소로 사용자가 선택한 감정에 대한 장소 추천의 전체적인 이유를 한 문장으로 추가한다\n"
+                        + "7-1) 예시(신남: 신나는 기분을 위해 즐겁고 신나는 장소를 골랐습니다)\n"
+                        + "7-2) 장소 추천의 전체적인 이유 한 문장에는 사용자가 입력한 감정이 반드시 포함되어야한다\n"
+                        + "8) 출력은 반드시 JSON 배열만 포함한다. 다른 텍스트는 포함하지 않는다.\n"
+                        + "9) 출력형식은 반드시 따라야한다.\n"
+                        + "10) 검색 키워드는 반드시 한글로만 구성한다.\n"
+                        + "11) 컴퓨터 수리나 고장 등 예기치 못한 상황 발생 입력받을 시 키워드를 반드시 전자상가로 검색\n"
+                        + "\n"
+                        + "----------------------------------\n"
+                        + "[출력 형식]\n"
+                        + "[\"키워드1\", \"키워드2\", \"키워드3\", \"선정 이유\"]\n"
+                        + "\n"
+                        + "----------------------------------\n"
+                        + "[사용자 입력]\n"
+                        + input + "\n"
+                        + "\n"
+                        + "[출력]\n";
 
         System.out.println("사용자의 입력 : " + input);
 
@@ -169,26 +173,7 @@ public class OpenAiService {
     }
 
     private String callOllama(String prompt) throws Exception {
-//        URL url = new URL("http://localhost:11434/api/generate");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestMethod("POST");
-//        conn.setRequestProperty("Content-Type", "application/json");
-//        conn.setDoOutput(true);
-//
-//        JSONObject body = new JSONObject();
-//        body.put("model", "gemma3:4b");
-//        body.put("prompt", prompt);
-//        body.put("stream", false);
-//
-//        try (OutputStream os = conn.getOutputStream()) {
-//            os.write(body.toString().getBytes());
-//        }
-//
-//        try (Scanner scanner = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
-//            return scanner.hasNext() ? scanner.next() : "";
-//        }
-//    }
-        URL url = new URL("http://localhost:11434/api/generate");
+        URL url = new URL(ollamaApiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
@@ -198,13 +183,12 @@ public class OpenAiService {
         body.put("model", "gemma3:4b");
         body.put("keep_alive", "8760h");
         body.put("prompt", prompt);
-        body.put("stream", false); // 그대로 false 유지
+        body.put("stream", false);
 
         try (OutputStream os = conn.getOutputStream()) {
             os.write(body.toString().getBytes());
         }
 
-        // 전체 응답 읽기
         StringBuilder rawResponse = new StringBuilder();
         try (Scanner scanner = new Scanner(conn.getInputStream())) {
             while (scanner.hasNextLine()) {
@@ -212,17 +196,13 @@ public class OpenAiService {
             }
         }
 
-        // 응답 문자열에 JSON 객체가 여러 개 붙어있을 수 있으니
-        // 마지막 JSON 객체만 안전하게 추출
         String responseText = rawResponse.toString();
 
-        // 여러 JSON이 붙어있으면 "}{", "}{" 기준으로 split
         int lastObjIndex = responseText.lastIndexOf("{");
         if (lastObjIndex != -1) {
             responseText = responseText.substring(lastObjIndex);
         }
 
-        JSONObject obj = new JSONObject(responseText);
-        return responseText; // response 필드만 반환
+        return responseText;
     }
 }
