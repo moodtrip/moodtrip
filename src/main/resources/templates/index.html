@@ -7,17 +7,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOODTRIP</title>
     <style>
+        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
+
+
+        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            /* "더 어두운 흰색"으로 수정된 애니메이션 */
+            background: linear-gradient(135deg,
+                /* 1. 블루/스카이 */
+            #a1c4fd, #c2e9fb,
+            #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
+                /* 2. 핑크/퍼플 */
+            #fbc2eb, #a6c1ee,
+            #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
+                /* 3. (녹색 대체) 피치/옐로우 */
+            #fde7c8, #fdf6d2,
+            #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
+                /* 4. 핑크 -> 코랄 */
+            #fbc2eb, #fad0c4,
+            #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
+                /* 5. 코랄/라벤더 */
+            #fad0c4, #ffd1ff,
+            #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
+                /* 6. 다시 블루로 순환 */
+            #a1c4fd, #c2e9fb
+            );
+
+            /* 그라데이션 크기를 10개 구간에 맞게 키웁니다. */
+            background-size: 1000% 1000%;
+            /* 30초(약 3초 * 10구간) 동안 그라데이션을 이동시킵니다. */
+            animation: gradientShift 30s ease-in-out infinite;
+
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #000;
+            color: white; /* 기본 텍스트 색상을 흰색으로 고정 */
         }
+        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
+
 
         /* Header 스타일 수정 */
         #header {
@@ -81,13 +125,15 @@
             color: rgba(255, 255, 255, 0.9);
             font-weight: 300;
             margin-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 가독성을 위해 그림자 추가 */
+            font-weight: bold;
         }
 
         .start-button {
             padding: 18px 40px;
             font-size: 20px;
             font-weight: 600;
-            color: #667eea;
+            color: #728ecf; /* 파스텔 블루에 어울리는 텍스트 색상 */
             background: white;
             border: none;
             border-radius: 50px;
@@ -118,8 +164,8 @@
         .start-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: rgba(255, 255, 255, 0.9); /* 호버 시 반투명 흰색 */
+            color: #333; /* 텍스트 색상 어둡게 */
         }
 
         .start-button:active {
@@ -134,7 +180,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5); /* 0.7 -> 0.5로 변경 */
             display: none;
             justify-content: center;
             align-items: center;
@@ -193,13 +239,13 @@
         }
 
         .allow-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 고정 */
             color: white;
         }
 
         .allow-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(161, 196, 253, 0.4); /* 파스텔 블루 그림자 */
         }
 
         .skip-btn {
@@ -270,7 +316,7 @@
             font-size: 32px;
             font-weight: bold;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 가독성 그림자 */
             margin-bottom: 10px;
         }
 
@@ -278,6 +324,8 @@
             font-size: 18px;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 가독성 그림자 */
+            font-weight: bold;
         }
 
         .selection-buttons {
@@ -292,22 +340,22 @@
             flex-direction: column;
             align-items: center;
             padding: 30px 40px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.6); /* 0.75 -> 0.6 (더 투명하게) */
             border: none;
             border-radius: 45px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); /* 블러 효과 */
             text-decoration: none;
-            color: #333;
+            color: #333; /* 내부 텍스트는 어둡게 */
             min-width: 180px;
         }
 
         .selection-btn:hover {
             transform: translateY(-20px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            background: white;
+            background: rgba(255, 255, 255, 0.85); /* white -> 0.85 (반투명 유지) */
         }
 
         .selection-icon {
@@ -346,11 +394,16 @@
             backdrop-filter: blur(10px);
         }
 
+        /* ▼▼▼ 뒤로가기 버튼 호버 효과 수정 ▼▼▼ */
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.8);
+            background: white; /* recommendResult.html 스타일 적용 */
+            color: #667eea; /* recommendResult.html 스타일 적용 */
+            border-color: white; /* 테두리도 흰색으로 */
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* recommendResult.html 그림자 스타일 */
+            text-shadow: none; /* 텍스트 그림자 제거 */
         }
+        /* ▲▲▲ 호버 효과 수정 완료 ▲▲▲ */
 
         /* 애니메이션 */
         @keyframes fadeIn {
@@ -594,7 +647,6 @@
     </style>
 </head>
 
-<!-- Header 수정 - 초기에 숨김 상태 -->
 <header id="header">
     <div id="logo">
         <a th:href="@{/}">
@@ -604,7 +656,6 @@
 </header>
 
 <body>
-<!-- 위치 정보 요청 모달 -->
 <div class="location-modal" id="locationModal">
     <div class="modal-content">
         <div class="modal-icon">&#128205;</div>
@@ -620,13 +671,11 @@
     </div>
 </div>
 
-<!-- 위치 정보 표시 -->
 <div class="location-info" id="locationInfo">
     <span class="location-icon">&#128205;</span>
     <span class="location-text" id="locationText">위치를 확인하고 있어요...</span>
 </div>
 
-<!-- 메인 화면 -->
 <div class="main-container" id="mainScreen">
     <div class="logo-container">
         <div class="logo">
@@ -640,7 +689,6 @@
     <button class="start-button" onclick="showLocationModal()">시작하기</button>
 </div>
 
-<!-- 감정/상황 선택 화면 -->
 <div class="emotion-selection" id="emotionScreen">
     <div>
         <h2 class="selection-title">어떤 방식으로 찾아드릴까요?</h2>

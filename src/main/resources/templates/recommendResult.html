@@ -7,25 +7,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>MOODTRIP - Recommend</title>
     <style>
+        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
+
+        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
 
+            /* 요청하신 5가지 색상 + 연한 회색 순환 적용 */
+            background: linear-gradient(135deg,
+                /* 1. 핑크 */ #fbc2eb, #fad0c4,
+            #f0f0f0, /* 연한 회색 */
+                /* 2. 보라 */ #d8bfff, #e6e6fa,
+            #f0f0f0, /* 연한 회색 */
+                /* 3. 민트 */ #b2f7d1, #c8f7e2, /* 연한 민트 계열 */
+            #f0f0f0, /* 연한 회색 */
+                /* 4. 녹색 */ #e3f7c4, #d3f0a5, /* 연한 녹색 계열 */
+            #f0f0f0, /* 연한 회색 */
+                /* 5. 파랑 */ #a1c4fd, #c2e9fb,
+            #f0f0f0, /* 연한 회색 */
+                /* 6. 다시 핑크 (순환) */ #fbc2eb, #fad0c4
+            );
+
+            /* 그라데이션 크기를 12개 구간(6*2)에 맞게 키웁니다. */
+            background-size: 1200% 1200%;
+            /* 36초(약 3초 * 12구간) 동안 그라데이션을 이동시킵니다. */
+            animation: gradientShift 36s ease-in-out infinite;
+
+            min-height: 100vh;
+            color: white; /* 기본 텍스트 흰색 (배경 위에 직접 놓이는 텍스트 위주) */
+            padding-top: 80px; /* 헤더 공간 확보 */
+            box-sizing: border-box;
+        }
+        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
+
+
+        /* ▼▼▼ 3. 나머지 요소 스타일 조정 (블러, 투명도, 가독성) ▼▼▼ */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 20px 0; /* body padding-top과 맞춤 */
+            /* 헤더 배경 블러 추가 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1500;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .header-line { /* 헤더 하단 라인 추가 */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            width: 100%;
         }
 
+
         .logo img {
-            height: 60px;
+            height: 50px; /* 로고 크기 조정 */
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .header-buttons {
@@ -36,11 +95,13 @@
             margin-left: 15px;
             cursor: pointer;
             text-decoration: none;
-            color: inherit;
+            color: white; /* 헤더 버튼 흰색 */
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         a{
-           text-decoration: none;
+            text-decoration: none;
         }
 
         .content {
@@ -51,23 +112,24 @@
             text-align: center;
         }
 
-        /* 선택된 감정/상황 표시 박스 */
+        /* 선택된 감정/상황 표시 박스 (블러 적용) */
         .selected-info {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.75); /* 투명도 조정 */
+            backdrop-filter: blur(10px); /* 블러 */
             border-radius: 20px;
-            padding: 10px;
+            padding: 20px; /* 패딩 조정 */
             margin: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            max-width: 600px; /* 너비 증가 */
+            width: 90%; /* 너비 조정 */
             animation: fadeInDown 0.6s ease-out;
+            color: #333; /* 내부 텍스트 색상 */
         }
 
         .selected-title {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* 간격 조정 */
             color: #2c3e50;
             display: flex;
             align-items: center;
@@ -84,16 +146,16 @@
         }
 
         .selected-tag {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
             color: white;
-            padding: 10px;
+            padding: 10px 18px; /* 패딩 조정 */
             border-radius: 25px;
-            white-space: normal;   /* 텍스트를 자동 줄 바꿈 */
-            word-wrap: break-word; /* 단어가 길면 자동으로 줄 바꿈 */
-            word-break: keep-all;  /* 한국어 줄 바꿈 자연스럽게 */
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: keep-all;
             font-size: 15px;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(161, 196, 253, 0.3); /* 파스텔 블루 그림자 */
             animation: fadeInUp 0.6s ease-out;
             animation-fill-mode: both;
         }
@@ -105,17 +167,18 @@
             border-radius: 15px;
             font-size: 16px;
             line-height: 1.5;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #a1c4fd; /* 파스텔 블루 */
             text-align: left;
-            max-width: 600px;
+            max-width: 100%; /* 부모 너비에 맞춤 */
             margin: 0 auto;
         }
 
         .search-title {
-            font-size: 24px;
+            font-size: 28px; /* 크기 조정 */
             margin: 5px;
             color: white;
             font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* 그림자 추가 */
         }
 
         #place-counter {
@@ -123,33 +186,28 @@
             margin-bottom: 20px;
             font-weight: bold;
             color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* 선택 이유 박스 */
+        /* 선택 이유 박스 (블러 적용) */
         .reason-box {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.75); /* 투명도 조정 */
+            backdrop-filter: blur(10px); /* 블러 */
+            border: none; /* 테두리 제거 */
             border-radius: 20px;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 20px; /* 패딩 조정 */
+            margin-bottom: 10px; /* 간격 조정 */
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             max-width: 800px;
-            width: 100%;
+            width: 90%; /* 너비 조정 */
             animation: fadeInUp 0.8s ease-out;
             position: relative;
             overflow: hidden;
+            color: #333; /* 내부 텍스트 색상 */
         }
 
-        .reason-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-            border-radius: 20px 20px 0 0;
+        .reason-box::before { /* 상단 라인 제거 */
+            content: none;
         }
 
         .reason-title {
@@ -159,47 +217,30 @@
             gap: 10px;
             font-size: 18px;
             font-weight: 600;
-            margin: 10px;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 0 0 15px 0; /* 간격 조정 */
+            color: #2c3e50;
+            text-shadow: none; /* 그림자 제거 */
         }
 
         .reason-content {
-            background: rgba(255, 255, 255, 0.95);
+            background: #f8f9fa; /* 배경색 조정 */
             border-radius: 15px;
-            padding: 10px;
+            padding: 15px 20px; /* 패딩 조정 */
             font-size: 16px;
-            white-space: normal;   /* 텍스트를 자동 줄 바꿈 */
-            word-wrap: break-word; /* 단어가 길면 자동으로 줄 바꿈 */
-            word-break: keep-all;  /* 한국어 줄 바꿈 자연스럽게 */
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: keep-all;
             line-height: 1.6;
-            color: #2c3e50;
+            color: #495057; /* 텍스트 색상 조정 */
             text-align: center;
             font-weight: 500;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: none; /* 그림자 제거 */
             position: relative;
+            border-left: 4px solid #a1c4fd; /* 파스텔 블루 */
         }
 
-        .reason-content::before {
-            content: '"';
-            position: absolute;
-            top: -5px;
-            left: 15px;
-            font-size: 40px;
-            color: #667eea;
-            font-weight: bold;
-            opacity: 0.3;
-        }
-
-        .reason-content::after {
-            content: '"';
-            position: absolute;
-            bottom: -15px;
-            right: 15px;
-            font-size: 40px;
-            color: #764ba2;
-            font-weight: bold;
-            opacity: 0.3;
+        .reason-content::before, .reason-content::after { /* 인용 부호 제거 */
+            content: none;
         }
 
         /* 스크롤 컨테이너 */
@@ -282,27 +323,30 @@
             padding: 0 10px;
         }
 
+        /* ▼▼▼ 장소 카드에 약한 블러 적용 ▼▼▼ */
         .place-card {
             flex: 0 0 calc(20% - 16px); /* 5개씩 보이도록 */
             min-width: 200px;
             display: flex;
             flex-direction: column;
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: none; /* 테두리 제거 */
             border-radius: 25px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.85); /* 0.95 -> 0.85 */
+            backdrop-filter: blur(5px); /* 약한 블러 */
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
             height: 320px;
+            color: #333; /* 내부 텍스트 색상 */
         }
 
         .place-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            background: white;
+            background: rgba(255, 255, 255, 0.95); /* 호버 시 투명도 약간 높임 */
         }
+        /* ▲▲▲ 블러 적용 끝 ▲▲▲ */
 
         .place-image-wrapper {
             width: 100%;
@@ -341,13 +385,13 @@
         }
 
         .keyword_title {
-            background: linear-gradient(135deg, #5c97e9, #a539b9);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
             color: white;
             padding: 8px 16px;
             border-radius: 25px;
             font-size: 14px;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(161, 196, 253, 0.3); /* 파스텔 블루 그림자 */
             text-align: center;
             line-height: 1.4;
             max-width: 140px;
@@ -389,14 +433,14 @@
         }
 
         .nav-buttons {
-            margin-top: 5px;
             display: flex;
             gap: 20px;
         }
 
         .nav-buttons .back-btn {
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.6); /* 반투명 + 블러 */
+            backdrop-filter: blur(5px);
             color: white;
             border: 2px solid white;
             border-radius: 25px;
@@ -405,11 +449,15 @@
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         .nav-buttons .back-btn:hover {
             background: white;
-            color: #667eea;
+            color: #a1c4fd; /* 파스텔 블루 */
+            text-shadow: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* 애니메이션 */
@@ -451,6 +499,18 @@
         }
 
         @media (max-width: 900px) {
+            body {
+                padding-top: 70px;
+            }
+            header {
+                padding: 12px 15px 0;
+            }
+            .logo img {
+                height: 40px;
+            }
+            .header-line {
+                margin: 12px 0 0 0;
+            }
             .place-card {
                 flex: 0 0 calc(33.333% - 14px); /* 3개씩 */
                 min-width: 160px;
@@ -464,7 +524,11 @@
 
             .selected-info {
                 padding: 20px 25px;
-                margin: 0 15px 25px;
+                margin: 20px 15px 25px;
+                width: calc(100% - 30px);
+            }
+            .reason-box {
+                width: calc(100% - 30px);
             }
 
             .keyword_title {
@@ -475,6 +539,18 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                padding-top: 65px;
+            }
+            header {
+                padding: 10px 10px 0;
+            }
+            .logo img {
+                height: 35px;
+            }
+            .header-line {
+                margin: 10px 0 0 0;
+            }
             .place-card {
                 flex: 0 0 calc(50% - 10px); /* 2개씩 */
                 min-width: 140px;
@@ -495,8 +571,14 @@
 
             .selected-info {
                 padding: 18px 20px;
-                margin: 0 10px 20px;
+                margin: 20px 10px 20px;
+                width: calc(100% - 20px);
             }
+            .reason-box {
+                width: calc(100% - 20px);
+                padding: 15px;
+            }
+
 
             .selected-title {
                 font-size: 16px;
@@ -517,6 +599,10 @@
                 padding: 6px 12px;
                 max-width: 100px;
             }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -527,6 +613,18 @@
 
             .content {
                 padding: 15px;
+            }
+            .search-title {
+                font-size: 22px;
+            }
+            .scroll-container {
+                max-width: 300px; /* 카드 너비에 맞춤 */
+            }
+            .scroll-btn.left {
+                left: -10px;
+            }
+            .scroll-btn.right {
+                right: -10px;
             }
         }
 
@@ -547,10 +645,10 @@
         <img src="/images/moodtrip-logo-short.png" alt="MOODTRIP"
              onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold; color: white;\'>MOODTRIP</span>'">
     </a>
+    <hr class="header-line">
 </header>
 
 <div class="content">
-    <!-- 선택된 감정/상황 표시 박스 -->
     <div class="selected-info" th:if="${selected}">
         <div class="selected-title">
             <span th:if="${type == 'emotion'}">&#128522; 선택하신 감정</span>
@@ -558,16 +656,14 @@
             <span th:unless="${type}">&#128269; 검색 키워드</span>
         </div>
         <div class="selected-content">
-            <!-- 감정 선택일 경우 태그 형태로 표시 -->
             <div th:if="${type == 'emotion'}" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
-                <span class="selected-tag"
-                      th:text="${selected}">감정</span>
+                <span th:each="emotion : ${#strings.arraySplit(selected, ',')}"
+                      class="selected-tag"
+                      th:text="${emotion.trim()}">감정</span>
             </div>
-            <!-- 상황 입력일 경우 텍스트 박스로 표시 -->
             <div th:if="${type == 'situation'}" class="selected-text" th:text="${selected}">
                 입력하신 상황
             </div>
-            <!-- 일반 검색일 경우 -->
             <div th:unless="${type}" style="color: white; font-size: 18px; font-weight: 600;" th:text="${selected}">
                 검색어
             </div>
@@ -586,16 +682,12 @@
     <h2 class="search-title">&#127919; 추천 결과</h2>
     <div id="place-counter" th:text="'총 ' + ${places.size()} + '개의 장소'">총 0개의 장소</div>
 
-    <!-- 페이지 인디케이터 -->
     <div class="page-indicator" id="pageIndicator"></div>
 
-    <!-- 스크롤 컨테이너 -->
     <div class="scroll-container">
-        <!-- 스크롤 버튼 -->
         <button class="scroll-btn left" id="scrollLeft">‹</button>
         <button class="scroll-btn right" id="scrollRight">›</button>
 
-        <!-- 가로 스크롤 영역 -->
         <div class="places-scroll-wrapper">
             <div class="places-list" id="placesList">
                 <a th:each="place, iterStat : ${places}" class="place-card"
@@ -604,7 +696,7 @@
                         <img th:src="${place.imageUrl}" alt="장소 이미지" class="place-image"
                              onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex'"/>
                         <div class="image-placeholder" style="display:none;">
-                            <img src="/images/no.png" alt="이미지 없음" />
+                            <img src="/images/no.png" alt="이미지 없음" style="width: 50%; height: auto; opacity: 0.5;" />
                         </div>
                     </div>
 
@@ -621,10 +713,8 @@
         </div>
     </div>
 
-    <!-- 네비게이션 버튼 -->
     <div class="nav-buttons">
         <a href="/" class="back-btn">« 처음으로 돌아가기 »</a>
-        <!-- 감정 선택에서 온 경우 -->
         <a th:if="${type == 'emotion'}"
            th:href="@{/selection(mode='emotion', lat=${latitude}, lng=${longitude})}"
            class="back-btn">« 이전으로 돌아가기 »</a>
@@ -642,10 +732,23 @@
             this.scrollRightBtn = document.getElementById('scrollRight');
             this.pageIndicator = document.getElementById('pageIndicator');
 
-            this.currentPage = 0;
+            if (!this.placesList || this.placesList.children.length === 0) {
+                console.warn("추천 장소 리스트가 비어있거나 찾을 수 없습니다.");
+                // 버튼과 인디케이터 숨기기
+                if(this.scrollLeftBtn) this.scrollLeftBtn.style.display = 'none';
+                if(this.scrollRightBtn) this.scrollRightBtn.style.display = 'none';
+                if(this.pageIndicator) this.pageIndicator.style.display = 'none';
+                return; // 초기화 중단
+            }
+
+
             this.cardsPerPage = this.getCardsPerPage();
             this.totalCards = this.placesList.children.length;
             this.totalPages = Math.ceil(this.totalCards / this.cardsPerPage);
+            // totalPages가 0이면 1로 설정 (최소 1페이지)
+            if (this.totalPages === 0) this.totalPages = 1;
+
+            this.currentPage = 0; // currentPage는 totalPages 계산 후 설정
 
             this.init();
         }
@@ -655,36 +758,51 @@
             if (width <= 400) return 1;
             if (width <= 600) return 2;
             if (width <= 900) return 3;
+            // 1000px 이하일 때 4개 보이도록 수정
             if (width <= 1000) return 4;
-            return 4;
+            // 1000px 초과일 때 5개 보이도록 수정
+            return 5;
         }
 
         init() {
             this.createPageIndicators();
             this.updateButtons();
             this.bindEvents();
-
-            // 초기 위치 설정
-            this.updateScroll();
+            this.updateScroll(); // 초기 위치 설정
         }
 
         createPageIndicators() {
             this.pageIndicator.innerHTML = '';
-            for (let i = 0; i < this.totalPages; i++) {
-                const dot = document.createElement('div');
-                dot.className = `page-dot ${i === 0 ? 'active' : ''}`;
-                dot.addEventListener('click', () => this.goToPage(i));
-                this.pageIndicator.appendChild(dot);
+            // totalPages가 1보다 클 때만 인디케이터 생성
+            if (this.totalPages > 1) {
+                for (let i = 0; i < this.totalPages; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = `page-dot ${i === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => this.goToPage(i));
+                    this.pageIndicator.appendChild(dot);
+                }
+            } else {
+                // 페이지가 하나거나 없으면 인디케이터 숨김
+                this.pageIndicator.style.display = 'none';
             }
         }
 
-        updateButtons() {
-            this.scrollLeftBtn.style.opacity = this.currentPage === 0 ? '0.5' : '1';
-            this.scrollRightBtn.style.opacity = this.currentPage >= this.totalPages - 1 ? '0.5' : '1';
 
-            this.scrollLeftBtn.disabled = this.currentPage === 0;
-            this.scrollRightBtn.disabled = this.currentPage >= this.totalPages - 1;
+        updateButtons() {
+            // 버튼 숨김/표시 로직 추가
+            if (this.totalPages <= 1) {
+                this.scrollLeftBtn.style.display = 'none';
+                this.scrollRightBtn.style.display = 'none';
+            } else {
+                this.scrollLeftBtn.style.display = 'block';
+                this.scrollRightBtn.style.display = 'block';
+                this.scrollLeftBtn.style.opacity = this.currentPage === 0 ? '0.5' : '1';
+                this.scrollRightBtn.style.opacity = this.currentPage >= this.totalPages - 1 ? '0.5' : '1';
+                this.scrollLeftBtn.disabled = this.currentPage === 0;
+                this.scrollRightBtn.disabled = this.currentPage >= this.totalPages - 1;
+            }
         }
+
 
         updatePageIndicators() {
             const dots = this.pageIndicator.querySelectorAll('.page-dot');
@@ -694,6 +812,9 @@
         }
 
         updateScroll() {
+            // placesList.children[0]가 없을 경우 에러 방지
+            if (!this.placesList.children[0]) return;
+
             const cardWidth = this.placesList.children[0].offsetWidth;
             const gap = 20; // CSS의 gap 값
             const scrollDistance = (cardWidth + gap) * this.cardsPerPage * this.currentPage;
@@ -730,47 +851,83 @@
 
             // 키보드 이벤트
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    this.scrollLeft();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    this.scrollRight();
+                // totalPages가 1보다 클 때만 키보드 이벤트 작동
+                if (this.totalPages > 1) {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.scrollLeft();
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        this.scrollRight();
+                    }
                 }
             });
+
 
             // 터치 스와이프 지원
             let startX = 0;
             let startY = 0;
             let isScrolling = false;
+            let currentTranslateX = 0; // 현재 transform 값 저장
 
             this.placesList.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                isScrolling = false;
+                // totalPages가 1보다 클 때만 터치 이벤트 작동
+                if (this.totalPages > 1) {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                    isScrolling = false;
+                    // 현재 transform 값 가져오기
+                    const style = window.getComputedStyle(this.placesList);
+                    const matrix = new WebKitCSSMatrix(style.transform);
+                    currentTranslateX = matrix.m41;
+                    this.placesList.style.transition = 'none'; // 드래그 중에는 transition 제거
+                }
+
             }, { passive: true });
 
             this.placesList.addEventListener('touchmove', (e) => {
-                if (!startX || !startY) return;
+                if (!startX || !startY || this.totalPages <= 1) return;
 
-                const diffX = startX - e.touches[0].clientX;
+                const currentX = e.touches[0].clientX;
+                const diffX = startX - currentX;
                 const diffY = startY - e.touches[0].clientY;
 
-                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && !isScrolling) {
+                // 수평 스크롤 의도 파악 (수평 이동량이 수직 이동량보다 클 때만)
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    // 기본 스크롤 막기 (필요한 경우)
+                    // e.preventDefault();
                     isScrolling = true;
-                    if (diffX > 0) {
-                        this.scrollRight();
-                    } else {
-                        this.scrollLeft();
-                    }
+                    // 드래그하는 만큼 실시간으로 이동
+                    this.placesList.style.transform = `translateX(${currentTranslateX - diffX}px)`;
                 }
+
             }, { passive: true });
 
-            this.placesList.addEventListener('touchend', () => {
+            this.placesList.addEventListener('touchend', (e) => {
+                if (!startX || !isScrolling || this.totalPages <= 1) return;
+
+                const endX = e.changedTouches[0].clientX;
+                const diffX = startX - endX;
+                const threshold = 50; // 스와이프로 인식할 최소 이동 거리
+
+                this.placesList.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // transition 복원
+
+                if (Math.abs(diffX) > threshold) {
+                    if (diffX > 0) { // 오른쪽으로 스와이프
+                        this.scrollRight();
+                    } else { // 왼쪽으로 스와이프
+                        this.scrollLeft();
+                    }
+                } else {
+                    // 임계값 미만이면 원래 위치로 복귀
+                    this.updateScroll();
+                }
+
                 startX = 0;
                 startY = 0;
                 isScrolling = false;
             }, { passive: true });
+
 
             // 윈도우 리사이즈 이벤트
             window.addEventListener('resize', () => {
@@ -778,6 +935,8 @@
                 if (newCardsPerPage !== this.cardsPerPage) {
                     this.cardsPerPage = newCardsPerPage;
                     this.totalPages = Math.ceil(this.totalCards / this.cardsPerPage);
+                    // totalPages가 0이면 1로 설정
+                    if (this.totalPages === 0) this.totalPages = 1;
                     this.currentPage = Math.min(this.currentPage, this.totalPages - 1);
                     this.createPageIndicators();
                     this.updateScroll();
@@ -788,9 +947,11 @@
 
     // 페이지 로드 후 스크롤러 초기화
     document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('placesList').children.length > 0) {
+        // placesList가 실제로 존재하는지 확인 후 초기화
+        if (document.getElementById('placesList')) {
             new HorizontalCardScroller();
         }
+
     });
 
     console.log('가로 스크롤 장소 리스트가 로드되었습니다.');
