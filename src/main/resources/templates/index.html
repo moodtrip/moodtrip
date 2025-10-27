@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOODTRIP</title>
     <style>
-        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+
         @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -19,22 +19,17 @@
                 background-position: 0% 50%;
             }
         }
-        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
 
-
-        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 
-            /* "더 어두운 흰색"으로 수정된 애니메이션 */
             background: linear-gradient(135deg,
-                /* 1. 블루/스카이 */
-            #a1c4fd, #c2e9fb,
+                /* 1. 블루/스카이 */ #a1e8fd, #c2f6fb,
             #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
                 /* 2. 핑크/퍼플 */
-            #fbc2eb, #a6c1ee,
+            #fbc2eb, #c2f6fb,
             #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
                 /* 3. (녹색 대체) 피치/옐로우 */
             #fde7c8, #fdf6d2,
@@ -46,7 +41,7 @@
             #fad0c4, #ffd1ff,
             #f0f0f0, /* 흰색 대체 (더 어두운 회색) */
                 /* 6. 다시 블루로 순환 */
-            #a1c4fd, #c2e9fb
+            #a1e8fd, #c2f6fb
             );
 
             /* 그라데이션 크기를 10개 구간에 맞게 키웁니다. */
@@ -60,10 +55,7 @@
             align-items: center;
             color: white; /* 기본 텍스트 색상을 흰색으로 고정 */
         }
-        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
 
-
-        /* Header 스타일 수정 */
         #header {
             position: fixed;
             top: 20px;
@@ -122,7 +114,7 @@
 
         .subtitle {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(96, 115, 163, 1);
             font-weight: 300;
             margin-top: 10px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 가독성을 위해 그림자 추가 */
@@ -259,7 +251,7 @@
             color: #333;
         }
 
-        /* 위치 정보 표시 - 수정된 부분 */
+        /* 위치 정보 표시 */
         .location-info {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -312,19 +304,30 @@
             animation: fadeInUp 0.6s ease-out;
         }
 
+        .selection-header {
+            background: rgba(255, 255, 255, 0.6); /* 1. 버튼과 동일한 배경 */
+            backdrop-filter: blur(10px); /* 2. 버튼과 동일한 블러 */
+            border-radius: 45px; /* 3. 버튼과 동일한 곡률 */
+            padding: 15px 10px; /* 4. 내부 여백 */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 5. 버튼과 동일한 그림자 */
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
         .selection-title {
             font-size: 32px;
             font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 가독성 그림자 */
+            color: #063f71; /* 6. 텍스트 색상 수정 */
+            text-shadow: none; /* 7. 텍스트 그림자 제거 */
             margin-bottom: 10px;
         }
 
         .selection-subtitle {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 가독성 그림자 */
+            color: #01569f; /* 8. 텍스트 색상 수정 */
+            margin-bottom: 10px; /* 9. 여백 수정 */
+            text-shadow: none; /* 10. 텍스트 그림자 제거 */
             font-weight: bold;
         }
 
@@ -381,29 +384,33 @@
         }
 
         .back-btn {
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 25px;
+            /* from .btn */
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-block;
+
+            /* from .btn-secondary */
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 2px solid #6c757d;
+
         }
 
-        /* ▼▼▼ 뒤로가기 버튼 호버 효과 수정 ▼▼▼ */
+        /* .btn-secondary:hover 스타일 적용 */
         .back-btn:hover {
-            background: white; /* recommendResult.html 스타일 적용 */
-            color: #667eea; /* recommendResult.html 스타일 적용 */
-            border-color: white; /* 테두리도 흰색으로 */
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* recommendResult.html 그림자 스타일 */
-            text-shadow: none; /* 텍스트 그림자 제거 */
+            background: #6c757d;
+            color: white;
+            transform: translateY(-3px);
+
+            border-color: #6c757d;
+            box-shadow: none;
+            text-shadow: none;
         }
-        /* ▲▲▲ 호버 효과 수정 완료 ▲▲▲ */
 
         /* 애니메이션 */
         @keyframes fadeIn {
@@ -540,6 +547,11 @@
                 font-size: 13px;
             }
 
+            /* [수정] 반응형 */
+            .selection-header {
+                padding: 15px 25px;
+            }
+
             .selection-title {
                 font-size: 28px;
             }
@@ -595,6 +607,12 @@
             .start-button {
                 padding: 14px 30px;
                 font-size: 16px;
+            }
+
+            .selection-header {
+                width: 100%;
+                max-width: 280px; /* 버튼과 너비 맞춤 */
+                padding: 15px 20px;
             }
 
             .selection-title {
@@ -690,7 +708,7 @@
 </div>
 
 <div class="emotion-selection" id="emotionScreen">
-    <div>
+    <div class="selection-header">
         <h2 class="selection-title">어떤 방식으로 찾아드릴까요?</h2>
         <p class="selection-subtitle">원하는 검색 방식을 선택해주세요</p>
     </div>
@@ -725,7 +743,7 @@
         document.getElementById('locationModal').style.display = 'flex';
     }
 
-    // 위치 정보 요청 - 수정된 부분
+    // 위치 정보 요청
     function requestLocation() {
         const modal = document.getElementById('locationModal');
         const locationInfo = document.getElementById('locationInfo');

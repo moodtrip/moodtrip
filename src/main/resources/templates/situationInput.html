@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상황 입력 - MOODTRIP</title>
     <style>
-        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+
         @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -19,9 +19,7 @@
                 background-position: 0% 50%;
             }
         }
-        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
 
-        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
@@ -55,8 +53,6 @@
             align-items: flex-start; /* 상단부터 시작 */
             justify-content: center;
         }
-        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
-
 
         /* Header 스타일 */
         #header-logo {
@@ -84,7 +80,6 @@
             width: 100%;
         }
 
-        /* ▼▼▼ 3. emotionSelection.html의 구조 적용 ▼▼▼ */
         .container {
             background: rgba(255, 255, 255, 0.75); /* 반투명 + 블러 */
             backdrop-filter: blur(10px);
@@ -238,7 +233,6 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            /* margin-top: 30px; -> fixed-bottom에서 패딩으로 대체 */
         }
 
         .btn {
@@ -328,8 +322,6 @@
             border-radius: 0 0 45px 45px;
             z-index: 100;
         }
-        /* ▲▲▲ 3단 구조 스타일 끝 ▲▲▲ */
-
 
         @keyframes fadeInUp {
             from {
@@ -351,7 +343,6 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* ▼▼▼ 로딩 오버레이 스타일 (수정) ▼▼▼ */
         #loadingOverlay {
             display: none;
             position: fixed;
@@ -365,12 +356,7 @@
             font-size: 18px;
             color: #333;
             border-radius: 45px; /* 곡률 추가 */
-            /* 화면 전체 대신 컨테이너 크기에 맞추려면 아래 주석 해제 (단, fixed 포지션이라 어려움) */
-            /* position: absolute; */
-            /* width: 100%; height: 100%; left:0; top: 0; */
-            /* box-sizing: border-box; */
         }
-        /* ▲▲▲ 로딩 오버레이 수정 끝 ▲▲▲ */
 
         .loader {
             position: relative;

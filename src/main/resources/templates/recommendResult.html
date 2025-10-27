@@ -5,9 +5,9 @@
     <link rel="apple-touch-icon" href="/images/moodtrip.png"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>MOODTRIP - Recommend</title>
+    <title>추천 - MOODTRIP</title>
     <style>
-        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+
         @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -19,9 +19,7 @@
                 background-position: 0% 50%;
             }
         }
-        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
 
-        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
@@ -52,10 +50,7 @@
             padding-top: 80px; /* 헤더 공간 확보 */
             box-sizing: border-box;
         }
-        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
 
-
-        /* ▼▼▼ 3. 나머지 요소 스타일 조정 (블러, 투명도, 가독성) ▼▼▼ */
         header {
             display: flex;
             justify-content: space-between;
@@ -68,6 +63,7 @@
             right: 0;
             z-index: 1500;
             background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
         }
         .header-line { /* 헤더 하단 라인 추가 */
@@ -117,8 +113,8 @@
             background: rgba(255, 255, 255, 0.75); /* 투명도 조정 */
             backdrop-filter: blur(10px); /* 블러 */
             border-radius: 20px;
-            padding: 20px; /* 패딩 조정 */
-            margin: 20px;
+            padding: 10px;
+            margin: 10px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             max-width: 600px; /* 너비 증가 */
             width: 90%; /* 너비 조정 */
@@ -176,7 +172,7 @@
         .search-title {
             font-size: 28px; /* 크기 조정 */
             margin: 5px;
-            color: white;
+            color: #d75c7d;
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* 그림자 추가 */
         }
@@ -185,7 +181,7 @@
             font-size: 16px;
             margin-bottom: 20px;
             font-weight: bold;
-            color: white;
+            color: #853d51;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
@@ -239,7 +235,7 @@
             border-left: 4px solid #a1c4fd; /* 파스텔 블루 */
         }
 
-        .reason-content::before, .reason-content::after { /* 인용 부호 제거 */
+        .reason-content::before, .reason-content::after {
             content: none;
         }
 
@@ -248,7 +244,7 @@
             width: 100%;
             max-width: 1000px; /* 1000px -> 4개, 1200px -> 4.5개 */
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         /* 스크롤 버튼 */
@@ -323,7 +319,7 @@
             padding: 0 10px;
         }
 
-        /* ▼▼▼ 장소 카드에 약한 블러 적용 ▼▼▼ */
+        /* 장소 카드에 약한 블러 적용 */
         .place-card {
             flex: 0 0 calc(20% - 16px); /* 5개씩 보이도록 */
             min-width: 200px;
@@ -385,12 +381,12 @@
         }
 
         .keyword_title {
-            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
-            color: white;
+            background: linear-gradient(135deg, #fda1d6, #c2fbcc); /* 파스텔 블루 */
+            color: #55ccc8;
             padding: 8px 16px;
             border-radius: 25px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             box-shadow: 0 4px 12px rgba(161, 196, 253, 0.3); /* 파스텔 블루 그림자 */
             text-align: center;
             line-height: 1.4;
@@ -437,27 +433,52 @@
             gap: 20px;
         }
 
+        /* 기본 back-btn 스타일 (처음으로 돌아가기 버튼) */
         .nav-buttons .back-btn {
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.6); /* 반투명 + 블러 */
-            backdrop-filter: blur(5px);
-            color: white;
-            border: 2px solid white;
-            border-radius: 25px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 16px;
+            /* from .btn */
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            text-decoration: none;
+            display: inline-block;
+
+            /* from .btn-primary */
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
+            color: white;
         }
 
         .nav-buttons .back-btn:hover {
-            background: white;
-            color: #a1c4fd; /* 파스텔 블루 */
-            text-shadow: none;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(161, 196, 253, 0.4); /* 파스텔 블루 그림자 */
+        }
+
+        /* 이전으로 돌아가기 버튼 전용 스타일 */
+        .nav-buttons .back-btn-previous {
+            /* from .btn */
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+
+            /* 파스텔톤 오렌지 배경 */
+            background: linear-gradient(135deg, #fed8b1, #fbc190);
+            color: white; /* 글자색 흰색 */
+        }
+
+        /* 이전으로 돌아가기 버튼 호버 효과 */
+        .nav-buttons .back-btn-previous:hover {
+            transform: translateY(-3px);
+            /* 오렌지색 그림자 */
+            box-shadow: 0 15px 35px rgba(251, 193, 144, 0.4);
         }
 
         /* 애니메이션 */
@@ -523,8 +544,8 @@
             }
 
             .selected-info {
-                padding: 20px 25px;
-                margin: 20px 15px 25px;
+                padding: 10px;
+                margin: 10px;
                 width: calc(100% - 30px);
             }
             .reason-box {
@@ -603,6 +624,12 @@
                 flex-direction: column;
                 gap: 10px;
             }
+
+            .nav-buttons .back-btn,
+            .nav-buttons .back-btn-previous {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -645,7 +672,6 @@
         <img src="/images/moodtrip-logo-short.png" alt="MOODTRIP"
              onerror="this.outerHTML='<span style=\'font-size: 24px; font-weight: bold; color: white;\'>MOODTRIP</span>'">
     </a>
-    <hr class="header-line">
 </header>
 
 <div class="content">
@@ -717,10 +743,10 @@
         <a href="/" class="back-btn">« 처음으로 돌아가기 »</a>
         <a th:if="${type == 'emotion'}"
            th:href="@{/selection(mode='emotion', lat=${latitude}, lng=${longitude})}"
-           class="back-btn">« 이전으로 돌아가기 »</a>
+           class="back-btn-previous">« 이전으로 돌아가기 »</a>
         <a th:if="${type == 'situation'}"
            th:href="@{/selection(mode='situation', lat=${latitude}, lng=${longitude})}"
-           class="back-btn">« 이전으로 돌아가기 »</a>
+           class="back-btn-previous">« 이전으로 돌아가기 »</a>
     </div>
 </div>
 

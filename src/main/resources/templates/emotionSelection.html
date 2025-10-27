@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>감정 선택 - MOODTRIP</title>
     <style>
-        /* ▼▼▼ 1. 부드러운 배경 애니메이션 정의 ▼▼▼ */
+
         @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -19,9 +19,7 @@
                 background-position: 0% 50%;
             }
         }
-        /* ▲▲▲ 애니메이션 정의 끝 ▲▲▲ */
 
-        /* ▼▼▼ 2. 기존 body 스타일을 애니메이션 스타일로 교체 ▼▼▼ */
         body {
             margin: 0;
             padding: 0;
@@ -62,8 +60,6 @@
             justify-content: center;
             align-items: flex-start; /* 컨테이너를 위쪽에 배치 */
         }
-        /* ▲▲▲ body 스타일 교체 완료 ▲▲▲ */
-
 
         .header {
             text-align: center;
@@ -398,12 +394,11 @@
         .emotion-item:nth-child(12) { animation-delay: 0.6s; }
         .emotion-item:nth-child(n+13) { animation-delay: 0.65s; }
 
-        /* ▼▼▼ 로딩 오버레이 스타일 (수정) ▼▼▼ */
         #loadingOverlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(255, 255, 255, 0.9); /* 0.98 -> 0.9 */
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(15px);
             z-index: 9999;
             flex-direction: column;
@@ -413,7 +408,6 @@
             color: #333;
             border-radius: 45px; /* 곡률 추가 */
         }
-        /* ▲▲▲ 로딩 오버레이 수정 끝 ▲▲▲ */
 
         /* 개선된 로딩 스피너 */
         .loader {
@@ -691,7 +685,6 @@
             }
 
             .content-area {
-                /* 계산 방식 수정 */
                 /* (100vh - 헤더공간 70px - 컨테이너마진 10px - 바디패딩 5px) */
                 max-height: calc(100vh - 85px);
             }
