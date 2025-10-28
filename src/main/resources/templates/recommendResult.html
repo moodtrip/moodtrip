@@ -142,7 +142,7 @@
         }
 
         .selected-tag {
-            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
+            background: linear-gradient(135deg, #2677fd, #a2c4d3);
             color: white;
             padding: 10px 18px; /* 패딩 조정 */
             border-radius: 25px;
@@ -342,7 +342,6 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
             background: rgba(255, 255, 255, 0.95); /* 호버 시 투명도 약간 높임 */
         }
-        /* ▲▲▲ 블러 적용 끝 ▲▲▲ */
 
         .place-image-wrapper {
             width: 100%;
@@ -381,9 +380,10 @@
         }
 
         .keyword_title {
-            background: linear-gradient(135deg, #fda1d6, #c2fbcc); /* 파스텔 블루 */
-            color: #55ccc8;
+            background: white; /* 파스텔 블루 */
+            color: #0b193a;
             padding: 8px 16px;
+            border: 1px solid darkgray;
             border-radius: 25px;
             font-size: 14px;
             font-weight: bold;
@@ -447,7 +447,7 @@
             display: inline-block;
 
             /* from .btn-primary */
-            background: linear-gradient(135deg, #a1c4fd, #c2e9fb); /* 파스텔 블루 */
+            background: linear-gradient(135deg, #5394ff, #9cd8f3); /* 파스텔 블루 */
             color: white;
         }
 
@@ -459,8 +459,10 @@
         /* 이전으로 돌아가기 버튼 전용 스타일 */
         .nav-buttons .back-btn-previous {
             /* from .btn */
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
             padding: 15px 35px;
-            border: none;
+            border: 2px solid #6c757d;;
             border-radius: 50px;
             font-size: 18px;
             font-weight: 600;
@@ -468,17 +470,13 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-
-            /* 파스텔톤 오렌지 배경 */
-            background: linear-gradient(135deg, #fed8b1, #fbc190);
-            color: white; /* 글자색 흰색 */
         }
 
         /* 이전으로 돌아가기 버튼 호버 효과 */
         .nav-buttons .back-btn-previous:hover {
+            background: #6c757d;
+            color: white;
             transform: translateY(-3px);
-            /* 오렌지색 그림자 */
-            box-shadow: 0 15px 35px rgba(251, 193, 144, 0.4);
         }
 
         /* 애니메이션 */
