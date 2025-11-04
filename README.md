@@ -63,7 +63,7 @@ sudo java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=80
 ```
 ## (생성된 jar 80포트로 실행 - 서비스용)
 ```
-sudo nohup java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=80 > app.log 2>&1 &
+sudo nohup java -jar target/demo-0.0.1-SNAPSHOT.jar --server.port=80 > app.log 2>&1
 ```
 ## (로그 파일 확인 - 출력 및 에러 기록)
 ```
