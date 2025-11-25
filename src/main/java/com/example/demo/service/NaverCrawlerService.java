@@ -48,7 +48,7 @@ public class NaverCrawlerService {
     // 키워드별 캐시 (30분 TTL)
     private final Map<String, CacheEntry> placeCache = new ConcurrentHashMap<>();
     private final Map<String, CacheEntry> locationCache = new ConcurrentHashMap<>();
-    private static final long CACHE_TTL_MINUTES = 30;
+    private static final long CACHE_TTL_MINUTES = 60;
     private static final int MAX_RESULTS = 25;
     private final WebDriverPool webDriverPool;
 
@@ -272,46 +272,48 @@ public class NaverCrawlerService {
     /**
      * WebDriver 풀(Pool) 관리 클래스
      */
-    private static class WebDriverPool {
-        private final BlockingQueue<WebDriver> pool;
-        private final int poolSize;
+//    private static class WebDriverPool {
+//        private final BlockingQueue<WebDriver> pool;
+//        private final int poolSize;
+//
+//        public WebDriverPool(int poolSize) {
+//            this.poolSize = poolSize;
+//            this.pool = new LinkedBlockingQueue<>(poolSize);
+//            for (int i = 0; i < poolSize; i++) {
+//                this.pool.offer(createDriver());
+//            }
+//        }
+//
+//        private WebDriver createDriver() {
+//            ChromeOptions options = new ChromeOptions();
+//            options.addArguments("--headless");
+//            options.addArguments("--no-sandbox");
+//            options.addArguments("--disable-dev-shm-usage");
+//            options.addArguments("--disable-gpu");
+//            options.addArguments("--disable-extensions");
+//            options.addArguments("--disable-logging");
+//            options.addArguments("--silent");
+//            return new ChromeDriver(options);
+//        }
+//
+//        public WebDriver getDriver() throws InterruptedException {
+//            return pool.take();
+//        }
+//
+//        public void returnDriver(WebDriver driver) {
+//            if (driver != null) {
+//                // 드라이버 상태를 초기화하고 풀에 반납
+//                driver.get("about:blank");
+//                pool.offer(driver);
+//            }
+//        }
+//
+//        public void closeAll() {
+//            for (WebDriver driver : pool) {
+//                driver.quit();
+//            }
+//        }
+//    }
 
-        public WebDriverPool(int poolSize) {
-            this.poolSize = poolSize;
-            this.pool = new LinkedBlockingQueue<>(poolSize);
-            for (int i = 0; i < poolSize; i++) {
-                this.pool.offer(createDriver());
-            }
-        }
 
-        private WebDriver createDriver() {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--disable-extensions");
-            options.addArguments("--disable-logging");
-            options.addArguments("--silent");
-            return new ChromeDriver(options);
-        }
-
-        public WebDriver getDriver() throws InterruptedException {
-            return pool.take();
-        }
-
-        public void returnDriver(WebDriver driver) {
-            if (driver != null) {
-                // 드라이버 상태를 초기화하고 풀에 반납
-                driver.get("about:blank");
-                pool.offer(driver);
-            }
-        }
-
-        public void closeAll() {
-            for (WebDriver driver : pool) {
-                driver.quit();
-            }
-        }
-    }
 }

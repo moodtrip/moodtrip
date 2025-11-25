@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +19,8 @@ public class RecommendService {
 
     private final OpenAiService openAiService;
     private final NaverCrawlerService naverCrawlerService;
+
+    ExecutorService executor = Executors.newFixedThreadPool(10);
 
     public RecommendService(OpenAiService openAiService, NaverCrawlerService naverCrawlerService) {
         this.openAiService = openAiService;
@@ -85,7 +88,7 @@ public class RecommendService {
     }
 
     public PlaceDto recommendPlaces(String userInput, String searchType) throws Exception {
-        List<PlaceInfo> places = new ArrayList<>();
+//        List<PlaceInfo> places = new ArrayList<>();
         List<String> keyword = new ArrayList<>();
 
         if(Objects.equals(searchType, "situation")) {
@@ -101,19 +104,40 @@ public class RecommendService {
         String comment = keyword.get(keyword.size() - 1);
         List<String> searchKeywords = keyword.subList(0, keyword.size() - 1);
 
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+//        List<CompletableFuture<List<PlaceInfo>>> futures = searchKeywords.stream()
+//                .map(k -> CompletableFuture.supplyAsync(() -> {
+//                    try {
+//                        System.out.println("장소 검색: " + k);
+//                        return naverCrawlerService.crawlPlaces(k);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        return new ArrayList<PlaceInfo>();
+//                    }
+//                }, executor))
+//                .collect(Collectors.toList());
 
+        // 병렬 크롤링
         List<CompletableFuture<List<PlaceInfo>>> futures = searchKeywords.stream()
                 .map(k -> CompletableFuture.supplyAsync(() -> {
                     try {
-                        System.out.println("장소 검색: " + k);
                         return naverCrawlerService.crawlPlaces(k);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         return new ArrayList<PlaceInfo>();
                     }
                 }, executor))
                 .collect(Collectors.toList());
+
+        // 모든 작업 완료 대기 (타임아웃 추가)
+        List<PlaceInfo> places = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> futures.stream()
+                        .map(CompletableFuture::join)
+                        .flatMap(List::stream)
+                        .distinct()
+                        .collect(Collectors.toList()))
+                .get(120, TimeUnit.SECONDS); // 최대 2분 대기
+
+//        places = futures.stream().map(CompletableFuture::join).flatMap(List::stream).distinct().collect(Collectors.toList());
+
 
 //        for(String input : searchKeywords) {
 //                // 테스트용 문구
@@ -126,8 +150,6 @@ public class RecommendService {
 
         //중복제거
 //        places = places.stream().distinct().collect(Collectors.toList());
-
-        places = futures.stream().map(CompletableFuture::join).flatMap(List::stream).distinct().collect(Collectors.toList());
 
         //리스트 배열 섞기
         Collections.shuffle(places);
