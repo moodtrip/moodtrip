@@ -93,7 +93,7 @@ MOODTRIP은 사용자의 **감정 또는 상황을 입력받아**, 로컬 LLM(Ol
 | 이름                                      | 역할 | 개발 부분                  |
 |-----------------------------------------|----|------------------------|
 | 정아형 (https://github.com/wnddjgld)       | 팀장 | 백엔드 / 프롬프트 엔지니어링       |
-| 배형권 (https://github.com/smcmfmf)        | 팀원 | 백엔드 / 크롤링 / UI, UX 수정  |
+| 배형권 (https://github.com/smcmfmf)        | 팀원 | 백엔드 / 프론트엔드 / 서버 구축 및 관리 / UI, UX 수정  |
 | 김용재 (https://github.com/bernadette1008) | 팀원 | 백엔드 / 크롤링 / 프로젝트 버전 관리 / 디자인 설계 |
 | 윤준석 (https://github.com/Emto0103)       | 팀원 | 프론트엔드 / 디자인 수정         |
 ---
